@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import { useInput } from "../hooks/useInput";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -10,6 +10,12 @@ const Login = () => {
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
+
+    const idRef = useRef();
+
+    useEffect(()=>{
+        idRef.current.focus();
+    }, []);
 
     return (
         <StyledLogin className="pageContainer">
@@ -22,13 +28,13 @@ const Login = () => {
                 <div className="input-section">
                     <h1>더 이상 배고픔에 속지 마세요.</h1>
                     <div className="inputs">
-                        <input type="text" value={id} onChange={handleId} required placeholder="아이디"/>
+                        <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef}/>
                         <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호"/>
                         {error && (
                             <p>아이디 혹은 비밀번호가 틀렸습니다.</p>
                         )}
                     </div>
-                    <button disabled={(id.length === 0 && pw.length === 0) || error} onClick={()=>{
+                    <button disabled={(id.length === 0 || pw.length === 0)} onClick={()=>{
                         setError(true)
                     }}>로그인하기</button>
                     <div className="id-pw-recovery">
@@ -100,7 +106,7 @@ const StyledLogin = styled.section`
                     min-height: 56.5px;
 
                     &:focus{
-                        border: 1px solid;
+                        border: 1px solid ${colors.mainColor};
                     }
 
                     &:first-child{
