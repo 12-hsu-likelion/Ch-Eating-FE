@@ -19,7 +19,8 @@ const colors = {
     negativeErrorCancel: "#FF5050",
     warningCaution: "#FFDC46",
     positiveSuccess: "#61EE61",
-    safety: "#96EBFF"
+    safety: "#96EBFF",
+    error: "#FF4242"
 };
 
 export default colors;
