@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
-import { useInput } from "../hooks/useInput";
+import colors from "../../styles/colors";
+import { useInput } from "../../hooks/useInput";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -58,10 +58,8 @@ const StyledLogin = styled.section`
     border: .000000000001px solid transparent;
 
     .login-content{
-        width: 92%;
-        margin: 0 auto;
         /* 시간, 배터리 나와있는 header가 스마트폰 시스템 기본 header라면 margin top을 수정할 것 */
-        margin-top: 180px;
+        margin: 230px 16px 0 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
