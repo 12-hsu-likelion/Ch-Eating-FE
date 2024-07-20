@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
-import { useInput } from "../hooks/useInput";
+import colors from "../../styles/colors";
+import { useInput } from "../../hooks/useInput";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Login = () => {
 
     const idRef = useRef();
 
-    useEffect(()=>{
+    useEffect(() => {
         idRef.current.focus();
     }, []);
 
@@ -28,24 +28,28 @@ const Login = () => {
                 <div className="input-section">
                     <h1>더 이상 배고픔에 속지 마세요.</h1>
                     <div className="inputs">
-                        <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef}/>
-                        <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호"/>
+                        <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef} />
+                        <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호" />
                         {error && (
                             <p>아이디 혹은 비밀번호가 틀렸습니다.</p>
                         )}
                     </div>
-                    <button disabled={(id.length === 0 || pw.length === 0)} onClick={()=>{
+                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={() => {
                         setError(true)
                     }}>로그인하기</button>
                     <div className="id-pw-recovery">
-                        <span>아이디 찾기</span>
+                        <span onClick={()=>{
+                            navigate("/findid")
+                        }}>아이디 찾기</span>
                         <span>|</span>
-                        <span>비밀번호 찾기</span>
+                        <span onClick={() => {
+                            navigate("/resetpassword");
+                        }}>비밀번호 찾기</span>
                     </div>
                 </div>
 
                 <div className="navi-to-signup">
-                    아직 회원이 아니세요? <span onClick={()=>navigate("/signup")}>회원가입하기</span>
+                    아직 회원이 아니세요? <span onClick={() => navigate("/signup")}>회원가입하기</span>
                 </div>
             </div>
         </StyledLogin>
@@ -58,10 +62,8 @@ const StyledLogin = styled.section`
     border: .000000000001px solid transparent;
 
     .login-content{
-        width: 92%;
-        margin: 0 auto;
         /* 시간, 배터리 나와있는 header가 스마트폰 시스템 기본 header라면 margin top을 수정할 것 */
-        margin-top: 180px;
+        margin: 230px 16px 0 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
