@@ -13,7 +13,7 @@ const Login = () => {
 
     const idRef = useRef();
 
-    useEffect(()=>{
+    useEffect(() => {
         idRef.current.focus();
     }, []);
 
@@ -28,24 +28,28 @@ const Login = () => {
                 <div className="input-section">
                     <h1>더 이상 배고픔에 속지 마세요.</h1>
                     <div className="inputs">
-                        <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef}/>
-                        <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호"/>
+                        <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef} />
+                        <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호" />
                         {error && (
                             <p>아이디 혹은 비밀번호가 틀렸습니다.</p>
                         )}
                     </div>
-                    <button disabled={(id.length === 0 || pw.length === 0)} onClick={()=>{
+                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={() => {
                         setError(true)
                     }}>로그인하기</button>
                     <div className="id-pw-recovery">
-                        <span>아이디 찾기</span>
+                        <span onClick={()=>{
+                            navigate("/findid")
+                        }}>아이디 찾기</span>
                         <span>|</span>
-                        <span>비밀번호 찾기</span>
+                        <span onClick={() => {
+                            navigate("/resetpassword");
+                        }}>비밀번호 찾기</span>
                     </div>
                 </div>
 
                 <div className="navi-to-signup">
-                    아직 회원이 아니세요? <span onClick={()=>navigate("/signup")}>회원가입하기</span>
+                    아직 회원이 아니세요? <span onClick={() => navigate("/signup")}>회원가입하기</span>
                 </div>
             </div>
         </StyledLogin>

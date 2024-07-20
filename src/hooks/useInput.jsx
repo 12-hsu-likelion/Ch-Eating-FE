@@ -11,7 +11,7 @@ export const useInput = (input, isPhoneNumber = false) => {
         // 번호 입력의 경우 전화번호 형식이 아니라면 return
         if (isPhoneNumber) {
             if (numberFormat.test(e.target.value)) {
-                alert("올바른 전화번호를 입력해주세요.");
+                alert("숫자를 입력해주세요.");
                 return;
             }
 

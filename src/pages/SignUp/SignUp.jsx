@@ -36,6 +36,15 @@ const SignUp = () => {
 
     const inputCodeRef = useRef();
 
+    const [isFocused, setIsFocused] = useState({
+        idFocus: false,
+        pwdFocus: false,
+        matchPwdFocus: false,
+        nameFocus: false,
+        phoneNumberFocus: false,
+        codeFocus: false,
+    })
+
     // 이건 에러 코드가 변경됐을 시 에러 코드 상태 보여주는 것 나중에 지우셈
     // useEffect(() => {
     //     console.log(errors);
@@ -49,7 +58,7 @@ const SignUp = () => {
             gsap.to(".slider", {
                 x: "-100%",
                 duration: .5,
-                ease: "power2.out"
+                ease: "power3.out"
             })
         }
         else {
@@ -71,7 +80,7 @@ const SignUp = () => {
     // 나중에 async 함수로 바꿀 것
     const checkIdDup = () => {
         if (errors.idError.formatError) {
-            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요.");
+            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요");
             return;
         }
 
@@ -84,7 +93,7 @@ const SignUp = () => {
         }));
         setInputTestMsg((prev) => ({
             ...prev,
-            idMsg: "사용 가능한 아이디입니다."
+            idMsg: "사용 가능한 아이디입니다"
         }))
     }
 
@@ -140,7 +149,7 @@ const SignUp = () => {
             }));
             setInputTestMsg({
                 ...inputTestMsg,
-                idMsg: "아이디는 6~12글자이어야 합니다."
+                idMsg: "아이디는 6~12글자이어야 합니다"
             });
         } else {
             setErrors(prev => ({
@@ -152,7 +161,7 @@ const SignUp = () => {
             }));
             setInputTestMsg({
                 ...inputTestMsg,
-                idMsg: "형식에 맞는 아이디입니다! 중복을 검사해주세요."
+                idMsg: "형식에 맞는 아이디입니다! 중복을 검사해주세요"
             });
         }
     }, [id]);
@@ -165,7 +174,7 @@ const SignUp = () => {
             });
             setInputTestMsg({
                 ...inputTestMsg,
-                pwMsg: "비밀번호는 최소 하나의 특수문자를 포함하여 8~15글자이어야 합니다."
+                pwMsg: "비밀번호는 최소 하나의 특수문자를 포함하여 8~15글자이어야 합니다"
             });
         } else {
             setErrors({
@@ -174,7 +183,7 @@ const SignUp = () => {
             });
             setInputTestMsg({
                 ...inputTestMsg,
-                pwMsg: "사용 가능한 비밀번호입니다."
+                pwMsg: "사용 가능한 비밀번호입니다"
             });
         }
     }, [pw]);
@@ -187,7 +196,7 @@ const SignUp = () => {
             }));
             setInputTestMsg(prev => ({
                 ...prev,
-                matchMsg: "비밀번호가 맞지 않습니다."
+                matchMsg: "비밀번호가 일치하지 않습니다"
             }));
         } else {
             setErrors(prev => ({
@@ -196,7 +205,7 @@ const SignUp = () => {
             }));
             setInputTestMsg(prev => ({
                 ...prev,
-                matchMsg: "비밀번호가 일치합니다."
+                matchMsg: "비밀번호가 일치합니다"
             }));
         }
     }, [pw, matchPw]);
@@ -217,7 +226,7 @@ const SignUp = () => {
                     <div className="slider">
                         <div className="login-info">
                             <div className="input id-input">
-                                <p>아이디</p>
+                                <Title $isFocused={isFocused} $target="idFocus">아이디</Title>
                                 <input
                                     type="text"
                                     name="id"
@@ -226,6 +235,16 @@ const SignUp = () => {
                                     placeholder="*(필수) 6~12자 이내, 영문, 숫자 사용가능"
                                     required
                                     maxLength={12}
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: true,
+                                            pwdFocus: false,
+                                            matchPwdFocus: false,
+                                            nameFocus: false,
+                                            phoneNumberFocus: false,
+                                            codeFocus: false,
+                                        })
+                                    }}
                                 />
                                 {id !== "" && (
                                     <Msg error={errors.idError.formatError} text={inputTestMsg.idMsg} />
@@ -236,13 +255,23 @@ const SignUp = () => {
                             </div>
 
                             <div className="input pw-input">
-                                <p>비밀번호</p>
+                                <Title $isFocused={isFocused} $target="pwdFocus">비밀번호</Title>
                                 <input
                                     type="text"
                                     value={pw}
                                     onChange={handlePw}
                                     placeholder="*(필수) 8자 이상, 영문, 숫자, 특수문자 필수"
                                     required
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: false,
+                                            pwdFocus: true,
+                                            matchPwdFocus: false,
+                                            nameFocus: false,
+                                            phoneNumberFocus: false,
+                                            codeFocus: false,
+                                        })
+                                    }}
                                 />
                                 {pw !== "" && (
                                     <Msg error={errors.pwError} text={inputTestMsg.pwMsg} />
@@ -250,12 +279,22 @@ const SignUp = () => {
                             </div>
 
                             <div className="input check-input">
-                                <p>비밀번호 확인</p>
+                                <Title $isFocused={isFocused} $target="matchPwdFocus">비밀번호 확인</Title>
                                 <input
                                     type="text"
                                     value={matchPw}
                                     onChange={handleMatch}
                                     required
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: false,
+                                            pwdFocus: false,
+                                            matchPwdFocus: true,
+                                            nameFocus: false,
+                                            phoneNumberFocus: false,
+                                            codeFocus: false,
+                                        })
+                                    }}
                                 />
                                 {matchPw !== "" && (
                                     <Msg error={errors.matchError} text={inputTestMsg.matchMsg} />
@@ -265,18 +304,30 @@ const SignUp = () => {
 
                         <div className="user-info">
                             <div className="input name-input">
-                                <p>이름</p>
+                                <Title $isFocused={isFocused} $target="nameFocus">이름</Title>
+
                                 <input
                                     type="text"
                                     placeholder="*(필수)이름을 입력해주세요"
                                     required
                                     value={name}
                                     onChange={handleName}
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: false,
+                                            pwdFocus: false,
+                                            matchPwdFocus: false,
+                                            nameFocus: true,
+                                            phoneNumberFocus: false,
+                                            codeFocus: false,
+                                        })
+                                    }}
                                 />
                             </div>
 
                             <div className="input phone-number-input">
-                                <p>전화번호</p>
+                                <Title $isFocused={isFocused} $target="phoneNumberFocus">전화번호</Title>
+
                                 <input
                                     type="text"
                                     placeholder="*(필수)전화번호를 입력해주세요."
@@ -285,12 +336,23 @@ const SignUp = () => {
                                     onChange={handlePhoneNumber}
                                     name="phone-number"
                                     maxLength={13}
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: false,
+                                            pwdFocus: false,
+                                            matchPwdFocus: false,
+                                            nameFocus: false,
+                                            phoneNumberFocus: true,
+                                            codeFocus: false,
+                                        })
+                                    }}
                                 />
                                 <button onClick={sendAuthCode} disabled={phoneNumber.length === 13 ? false : true}>인증받기</button>
                             </div>
 
                             <div className="input verification-code-input">
-                                <p>인증번호 입력</p>
+                                <Title $isFocused={isFocused} $target="codeFocus">인증번호 입력</Title>
+
                                 <input
                                     type="text"
                                     placeholder="인증번호를 입력해주세요."
@@ -299,6 +361,16 @@ const SignUp = () => {
                                     onChange={handleCode}
                                     ref={inputCodeRef}
                                     maxLength={6}
+                                    onFocus={() => {
+                                        setIsFocused({
+                                            idFocus: false,
+                                            pwdFocus: false,
+                                            matchPwdFocus: false,
+                                            nameFocus: false,
+                                            phoneNumberFocus: false,
+                                            codeFocus: true,
+                                        })
+                                    }}
                                 />
                                 {code !== "" && (
                                     <Msg error={errors.verificationCodeError} text={inputTestMsg.codeMsg} />
@@ -384,13 +456,6 @@ const StyledSignUp = styled.section`
             margin-bottom: 30px;
             height: 49px;
 
-            p {
-              font-size: 14px;
-              color: ${colors.gray5};
-              margin-bottom: 8px;
-              font-weight: 600;
-            }
-
             input {
               width: 100%;
               margin-left: -2.2px;
@@ -450,6 +515,13 @@ const StyledSignUp = styled.section`
       pointer-events: none;
     }
   }
+`;
+
+const Title = styled.p`
+    font-size: 14px;
+    color: ${({ $target, $isFocused }) => $isFocused[$target] ? colors.mainColor : colors.gray5};
+    margin-bottom: 8px;
+    font-weight: 600;
 `;
 
 export default SignUp;

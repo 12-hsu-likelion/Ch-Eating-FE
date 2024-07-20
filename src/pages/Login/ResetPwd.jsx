@@ -4,28 +4,49 @@ import styled from 'styled-components';
 import colors from '../../styles/colors';
 import Msg from '../../components/LoginAndSignUp/InputMessage';
 import gsap from "gsap";
+import { inputRegexs } from '../../components/LoginAndSignUp/inputRegexs';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPwd = () => {
     const [id, handleId, setId] = useInput("");
     const [phoneNumber, handlePhoneNumber, setPhoneNumber] = useInput("", true);
     const [code, handleCode, setCode] = useInput("");
 
-    const [resetPwd, handleResetPwd, setResetPwd] = useInput("");
-    const [matchPwd, handleMatchPwd, setMatchPwd] = useInput("");
+    const [newPwd, handleNewPwd, setNewPwd] = useInput("");
+    const [matchNewPwd, handleMatchNewPwd, setMatchNewPwd] = useInput("");
 
     const [inputTestMsg, setInputTestMsg] = useState({
         checkIdMsg: "",
-        codeMsg: ""
+        phoneNumberMsg: "",
+        codeMsg: "",
+        newPwdMsg: "",
+        matchNewPwdMsg: ""
     });
 
     const [errors, setErrors] = useState({
         checkIdError: true,
-        verificationCodeError: true
+        phoneNumberError: true,
+        verificationCodeError: true,
+        newPwdError: true,
+        matchNewPwdError: true
     });
 
     const [currentSection, setCurrentSection] = useState("before");
 
     const inputCodeRef = useRef();
+    const navigate = useNavigate();
+
+    const [isFocused, setIsFocused] = useState({
+        idFocus: false,
+        phoneNumberFocus: false,
+        codeFocus: false,
+        newPwdFocus: false,
+        matchNewPwdFocus: false
+    })
+
+    // 아이디가 존재하는지 확인하는 post 요청에서 아이디 존재 유무와 해당 아이디의 비밀번호도 같이 받아와야함
+    // 밑은 그 작업을 위한 변수 설정
+    const [currentPwd, setCurrentPwd] = useState("");
 
     const checkIdExists = async () => {
         try {
@@ -35,7 +56,7 @@ const ResetPwd = () => {
             }));
             setInputTestMsg(prev => ({
                 ...prev,
-                checkIdMsg: "확인되었습니다."
+                checkIdMsg: "확인되었습니다"
             }));
         } catch (e) {
             setErrors(prev => ({
@@ -44,15 +65,36 @@ const ResetPwd = () => {
             }));
             setInputTestMsg(prev => ({
                 ...prev,
-                checkIdMsg: "존재하지 않는 아이디입니다."
+                checkIdMsg: "존재하지 않는 아이디입니다"
             }));
             console.log(e);
         }
     };
 
-    const sendAuthCode = () => {
-        alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
-        inputCodeRef.current.focus();
+    const sendAuthCode = async () => {
+        try {
+            setErrors(prev => ({
+                ...prev,
+                phoneNumberError: false
+            }));
+            alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
+            setTimeout(() => {
+                if (inputCodeRef.current) {
+                    inputCodeRef.current.focus();
+                }
+            }, 0);
+        } catch (e) {
+            setErrors(prev => ({
+                ...prev,
+                phoneNumberError: true
+            }));
+            // 전화번호가 없을 시 상태코드 받아와서 밑에 코드 실행
+            setInputTestMsg(prev=>({
+                ...prev,
+                phoneNumberMsg: "가입되지 않은 전화번호입니다."
+            }))
+            console.log(e);
+        }
     };
 
     const verifyAuthCode = async () => {
@@ -78,20 +120,25 @@ const ResetPwd = () => {
         }
     };
 
+    // 제출하는 함수
     const onSubmit = async () => {
         if (currentSection === "before") {
             setCurrentSection("after");
             gsap.to(".slider", {
                 x: "-100%",
                 duration: .5,
-                ease: "power2.out"
+                ease: "power3.out"
             })
         }
         else {
             try {
-                console.log("asdsa");
+                console.log({
+                    newPwd: newPwd,
+                });
+                alert("비밀번호 변경 성공!");
+                navigate("/login");
             } catch (e) {
-
+                console.log(e);
             }
         }
     }
@@ -101,6 +148,74 @@ const ResetPwd = () => {
             verifyAuthCode();
         }
     }, [code]);
+
+    useEffect(() => {
+        if (!inputRegexs.pwReg.test(newPwd)) {
+
+            setErrors(prev => ({
+                ...prev,
+                newPwdError: true
+            }));
+
+            setInputTestMsg(prev => ({
+                ...prev,
+                newPwdMsg: "비밀번호는 최소 하나의 특수문자를 포함하여 8~15글자이어야 합니다"
+            }))
+        }
+        else {
+            if (newPwd === currentPwd) {
+                setErrors(prev => ({
+                    ...prev,
+                    newPwdError: true
+                }));
+
+                setInputTestMsg(prev => ({
+                    ...prev,
+                    newPwdMsg: "이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다"
+                }))
+            }
+            else {
+                setErrors(prev => ({
+                    ...prev,
+                    newPwdError: false
+                }));
+
+                setInputTestMsg(prev => ({
+                    ...prev,
+                    newPwdMsg: "사용 가능한 비밀번호입니다"
+                }))
+            }
+        }
+    }, [newPwd]);
+
+    useEffect(() => {
+        if (matchNewPwd !== newPwd) {
+            setErrors(prev => ({
+                ...prev,
+                matchNewPwdError: true
+            }));
+
+            setInputTestMsg(prev => ({
+                ...prev,
+                matchNewPwdMsg: "비밀번호가 일치하지 않습니다"
+            }));
+        }
+        else {
+            setErrors(prev => ({
+                ...prev,
+                matchNewPwdError: false
+            }));
+
+            setInputTestMsg(prev => ({
+                ...prev,
+                matchNewPwdMsg: "비밀번호가 일치합니다"
+            }));
+        }
+    }, [matchNewPwd, newPwd]);
+
+    // useEffect(()=>{
+    //     console.log(errors);
+    // }, [errors]);
 
     return (
         <StyledResetPwd className='pageContainer'>
@@ -119,7 +234,7 @@ const ResetPwd = () => {
                         <div className="slider">
                             <div className="slide-item before">
                                 <div className="input id-input">
-                                    <p>아이디</p>
+                                    <Title $isFocused={isFocused} $target="idFocus">아이디</Title>
                                     <input
                                         type="text"
                                         required
@@ -127,6 +242,15 @@ const ResetPwd = () => {
                                         onChange={handleId}
                                         name='id'
                                         maxLength={12}
+                                        onFocus={() => {
+                                            setIsFocused({
+                                                idFocus: true,
+                                                phoneNumberFocus: false,
+                                                codeFocus: false,
+                                                newPwdFocus: false,
+                                                matchNewPwdFocus: false
+                                            })
+                                        }}
                                     />
                                     <button
                                         onClick={checkIdExists}
@@ -141,7 +265,7 @@ const ResetPwd = () => {
                                 </div>
 
                                 <div className="input phone-number-input">
-                                    <p>전화번호</p>
+                                    <Title $isFocused={isFocused} $target="phoneNumberFocus">전화번호</Title>
                                     <input
                                         type="text"
                                         required
@@ -149,6 +273,15 @@ const ResetPwd = () => {
                                         onChange={handlePhoneNumber}
                                         name="phone-number"
                                         maxLength={13}
+                                        onFocus={() => {
+                                            setIsFocused({
+                                                idFocus: false,
+                                                phoneNumberFocus: true,
+                                                codeFocus: false,
+                                                newPwdFocus: false,
+                                                matchNewPwdFocus: false
+                                            })
+                                        }}
                                     />
                                     <button
                                         onClick={sendAuthCode}
@@ -156,17 +289,34 @@ const ResetPwd = () => {
                                     >
                                         인증받기
                                     </button>
+
+                                    {errors.phoneNumberError && (
+                                        <Msg
+                                            error={errors.phoneNumberError}
+                                            text={inputTestMsg.phoneNumberMsg}
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="input verification-code-input">
-                                    <p>인증번호 입력</p>
+                                    <Title $isFocused={isFocused} $target="codeFocus">인증번호 입력</Title>
                                     <input
                                         type="text"
                                         required
                                         value={code}
                                         onChange={handleCode}
+                                        disabled={errors.phoneNumberError}
                                         ref={inputCodeRef}
                                         maxLength={6}
+                                        onFocus={() => {
+                                            setIsFocused({
+                                                idFocus: false,
+                                                phoneNumberFocus: false,
+                                                codeFocus: true,
+                                                newPwdFocus: false,
+                                                matchNewPwdFocus: false
+                                            })
+                                        }}
                                     />
                                     {code !== "" && (
                                         <Msg
@@ -178,7 +328,57 @@ const ResetPwd = () => {
                             </div>
 
                             <div className="slide-item after">
-                                {/* 추가 내용 */}
+
+                                <div className="input new-pwd-input">
+                                    <Title $isFocused={isFocused} $target="newPwdFocus">새로운 비밀번호</Title>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={newPwd}
+                                        onChange={handleNewPwd}
+                                        onFocus={() => {
+                                            setIsFocused({
+                                                idFocus: false,
+                                                phoneNumberFocus: false,
+                                                codeFocus: false,
+                                                newPwdFocus: true,
+                                                matchNewPwdFocus: false
+                                            })
+                                        }}
+                                    />
+                                    {newPwd !== "" && (
+                                        <Msg
+                                            error={errors.newPwdError}
+                                            text={inputTestMsg.newPwdMsg}
+                                        />
+                                    )}
+                                </div>
+
+                                <div className="input new-pwd-input">
+                                    <Title $isFocused={isFocused} $target="matchNewPwdFocus">비밀번호 확인</Title>
+
+                                    <input
+                                        type="text"
+                                        required
+                                        value={matchNewPwd}
+                                        onChange={handleMatchNewPwd}
+                                        onFocus={() => {
+                                            setIsFocused({
+                                                idFocus: false,
+                                                phoneNumberFocus: false,
+                                                codeFocus: false,
+                                                newPwdFocus: false,
+                                                matchNewPwdFocus: true
+                                            })
+                                        }}
+                                    />
+                                    {matchNewPwd !== "" && (
+                                        <Msg
+                                            error={errors.matchNewPwdError}
+                                            text={inputTestMsg.matchNewPwdMsg}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,8 +388,12 @@ const ResetPwd = () => {
                     className="next"
                     disabled={(currentSection === "before" &&
                         errors.checkIdError ||
+                        errors.phoneNumberError ||
                         errors.verificationCodeError
-                    ) || currentSection === "after"}
+                    ) || (currentSection === "after" &&
+                        errors.newPwdError ||
+                        errors.matchNewPwdError
+                        )}
                 >
                     다음
                 </button>
@@ -233,7 +437,7 @@ const StyledResetPwd = styled.section`
                 .slider {
                     width: 100%;
                     display: flex;
-                    transform: translateX(-100%);
+                    /* transform: translateX(-100%); */
 
                     .slide-item {
                         flex-shrink: 0;
@@ -241,11 +445,11 @@ const StyledResetPwd = styled.section`
                     }
 
                     .before {
-                        /* 스타일 추가 */
+                        /* 없으면 빈 상태로 냅둬 */
                     }
 
                     .after {
-                        border: 1px solid;
+                        /* 없으면 빈 상태로 냅둬 */
                     }
 
                     .input {
@@ -253,13 +457,6 @@ const StyledResetPwd = styled.section`
                         position: relative;
                         margin-bottom: 30px;
                         height: 49px;
-
-                        p {
-                            font-size: 14px;
-                            color: ${colors.gray5};
-                            margin-bottom: 8px;
-                            font-weight: 600;
-                        }
 
                         input {
                             width: 100%;
@@ -321,6 +518,13 @@ const StyledResetPwd = styled.section`
             pointer-events: none;
         }
     }
+`;
+
+const Title = styled.p`
+    font-size: 14px;
+    color: ${({ $target, $isFocused }) => $isFocused[$target] ? colors.mainColor : colors.gray5};
+    margin-bottom: 8px;
+    font-weight: 600;
 `;
 
 export default ResetPwd;
