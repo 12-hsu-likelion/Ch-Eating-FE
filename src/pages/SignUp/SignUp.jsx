@@ -5,6 +5,7 @@ import { inputRegexs } from "../../components/LoginAndSignUp/inputRegexs";
 import Msg from "../../components/LoginAndSignUp/InputMessage";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [id, handleId, setId] = useInput("");
@@ -35,6 +36,7 @@ const SignUp = () => {
     });
 
     const inputCodeRef = useRef();
+    const navigate = useNavigate();
 
     const [isFocused, setIsFocused] = useState({
         idFocus: false,
@@ -69,6 +71,7 @@ const SignUp = () => {
                     name: name,
                     phoneNumber: phoneNumber
                 })
+                navigate("/signupcomplete");
             } catch (e) {
                 console.log(e);
             }

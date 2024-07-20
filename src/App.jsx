@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ResetPwd from './pages/Login/ResetPwd';
 import FindId from './pages/Login/FindId';
 import ViewUserId from './pages/Login/ViewUserId';
+import SignUpComplete from './pages/SignUp/SignUpComplete';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/signupcomplete' element={<SignUpComplete />} />
         <Route path='/resetpassword' element={<ResetPwd />} />
         <Route path="/findid" element={<FindId />} />
         <Route path='/viewuserid' element={<ViewUserId />} />
