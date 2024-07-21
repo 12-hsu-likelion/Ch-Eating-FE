@@ -1,9 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Header from './components/Header/Header';
-import NavBar from './components/NavBar/NavBar';
-import Footer from './components/Footer/Footer';
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import ResetPwd from './pages/Login/ResetPwd';
@@ -12,10 +10,12 @@ import ViewUserId from './pages/Login/ViewUserId';
 import SignUpComplete from './pages/SignUp/SignUpComplete';
 
 function App() {
+  const location = useLocation();
+  const showHeader = location.pathname === '/';
+
   return (
     <>
-      {/* <Header /> */}
-      {/* <NavBar /> */}
+      {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/login' element={<Login />} />
@@ -25,7 +25,6 @@ function App() {
         <Route path="/findid" element={<FindId />} />
         <Route path='/viewuserid' element={<ViewUserId />} />
       </Routes>
-      {/* <Footer /> */}
     </>
   );
 }

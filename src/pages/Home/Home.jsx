@@ -1,7 +1,9 @@
+import Banner from "../../components/Home/Banner";
+
 const Home = () => {
     return (
         <div className="pageContainer">
-            Home 예시
+            <Banner />
         </div>
     )
 }
