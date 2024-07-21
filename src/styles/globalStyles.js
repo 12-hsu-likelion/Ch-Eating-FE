@@ -81,29 +81,35 @@ const GlobalStyle = createGlobalStyle`
         font-size: 62.5%;
     }
 
-        @media screen and (max-width:1799px) {
-        /* 데스크탑 */
-        html {
-            font-size: 50%;
-        }
-    }
-    @media screen and (max-width:1199px) {
-        /* 데스크탑 */
-        html {
-            font-size: 45%;
-        }
-    }
+    // @media screen and (max-width:1799px) {
+    //     /* 데스크탑 */
+    //     html {
+    //         font-size: 50%;
+    //     }
+    // }
+    // @media screen and (max-width:1199px) {
+    //     /* 데스크탑 */
+    //     html {
+    //         font-size: 45%;
+    //     }
+    // }
 
-    @media screen and (max-width:991px) {
-        /* 타블렛 */
+    // @media screen and (max-width:991px) {
+    //     /* 타블렛 */
+    //     html {
+    //         font-size: 40%;
+    //     }
+    // }
+    // @media screen and (max-width:767px) {
+    //     /* 모바일 */
+    //     html {
+    //         font-size: 30%;
+    //     }
+    // }
+
+    @media screen and (max-width: 375px) {
         html {
-            font-size: 40%;
-        }
-    }
-    @media screen and (max-width:767px) {
-        /* 모바일 */
-        html {
-            font-size: 30%;
+             font-size: 40%;
         }
     }
     
@@ -151,6 +157,12 @@ const GlobalStyle = createGlobalStyle`
 
     .pageContainer {
         width: 430px;
+    }
+    
+    @media screen and (max-width: 429px) {
+        .pageContainer {
+            width: 100vw;
+        }
     }
 `;
 
