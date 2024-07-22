@@ -57,21 +57,19 @@ const TestButton = styled.button`
 
 const Time = () => {
     const [time, setTime] = useState('');
+
     const navigate = useNavigate();
 
-    const updateTime = () => {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const period = hours < 12 ? 'AM' : 'PM';
-        const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        setTime(`${period} ${formattedHours}:${formattedMinutes}`);
-    };
-
     useEffect(() => {
-        updateTime();
-        const intervalId = setInterval(updateTime, 60000);
+        const intervalId = setInterval(() => {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const period = hours < 12 ? 'AM' : 'PM';
+            const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            setTime(`${period} ${formattedHours}:${formattedMinutes}`);
+        }, 1000);
 
         return () => clearInterval(intervalId);
     }, []);
