@@ -36,7 +36,7 @@ const Header = () => {
     return (
         <div className="pageContainer" style={{display: "flex", justifyContent: "center", backgroundColor: colors.mainColor}}>
                 <HeaderContainer>
-                    <HeaderP onClick={handleHomeClick}>서비스명</HeaderP>
+                    <HeaderP onClick={handleHomeClick}>Ch-eating</HeaderP>
                     <HeaderImg src={Profile} alt="profile" onClick={handleProfileClick}/>
                 </HeaderContainer>
         </div>
