@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 import colors from "../../../styles/colors";
 
 const TimeContainer = styled.div`
@@ -56,6 +57,7 @@ const TestButton = styled.button`
 
 const Time = () => {
     const [time, setTime] = useState('');
+    const navigate = useNavigate();
 
     const updateTime = () => {
         const now = new Date();
@@ -74,6 +76,10 @@ const Time = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    const handleTestButtonClick = () => {
+        navigate('/test');
+    };
+
     return (
         <div className="pageContainer" style={{ display: "flex", justifyContent: "center" }}>
             <TimeContainer>
@@ -82,7 +88,7 @@ const Time = () => {
                 <TimeSub>적절한 식사시간이에요!</TimeSub>
 
                 <TestContainer>
-                    <TestButton>배고픔테스트 하기</TestButton>
+                    <TestButton onClick={handleTestButtonClick}>배고픔테스트 하기</TestButton>
                 </TestContainer>
             </TimeContainer>
         </div>

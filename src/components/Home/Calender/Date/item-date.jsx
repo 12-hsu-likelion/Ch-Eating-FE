@@ -2,13 +2,17 @@ import styled from 'styled-components';
 import colors from "../../../../styles/colors";
 import ListBar from "../Bar/list-bar";
 
-const DateContainer = styled.div`
-    width: 5.7rem;
+const DateContainer = styled.div.attrs(props => ({
+    istoday: props.istoday ? "true" : undefined,
+    isfirst: props.isfirst ? "true" : undefined,
+    islast: props.islast ? "true" : undefined
+}))`
+    width: calc(100% / 7);
     display: flex;
     justify-content: center;
     text-align: center;
-    background-color: ${props => (props.isToday ? colors.violet10 : "white")};
-    border-radius: ${props => props.isFirst ? '0 0 0 0.8rem' : props.isLast ? '0 0 0.8rem 0' : '0'};
+    background-color: ${props => (props.istoday ? colors.violet10 : "white")};
+    border-radius: ${props => props.isfirst ? '0 0 0 0.8rem' : props.islast ? '0 0 0.8rem 0' : '0'};
     border: none;
 `;
 const DateItem = styled.div`
@@ -26,9 +30,9 @@ const DateP = styled.p`
     font-weight: 600;
 `;
 
-const ItemDate = ({date, day, isToday, isFirst, isLast}) => {
+const ItemDate = ({date, day, istoday, isfirst, islast}) => {
     return (
-        <DateContainer isToday={isToday} isFirst={isFirst} isLast={isLast}>
+        <DateContainer istoday={istoday} isfirst={isfirst} islast={islast}>
                 <DateItem>
                     <DayP>{day}</DayP>
                     <DateP>{date.getDate()}</DateP>

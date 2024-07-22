@@ -10,9 +10,9 @@ const ListContainer = styled.div`
 
 const ListDate = () => {
     const [weekDates, setWeekDates] = useState([]);
-    const today = new Date();
 
     useEffect(() => {
+        const today = new Date();
         const dayOfWeek = today.getDay();
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
@@ -25,9 +25,10 @@ const ListDate = () => {
         }
 
         setWeekDates(dates);
-    }, [today]);
+    }, []);
 
     const day = ['월', '화', '수', '목', '금', '토', '일'];
+    const today = new Date();
 
     return (
         <ListContainer>
@@ -36,9 +37,9 @@ const ListDate = () => {
                     key={index} 
                     date={date} 
                     day={day[index]}
-                    isToday={date.toDateString() === today.toDateString()}
-                    isFirst={index === 0}
-                    isLast={index === weekDates.length - 1}
+                    istoday={date.toDateString() === today.toDateString()}
+                    isfirst={index === 0}
+                    islast={index === weekDates.length - 1}
                 />
             ))}
         </ListContainer>
