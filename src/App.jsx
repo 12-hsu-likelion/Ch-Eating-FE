@@ -8,10 +8,12 @@ import ResetPwd from './pages/Login/ResetPwd';
 import FindId from './pages/Login/FindId';
 import ViewUserId from './pages/Login/ViewUserId';
 import SignUpComplete from './pages/SignUp/SignUpComplete';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const location = useLocation();
   const showHeader = location.pathname === '/';
+  const showFooter = location.pathname === '/';
 
   return (
     <>
@@ -25,6 +27,7 @@ function App() {
         <Route path="/findid" element={<FindId />} />
         <Route path='/viewuserid' element={<ViewUserId />} />
       </Routes>
+      {showFooter && <Footer />}
     </>
   );
 }
