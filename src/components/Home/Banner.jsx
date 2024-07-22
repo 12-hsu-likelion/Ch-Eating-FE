@@ -7,11 +7,11 @@ import Banner3 from '../../assets/images/banner3.png';
 
 const BannerContainer = styled.div`
     width: 100%;
-    height: 19.6rem;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 2.8rem;
 `
 
 const BannerImage = styled.img`
@@ -44,22 +44,21 @@ const Banner = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const goToNextBanner = () => {
+    // const goToNextBanner = () => {
+    //     setCurrentBanner((prev) => (prev + 1) % banners.length);
+    // };
 
-        setCurrentBanner((prev) => (prev + 1) % banners.length);
-    };
-
-    const goToPreviousBanner = () => {
-        setCurrentBanner((prev) => (prev - 1 + banners.length) % banners.length);
-    };
+    // const goToPreviousBanner = () => {
+    //     setCurrentBanner((prev) => (prev - 1 + banners.length) % banners.length);
+    // };
 
     return (
         <BannerContainer>
             <BannerImage src={banners[currentBanner]} alt={`Banner ${currentBanner + 1}`} />
-            <BannerArrowContainer>
+{/*         <BannerArrowContainer>
                 <BannerArrowImg src={Banner_arrowLeft} alt="left" onClick={goToPreviousBanner} />
                 <BannerArrowImg src={Banner_arrowLeft} alt="right" style={{ transform: "rotate(180deg)" }} onClick={goToNextBanner} />
-            </BannerArrowContainer>
+            </BannerArrowContainer> */}
         </BannerContainer>
     );
 }

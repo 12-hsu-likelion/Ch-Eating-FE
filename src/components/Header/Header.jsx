@@ -6,8 +6,6 @@ import Profile from "../../assets/images/profile.png";
 const HeaderContainer = styled.div`
     width: 85%;
     height: 5.5rem;
-    margin-bottom: 2.8rem;
-    background-color: ${colors.backgroundColor};
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -36,7 +34,7 @@ const Header = () => {
     };
 
     return (
-        <div className="pageContainer" style={{display: "flex", justifyContent: "center"}}>
+        <div className="pageContainer" style={{display: "flex", justifyContent: "center", backgroundColor: colors.mainColor}}>
                 <HeaderContainer>
                     <HeaderP onClick={handleHomeClick}>서비스명</HeaderP>
                     <HeaderImg src={Profile} alt="profile" onClick={handleProfileClick}/>
