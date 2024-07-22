@@ -8,12 +8,12 @@ const HeaderContainer = styled.div`
     height: 5.5rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 `
 
 const HeaderP = styled.p`
     font-size: 2rem;
-    color: ${colors.black};
+    color: ${colors.white};
 `
 
 const HeaderImg = styled.img`

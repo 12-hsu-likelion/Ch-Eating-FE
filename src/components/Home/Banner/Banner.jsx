@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Banner_arrowLeft from '../../assets/images/banner_arrowLeft.png';
-import Banner1 from '../../assets/images/banner1.png';
-import Banner2 from '../../assets/images/banner2.png';
-import Banner3 from '../../assets/images/banner3.png';
+import Banner_arrowLeft from '../../../assets/images/banner_arrowLeft.png';
+import Banner1 from '../../../assets/images/banner1.png';
+import Banner2 from '../../../assets/images/banner2.png';
+import Banner3 from '../../../assets/images/banner3.png';
 
 const BannerContainer = styled.div`
     width: 100%;
