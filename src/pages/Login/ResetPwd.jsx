@@ -6,6 +6,8 @@ import Msg from '../../components/LoginAndSignUp/InputMessage';
 import gsap from "gsap";
 import { inputRegexs } from '../../components/LoginAndSignUp/inputRegexs';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useRequestAuthCodeAsync, useVerifyAuthCodeAsync } from '../../hooks/useAsync';
 
 const ResetPwd = () => {
     const [id, handleId, setId] = useInput("");
@@ -71,54 +73,10 @@ const ResetPwd = () => {
         }
     };
 
-    const sendAuthCode = async () => {
-        try {
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: false
-            }));
-            alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
-            setTimeout(() => {
-                if (inputCodeRef.current) {
-                    inputCodeRef.current.focus();
-                }
-            }, 0);
-        } catch (e) {
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: true
-            }));
-            // 전화번호가 없을 시 상태코드 받아와서 밑에 코드 실행
-            setInputTestMsg(prev=>({
-                ...prev,
-                phoneNumberMsg: "가입되지 않은 전화번호입니다."
-            }))
-            console.log(e);
-        }
-    };
+    // 나중에 post 요청 주소 바꿀 것
+    const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
 
-    const verifyAuthCode = async () => {
-        try {
-            setErrors(prev => ({
-                ...prev,
-                verificationCodeError: false
-            }));
-            setInputTestMsg(prev => ({
-                ...prev,
-                codeMsg: "인증되었습니다"
-            }));
-        } catch (e) {
-            setErrors(prev => ({
-                ...prev,
-                verificationCodeError: true
-            }));
-            console.log(e);
-            setInputTestMsg(prev => ({
-                ...prev,
-                codeMsg: "인증번호가 올바르지 않습니다"
-            }));
-        }
-    };
 
     // 제출하는 함수
     const onSubmit = async () => {
@@ -284,7 +242,7 @@ const ResetPwd = () => {
                                         }}
                                     />
                                     <button
-                                        onClick={sendAuthCode}
+                                        onClick={requestAuthCodeByPhoneNumber}
                                         disabled={phoneNumber.length !== 13}
                                     >
                                         인증받기

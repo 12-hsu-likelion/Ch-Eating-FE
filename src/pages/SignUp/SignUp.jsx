@@ -6,6 +6,8 @@ import Msg from "../../components/LoginAndSignUp/InputMessage";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useRequestAuthCodeAsync, useVerifyAuthCodeAsync } from "../../hooks/useAsync";
 
 const SignUp = () => {
     const [id, handleId, setId] = useInput("");
@@ -46,100 +48,6 @@ const SignUp = () => {
         phoneNumberFocus: false,
         codeFocus: false,
     })
-
-    // 이건 에러 코드가 변경됐을 시 에러 코드 상태 보여주는 것 나중에 지우셈
-    // useEffect(() => {
-    //     console.log(errors);
-    // }, [errors]);
-
-    // 다음 버튼 클릭했을 시 정보 입력 폼 변경 / 모든 폼을 입력했을 시 회원가입 정보 제출이 되도록하는 함수
-    // 나중에 async 함수로 바꿀 것
-    const onSubmit = async () => {
-        if (currentSection === "login-info") {
-            setCurrentSection("user-info");
-            gsap.to(".slider", {
-                x: "-100%",
-                duration: .5,
-                ease: "power3.out"
-            })
-        }
-        else {
-            try {
-                console.log({
-                    id: id,
-                    pw: pw,
-                    name: name,
-                    phoneNumber: phoneNumber
-                })
-                navigate("/signupcomplete");
-            } catch (e) {
-                console.log(e);
-            }
-        }
-    }
-
-    // 아이디 중복 확인하는 함수 
-    // 현재는 그냥 중복 확인을 누를 시 dupError가 false가 되도록 설정해놓음
-    // 나중에 async 함수로 바꿀 것
-    const checkIdDup = () => {
-        if (errors.idError.formatError) {
-            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요");
-            return;
-        }
-
-        setErrors(prev => ({
-            ...prev,
-            idError: {
-                ...prev.idError,
-                dupError: false
-            }
-        }));
-        setInputTestMsg((prev) => ({
-            ...prev,
-            idMsg: "사용 가능한 아이디입니다"
-        }))
-    }
-
-    // 인증 번호를 발송하라는 요청을 하는 함수
-    // 현재는 그냥 빈 함수임
-    // 나중에 async 함수로 바꿀 것
-    const sendAuthCode = () => {
-        alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
-        inputCodeRef.current.focus();
-    }
-
-    // 6자리가 입력이 된다면 인증 코드를 post하는 함수
-    // post에서 올바른 인증이 온다면 verificationCodeError를 false로
-    // 나중에 올바른 로직으로 수정할 것
-    const verifyAuthCode = async () => {
-        try {
-            setErrors((prev) => ({
-                ...prev,
-                verificationCodeError: false
-            }))
-            setInputTestMsg((prev) => ({
-                ...prev,
-                codeMsg: "인증되었습니다"
-            }))
-        } catch (e) {
-            setErrors((prev) => ({
-                ...prev,
-                verificationCodeError: true
-            }))
-            console.log(e);
-            setInputTestMsg((prev) => ({
-                ...prev,
-                codeMsg: "인증번호가 올바르지 않습니다"
-            }))
-        }
-    }
-
-    // code 입력 필드의 값이 6이 될 시 인증 코드가 맞는지 확인하는 함수를 호출하는 useEffect
-    useEffect(() => {
-        if (code.length === 6) {
-            verifyAuthCode();
-        }
-    }, [code])
 
     useEffect(() => {
         if (!inputRegexs.idReg.test(id)) {
@@ -212,6 +120,70 @@ const SignUp = () => {
             }));
         }
     }, [pw, matchPw]);
+
+    // 비동기 함수들
+
+    // 다음 버튼 클릭했을 시 정보 입력 폼 변경 / 모든 폼을 입력했을 시 회원가입 정보 제출이 되도록하는 함수
+    // 나중에 async 함수로 바꿀 것
+    const onSubmit = async () => {
+        if (currentSection === "login-info") {
+            setCurrentSection("user-info");
+            gsap.to(".slider", {
+                x: "-100%",
+                duration: .5,
+                ease: "power3.out"
+            })
+        }
+        else {
+            try {
+                console.log({
+                    id: id,
+                    pw: pw,
+                    name: name,
+                    phoneNumber: phoneNumber
+                })
+                navigate("/signupcomplete");
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
+    // 아이디 중복 확인하는 함수 
+    // 현재는 그냥 중복 확인을 누를 시 dupError가 false가 되도록 설정해놓음
+    // 나중에 async 함수로 바꿀 것
+    const checkIdDup = () => {
+        if (errors.idError.formatError) {
+            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요");
+            return;
+        }
+
+        setErrors(prev => ({
+            ...prev,
+            idError: {
+                ...prev.idError,
+                dupError: false
+            }
+        }));
+        setInputTestMsg((prev) => ({
+            ...prev,
+            idMsg: "사용 가능한 아이디입니다"
+        }))
+    }
+
+    const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
+
+    useEffect(() => {
+        if (code.length === 6) {
+            verifyAuthCode();
+        }
+    }, [code])
+    
+    // 이건 에러 코드가 변경됐을 시 에러 코드 상태 보여주는 것 나중에 지우셈
+    // useEffect(() => {
+    //     console.log(errors);
+    // }, [errors]);
 
     return (
         <StyledSignUp className="pageContainer">
@@ -350,7 +322,7 @@ const SignUp = () => {
                                         })
                                     }}
                                 />
-                                <button onClick={sendAuthCode} disabled={phoneNumber.length === 13 ? false : true}>인증받기</button>
+                                <button onClick={requestAuthCodeByPhoneNumber} disabled={phoneNumber.length === 13 ? false : true}>인증받기</button>
                             </div>
 
                             <div className="input verification-code-input">
