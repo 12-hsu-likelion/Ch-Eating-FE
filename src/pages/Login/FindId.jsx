@@ -4,6 +4,8 @@ import { useInput } from '../../hooks/useInput';
 import colors from '../../styles/colors';
 import Msg from '../../components/LoginAndSignUp/InputMessage';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useRequestAuthCodeAsync, useVerifyAuthCodeAsync } from '../../hooks/useAsync';
 
 const FindId = () => {
     const [phoneNumber, handlePhoneNumber, setPhoneNumber] = useInput("", true);
@@ -16,7 +18,7 @@ const FindId = () => {
 
     const [errors, setErrors] = useState({
         phoneNumberError: true,
-        codeError: true
+        verificationCodeError: true
     })
 
     const [isFocused, setIsFocused] = useState({
@@ -27,54 +29,9 @@ const FindId = () => {
     const inputCodeRef = useRef();
     const navigate = useNavigate();
 
-    const sendAuthCode = async () => {
-        try {
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: false
-            }));
-            alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
-            setTimeout(() => {
-                if (inputCodeRef.current) {
-                    inputCodeRef.current.focus();
-                }
-            }, 0);
-        } catch (e) {
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: true
-            }));
-            // 전화번호가 없을 시 상태코드 받아와서 밑에 코드 실행
-            setInputTestMsg(prev => ({
-                ...prev,
-                phoneNumberMsg: "가입되지 않은 전화번호입니다."
-            }))
-            console.log(e);
-        }
-    };
-
-    const verifyAuthCode = async () => {
-        try {
-            setErrors(prev => ({
-                ...prev,
-                codeError: false
-            }));
-            setInputTestMsg(prev => ({
-                ...prev,
-                codeMsg: "인증되었습니다"
-            }));
-        } catch (e) {
-            setErrors(prev => ({
-                ...prev,
-                codeError: true
-            }));
-            console.log(e);
-            setInputTestMsg(prev => ({
-                ...prev,
-                codeMsg: "인증번호가 올바르지 않습니다"
-            }));
-        }
-    };
+    // 비동기 처리 로직들
+    const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
 
     const onFindId = async() => {
         try{
@@ -89,6 +46,10 @@ const FindId = () => {
             verifyAuthCode();
         }
     }, [code]);
+
+    // useEffect(()=>{
+    //     console.log(errors);
+    // }, [errors]);
 
     return (
         <StyledFindId className='pageContainer'>
@@ -119,7 +80,7 @@ const FindId = () => {
                                 });
                             }}
                         />
-                        <button onClick={sendAuthCode} disabled={phoneNumber.length !== 13}>
+                        <button onClick={requestAuthCodeByPhoneNumber} disabled={phoneNumber.length !== 13}>
                             인증받기
                         </button>
                         {errors.phoneNumberError && (
@@ -149,14 +110,14 @@ const FindId = () => {
                                 });
                             }}
                         />
-                        <Msg error={errors.codeError} text={inputTestMsg.codeMsg} />
+                        <Msg error={errors.verificationCodeError} text={inputTestMsg.codeMsg} />
                     </div>
                 </div>
 
                 <button
                     onClick={onFindId}
                     className="find"
-                    disabled={errors.phoneNumberError || errors.codeError}
+                    disabled={errors.phoneNumberError || errors.verificationCodeError}
                 >
                     다음
                 </button>
