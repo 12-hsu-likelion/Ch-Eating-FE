@@ -19,12 +19,12 @@ const HeaderLeft = styled.div`
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    cursor: pointer;
 `
 
 const HeaderLogoImg = styled.img`
     width: 1.8rem;
     height: 1.8rem;
-    cursor: pointer;
 `
 
 const HeaderP = styled.p`
@@ -34,8 +34,8 @@ const HeaderP = styled.p`
 `
 
 const HeaderImg = styled.img`
-    width: 2rem;
-    height: 2rem;
+    width: 2.8rem;
+    height: 2.8rem;
     cursor: pointer;
 `
 
@@ -67,9 +67,9 @@ const Header = () => {
     return (
         <div className="pageContainer" style={{display: "flex", justifyContent: "center", backgroundColor: colors.mainColor}}>
                 <HeaderContainer>
-                    <HeaderLeft>
+                    <HeaderLeft onClick={handleHomeClick}>
                         <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
-                        <HeaderP onClick={handleHomeClick}>Ch-eating</HeaderP>
+                        <HeaderP>Ch-eating</HeaderP>
                     </HeaderLeft>
                     {meal ? (
                         <HeaderImg src={HeaderYes} alt="headerYes" onClick={handleMypageClick} />
