@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import colors from "../../../styles/colors";
-import MypageProfile from "../../../assets/images/mypageProfile.png";
+import axios from "axios";
+import NoticeNot from "../../../assets/images/noticeNot.png";
+import NoticeYes from "../../../assets/images/noticeYes.png";
 
 const UserProfileP = styled.p`
     font-size: 2.4rem;
@@ -11,6 +13,7 @@ const UserProfileP = styled.p`
 
 const MypageImg = styled.img`
     width: 9.6rem;
+    height: 9.6rem;
     margin-top: 1.6rem;
 `
 
@@ -28,24 +31,22 @@ const UserProfileP2 = styled.p`
 const UserProfile = () => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const [active1, setActive1] = useState(false);
+    const [active2, setActive2] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const Name = localStorage.getItem('name');
-                const Phone = localStorage.getItem('phone');
+                const response = await axios.get('https://jsonplaceholder.typicode.com/users/1');
+                const userData = response.data;
+                console.log(userData);
 
-                if (Name) {
-                    setName(Name);
-                } else {
-                    setName('정보 없음');
-                }
+                setName(userData.name || '정보 없음');
+                setPhone(userData.phone || '정보 없음');
 
-                if (Phone) {
-                    setPhone(Phone);
-                } else {
-                    setPhone('정보 없음');
-                }
+                // 프로필 변화 -> 통신할 때 다시 확인할 것
+                setActive1(userData.active.notice1 || false);
+                setActive2(userData.active.notice2 || false);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -55,10 +56,18 @@ const UserProfile = () => {
         fetchData();
     }, []);
 
+    const getImage = () => {
+        if (!active1 && !active2) {
+            return NoticeNot;
+        } else {
+            return NoticeYes;
+        }
+    };
+
     return (
         <>
             <UserProfileP>내 계정</UserProfileP>
-            <MypageImg src={MypageProfile} alt="mypageProfile" />
+            <MypageImg src={getImage()} alt="profileImg" />
 
             <ProfileContainer style={{marginTop: "3.2rem"}}>
                 <UserProfileP2>이름</UserProfileP2>

@@ -30,8 +30,9 @@ const ToggleButton = ({ defaultActive = false, onClick }) => {
 
     const handleClick = () => {
         setActive(!active);
+
         if (onClick) {
-        onClick(!active);
+            onClick(!active);
         }
     };
 
