@@ -9,7 +9,6 @@ const MealContainer = styled.div`
     width: 100%;
     padding: 2.1rem 0;
     margin-top: 2rem;
-    margin-bottom: 4.6rem;
     border: 0.05rem solid ${colors.gray2};
     display: flex;
     flex-direction: column;
