@@ -6,16 +6,25 @@ import Footer_test from "../../assets/images/footer_test.png";
 import Footer_meal from "../../assets/images/footer_meal.png";
 
 const FooterContainer = styled.div`
-    width: 100%;
+    width: 430px;
     height: 5.5rem;
     background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border: none;
     border-radius: 1.6rem 1.6rem 0 0;
     box-shadow: 0 0 1.6rem 0 rgba(50, 50, 50, 0.08);
-`
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: 429px) {
+        width: 100%;
+    }
+`;
 
 const IconContainer = styled.div`
     width: 72%;
@@ -49,14 +58,16 @@ const Footer = () => {
     };
 
     return (
-        <FooterContainer>
-            <IconContainer>
-                <IconImg src={Footer_home} alt="home" onClick={handleHomeButtonClick} />
-                <IconImg src={Footer_test} alt="test" onClick={handleTestButtonClick} />
-                <IconImg src={Footer_calender} alt="calender" onClick={handleCalenderButtonClick} />
-                <IconImg src={Footer_meal} alt="meal" onClick={handleMealButtonClick} />
-            </IconContainer>
-        </FooterContainer>
+        <div className="pageContainer">
+            <FooterContainer>
+                <IconContainer>
+                    <IconImg src={Footer_home} alt="home" onClick={handleHomeButtonClick} />
+                    <IconImg src={Footer_test} alt="test" onClick={handleTestButtonClick} />
+                    <IconImg src={Footer_calender} alt="calender" onClick={handleCalenderButtonClick} />
+                    <IconImg src={Footer_meal} alt="meal" onClick={handleMealButtonClick} />
+                </IconContainer>
+            </FooterContainer>
+        </div>
     )
 }
 

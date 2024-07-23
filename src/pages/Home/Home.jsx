@@ -5,7 +5,7 @@ import Meal from "../../components/Home/Meal/Meal";
 
 const Home = () => {
     return (
-        <div className="pageContainer">
+        <div className="pageContainer" style={{marginBottom: "10.1rem"}}>
             <Banner />
             <Calender />
             <Time />
