@@ -172,7 +172,7 @@ const SignUp = () => {
     }
 
     const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
-    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(phoneNumber, code, setErrors, setInputTestMsg);
 
     useEffect(() => {
         if (code.length === 6) {
