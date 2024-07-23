@@ -76,7 +76,7 @@ const ResetPwd = () => {
 
     // 나중에 post 요청 주소 바꿀 것
     const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
-    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(phoneNumber, code, setErrors, setInputTestMsg);
 
 
     // 제출하는 함수

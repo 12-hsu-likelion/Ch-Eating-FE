@@ -2,17 +2,20 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useInput } from "../../hooks/useInput";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import sign_up_logo from "../../assets/images/sign_up_logo.png";
+import axios from "axios";
+import { useLoginAsync } from "../../hooks/useAsync";
 
 const Login = () => {
     const [id, handleId, setId] = useInput("");
     const [pw, handlePw, setPw] = useInput("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(true);
 
-    const navigate = useNavigate();
+    const [message, setMessage] = useState("");
 
     const idRef = useRef();
+
+    const [loginState, onLogin] = useLoginAsync(id, pw, setError, setMessage);
 
     useEffect(() => {
         idRef.current.focus();
@@ -32,12 +35,10 @@ const Login = () => {
                         <input type="text" value={id} onChange={handleId} required placeholder="아이디" ref={idRef} />
                         <input type="password" value={pw} onChange={handlePw} required placeholder="비밀번호" />
                         {error && (
-                            <p>아이디 혹은 비밀번호가 틀렸습니다.</p>
+                            <p>{message}</p>
                         )}
                     </div>
-                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={() => {
-                        setError(true)
-                    }}>로그인하기</button>
+                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={onLogin}>로그인하기</button>
                     <div className="id-pw-recovery">
                         <span onClick={()=>{
                             navigate("/findid")

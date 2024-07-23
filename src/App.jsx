@@ -12,6 +12,8 @@ import ViewUserId from './pages/Login/ViewUserId';
 import SignUpComplete from './pages/SignUp/SignUpComplete';
 import Mypage from './pages/Mypage/Mypage';
 import TestMain from "./pages/Test/TestMain";
+import DeletePls from './pages/Login/DeletePls';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 
 function App() {
@@ -32,6 +34,10 @@ function App() {
         <Route path='/viewuserid' element={<ViewUserId />} />
         <Route path='/mypage' element={<Mypage />} />
         <Route path="/test" element={<TestMain />} />
+        <Route element={<ProtectedRoute />}>
+        {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
+          <Route path='shouldbedeleted' element={<DeletePls />} />
+        </Route>
       </Routes>
       {showFooter && <Footer />}
     </>

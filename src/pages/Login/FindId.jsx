@@ -31,7 +31,7 @@ const FindId = () => {
 
     // 비동기 처리 로직들
     const [requsetAuthCodeState, requestAuthCodeByPhoneNumber] = useRequestAuthCodeAsync(phoneNumber, inputCodeRef, setErrors, setInputTestMsg);
-    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(code, setErrors, setInputTestMsg);
+    const [verifyAuthCodeState, verifyAuthCode] = useVerifyAuthCodeAsync(phoneNumber, code, setErrors, setInputTestMsg);
 
     const onFindId = async() => {
         try{
