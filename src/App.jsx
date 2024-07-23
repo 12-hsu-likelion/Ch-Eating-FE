@@ -11,12 +11,13 @@ import FindId from './pages/Login/FindId';
 import ViewUserId from './pages/Login/ViewUserId';
 import SignUpComplete from './pages/SignUp/SignUpComplete';
 import Mypage from './pages/Mypage/Mypage';
+import TestMain from "./pages/Test/TestMain";
 
 
 function App() {
   const location = useLocation();
-  const showHeader = location.pathname === '/' || location.pathname === '/mypage';
-  const showFooter = location.pathname === '/' || location.pathname === '/mypage';
+  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test';
+  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test';
 
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
         <Route path="/findid" element={<FindId />} />
         <Route path='/viewuserid' element={<ViewUserId />} />
         <Route path='/mypage' element={<Mypage />} />
+        <Route path="/test" element={<TestMain />} />
       </Routes>
       {showFooter && <Footer />}
     </>
