@@ -10,7 +10,6 @@ const TestContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 `;
 
@@ -46,7 +45,7 @@ const TestButton = styled.button`
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin: 1.6rem 0 7.5rem 0;
+    margin: 1.6rem 0 13rem 0;
     cursor: pointer;
 `
 

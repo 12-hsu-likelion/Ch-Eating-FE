@@ -42,7 +42,7 @@ const Mypage = () => {
     }
 
     return (
-        <div className="pageContainer" style={{display: "flex", justifyContent: "center", flexDirection: "column", position: "relative"}}>
+        <div className="pageContainer" style={{display: "flex", alignItems: "center", flexDirection: "column", position: "relative"}}>
             <MypageContainer style={{padding: "8.8rem 5% 4.6rem 5%"}}>
                 <UserProfile />
             </MypageContainer>
@@ -51,7 +51,7 @@ const Mypage = () => {
                 <Notice />
             </MypageContainer>
 
-            <MypageContainer style={{padding: "2.8rem 5% 4.7rem 5%", margin: "2rem 0 2.2rem 0"}}>
+            <MypageContainer style={{padding: "2.8rem 5% 4.7rem 5%", marginTop: "2rem", marginBottom: "7.7rem"}}>
                 <Account onLogoutClick={handleLogoutClick} onDeleteClick={handleDeleteClick} />
             </MypageContainer>
 
