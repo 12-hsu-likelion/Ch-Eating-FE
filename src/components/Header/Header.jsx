@@ -69,7 +69,7 @@ const Header = () => {
                 <HeaderContainer>
                     <HeaderLeft onClick={handleHomeClick}>
                         <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
-                        <HeaderP>Ch-eating</HeaderP>
+                        <HeaderP>Ch-Eating</HeaderP>
                     </HeaderLeft>
                     {location.pathname !== '/mypage' && (
                         <HeaderImg src={meal ? HeaderYes : HeaderNot} alt={meal ? "headerYes" : "headerNot"} onClick={handleMypageClick} />
