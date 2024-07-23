@@ -58,8 +58,7 @@ const Delete = ({ onDeleteConfirm, onDeleteCancel }) => {
     const handleDeleteConfirm = async () => {
         console.log("회원 탈퇴 진행할 것임");
         try {
-            // 나중에 delete로 바꾸기
-            const response = await axios.post("https://jsonplaceholder.typicode.com/users");
+            const response = await axios.delete("https://jsonplaceholder.typicode.com/users/1");
             console.log("회원 탈퇴 서버 통신 성공: ", response.data);
             localStorage.clear();
             onDeleteConfirm();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import axios from "axios";
@@ -71,10 +71,8 @@ const Header = () => {
                         <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
                         <HeaderP>Ch-eating</HeaderP>
                     </HeaderLeft>
-                    {meal ? (
-                        <HeaderImg src={HeaderYes} alt="headerYes" onClick={handleMypageClick} />
-                    ) : (
-                        <HeaderImg src={HeaderNot} alt="headerNot" onClick={handleMypageClick} />
+                    {location.pathname !== '/mypage' && (
+                        <HeaderImg src={meal ? HeaderYes : HeaderNot} alt={meal ? "headerYes" : "headerNot"} onClick={handleMypageClick} />
                     )}
                 </HeaderContainer>
         </div>
