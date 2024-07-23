@@ -25,7 +25,7 @@ const Notice2 = styled.p`
 const Notice = () => {
     const handleToggle = async (active, type) => {
         try {
-            const response = await axios.post("https://jsonplaceholder.typicode.com/users", {
+            const response = await axios.patch("https://jsonplaceholder.typicode.com/users/1", {
                 type,
                 active,
             });
@@ -43,12 +43,12 @@ const Notice = () => {
 
             <NoticeContainer style={{ marginTop: "3.2rem" }}>
                 <Notice2>알림</Notice2>
-                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "알림")} />
+                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "notice1")} />
             </NoticeContainer>
 
             <NoticeContainer style={{ marginTop: "2rem" }}>
                 <Notice2>카카오톡 알림톡</Notice2>
-                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "알림톡")} />
+                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "notice2")} />
             </NoticeContainer>
         </>
     );
