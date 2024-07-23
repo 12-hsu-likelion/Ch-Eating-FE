@@ -3,7 +3,7 @@ import colors from "../../../../styles/colors";
 
 const EatContainer = styled.div`
     width: calc(100% - 0rem / 4);
-    height: 12.8rem%;
+    height: 12.8rem;
     background-color: ${colors.mainColor};
     padding: 3.2rem 0;
     display: flex;

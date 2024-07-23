@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 import { useNavigate } from 'react-router-dom';
+import sign_up_logo from "../../assets/images/sign_up_logo.png";
 
 const ViewUserId = () => {
     const navigate = useNavigate();
@@ -11,8 +12,8 @@ const ViewUserId = () => {
             <div className="view-user-id-content">
                 <div className="logo-wrapper">
                     <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjgDGeD2i-CP1wlBlkU-sysJurmSISqB7-dA&s"
-                        alt=""
+                        src={sign_up_logo}
+                        alt="logo"
                     />
                 </div>
                 <h2>회원님의 아이디 정보입니다.</h2>
@@ -27,6 +28,10 @@ const ViewUserId = () => {
                         navigate("/resetpassword")
                     }}>비밀번호 찾기</span>
                 </div>
+
+                <button onClick={()=>{
+                    navigate("/login");
+                }}>확인</button>
             </div>
         </StyledViewUserId>
     );
@@ -75,6 +80,7 @@ const StyledViewUserId = styled.section`
             display: flex;
             width: 100%;
             justify-content: flex-end;
+            margin-bottom: 208px;
             
             span{
                 font-size: 10px;
@@ -95,6 +101,17 @@ const StyledViewUserId = styled.section`
                 }
             }
         }   
+        
+        button{
+            width: 100%;
+            background-color: ${colors.mainColor};
+            font-size: 16px;
+            padding: 18px 164px;
+            color: ${colors.gray1};
+            white-space: nowrap;
+            border-radius: 29px;
+            margin-bottom: 8px;
+        }
     }
 `;
 

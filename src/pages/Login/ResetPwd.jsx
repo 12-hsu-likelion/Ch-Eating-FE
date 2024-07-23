@@ -8,6 +8,7 @@ import { inputRegexs } from '../../components/LoginAndSignUp/inputRegexs';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useRequestAuthCodeAsync, useVerifyAuthCodeAsync } from '../../hooks/useAsync';
+import sign_up_logo from "../../assets/images/sign_up_logo.png";
 
 const ResetPwd = () => {
     const [id, handleId, setId] = useInput("");
@@ -180,8 +181,8 @@ const ResetPwd = () => {
             <div className="find-id-content">
                 <div className="logo-wrapper">
                     <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjgDGeD2i-CP1wlBlkU-sysJurmSISqB7-dA&s"
-                        alt=""
+                        src={sign_up_logo}
+                        alt="logo"
                     />
                 </div>
 
