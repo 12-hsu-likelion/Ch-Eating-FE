@@ -4,7 +4,7 @@ import colors from '../../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import gsap from "gsap";
 import sign_up_logo from "../../assets/images/sign_up_logo.png";
-// import welcome from "../../assets/images/welcome_svg.png";
+import welcome from "../../assets/images/welcome_svg.png";
 
 const SignUpComplete = () => {
     const navigate = useNavigate();
@@ -20,6 +20,11 @@ const SignUpComplete = () => {
             opacity: 0,
             duration: .5
         }, "-=.3")
+        .from(".welcome-wrapper", {
+            y: 10,
+            opacity: 0,
+            duration: .5
+        }, "-=.4")
             .from(".btn", {
                 opacity: 0,
                 duration: .3
@@ -31,7 +36,7 @@ const SignUpComplete = () => {
             <div className="sign-up-complete-wrapper">
                 <div className="img-wrapper">
                     <div className="welcome-wrapper">
-                        <img src="" alt="" />
+                        <img src={welcome} alt="" />
                     </div>
                     <div className="logo-wrapper">
                         <img src={sign_up_logo} alt="logo" />
@@ -80,7 +85,10 @@ const StyledSignUpComplete = styled.section`
             .welcome-wrapper{
                 position: absolute;
                 z-index: 2;
-                right: -50px;
+                right: -65px;
+                top: -25px;
+                width: 88.98px;
+                height: 44px;
             }
         }
         
