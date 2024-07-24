@@ -12,7 +12,6 @@ const MealContainer = styled.div`
     margin-bottom: 10rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
 `
 
 const MealTitle = styled.p`
@@ -36,6 +35,12 @@ const MealPostP = styled.p`
     font-size: 1.4rem;
     font-weight: 600;
     color: ${colors.gray5};
+`
+
+const SubmitButtonContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
 `
 
 const SubmitButton = styled.button`
@@ -107,7 +112,9 @@ const MealPost = () => {
                     <InputPost value={details} onChange={setDetails} />
                 </PostContainer>
 
-                <SubmitButton onClick={handleSubmit}>제출 버튼</SubmitButton>
+                <SubmitButtonContainer>
+                    <SubmitButton onClick={handleSubmit}>제출 버튼</SubmitButton>
+                </SubmitButtonContainer>
             </MealContainer>
         </div>
     )
