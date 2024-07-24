@@ -16,6 +16,8 @@ const FilterButton = styled.button`
     cursor: pointer;
 `;
 
+// id 같은 거 뜨도록 필터링 버튼 구현함 -> 나중에 서버 연동 시 type으로 바꿀 것.
+// 현재: 한식(1), 양식(2), ... 와 listMeal 통신 후 받은 데이터 배열의 id와 비교하여 같으면 뜨게 함
 const ItemFilter = ({ id, name, isActive, handleSelection }) => {
     const handleClick = () => {
         handleSelection(id, !isActive);

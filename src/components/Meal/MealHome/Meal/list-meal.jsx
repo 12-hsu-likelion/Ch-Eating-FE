@@ -47,14 +47,15 @@ const ListMeal = () => {
     const getFilteredData = () => {
         let filteredData = [...meals];
 
-        // 이름으로 검색 필터링
+        // 이름으로 검색 필터링 -> 서버 연동 필요없음. 프론트만으로 처리함
         if (searchInput.trim() !== '') {
             filteredData = filteredData.filter
                 (item => item.name.toLowerCase().startsWith(searchInput.toLowerCase())
             );
         }
 
-        // 선택된 id 필터 아이템으로 필터링(한식:1, 양식:2, ...)
+        // id 같은 거 뜨도록 필터링 버튼 구현함 -> 나중에 서버 연동 시 type으로 바꿀 것.
+        // 현재: 한식(1), 양식(2), ... 와 listMeal 통신 후 받은 데이터 배열의 id와 비교하여 같으면 뜨게 함
         if (selectedFilterItems.length > 0) {
             filteredData = filteredData.filter(item =>
                 selectedFilterItems.includes(item.id)
