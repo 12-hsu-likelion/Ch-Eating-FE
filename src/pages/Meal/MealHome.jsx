@@ -47,7 +47,7 @@ const MealHome = () => {
     const navigate = useNavigate();
 
     const handleAddClick = () => {
-        navigate("/write");
+        navigate("/post");
     }
 
     return (
