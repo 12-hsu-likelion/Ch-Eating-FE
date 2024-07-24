@@ -14,6 +14,19 @@ const FilterButton = styled.button`
     font-size: 1.6rem;
     color: ${props => props.active === "true" ? colors.gray1 : colors.gray5};
     cursor: pointer;
+
+    @media screen and (max-width: 400px) {
+        font-size: 1.2rem;
+    }
+    
+    @media screen and (max-width: 375px) {
+        padding: 0.8rem 3rem;
+        font-size: 1.6rem;
+    }
+
+    @media screen and (max-width: 325px) {
+        padding: 0.8rem 2.2rem;
+    }
 `;
 
 // id 같은 거 뜨도록 필터링 버튼 구현함 -> 나중에 서버 연동 시 type으로 바꿀 것.
