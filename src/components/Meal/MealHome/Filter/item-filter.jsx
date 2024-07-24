@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import colors from "../../../../styles/colors";
 
@@ -16,12 +16,9 @@ const FilterButton = styled.button`
     cursor: pointer;
 `;
 
-const ItemFilter = ({id, name}) => {
-    const [isActive, setIsActive] = useState(false);
-
+const ItemFilter = ({ id, name, isActive, handleSelection }) => {
     const handleClick = () => {
-        setIsActive(!isActive);
-        console.log(name, "선택");
+        handleSelection(id, !isActive);
     };
 
     return (

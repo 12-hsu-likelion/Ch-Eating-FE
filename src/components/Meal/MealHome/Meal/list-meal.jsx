@@ -29,6 +29,7 @@ const NotP = styled.p`
 const ListMeal = () => {
     const [meals, setMeals] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const [selectedFilterItems, setSelectedFilterItems] = useState([]);
 
     useEffect(() => {
         const fetchMeals = async () => {
@@ -43,11 +44,36 @@ const ListMeal = () => {
         fetchMeals();
     }, []);
 
-    const filteredMealData = meals.filter(item => item.name.toLowerCase().startsWith(searchInput.toLowerCase()));
+    const getFilteredData = () => {
+        let filteredData = [...meals];
+
+        // 이름으로 검색 필터링
+        if (searchInput.trim() !== '') {
+            filteredData = filteredData.filter
+                (item => item.name.toLowerCase().startsWith(searchInput.toLowerCase())
+            );
+        }
+
+        // 선택된 id 필터 아이템으로 필터링(한식:1, 양식:2, ...)
+        if (selectedFilterItems.length > 0) {
+            filteredData = filteredData.filter(item =>
+                selectedFilterItems.includes(item.id)
+            );
+        }
+
+        return filteredData;
+    };
 
     const handleInputChange = (e) => {
         setSearchInput(e.target.value);
     }
+
+    const handleSelectedItemsChange = (selectedItems) => {
+        setSelectedFilterItems(selectedItems);
+        console.log("선택된 필터 아이템들:", selectedItems);
+    };
+
+    const filteredMealData = getFilteredData();
 
     return (
         <>
@@ -57,7 +83,7 @@ const ListMeal = () => {
                 value={searchInput}
             />
 
-            <ListFilter />
+            <ListFilter onSelectedItemsChange={handleSelectedItemsChange} />
 
             {filteredMealData.length > 0 ? (
                 <ListContainer>
@@ -67,6 +93,7 @@ const ListMeal = () => {
                             name={meal.name} 
                             username={meal.username}
                             email={meal.email}
+                            selectedFilterItems={selectedFilterItems}
                         />
                     ))}
                 </ListContainer>
