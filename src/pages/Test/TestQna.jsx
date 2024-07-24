@@ -10,8 +10,8 @@ const ButtonContainer = styled.div`
 `
 
 const QnaButton = styled.button`
-    background-color: ${props => props.active === "true" ? colors.mainColor : colors.gray1};
-    color: ${props => props.active === "true" ? colors.gray1 : colors.mainColor};
+    background-color: ${props => props.active ? colors.mainColor : colors.gray1};
+    color: ${props => props.active ? colors.gray1 : colors.mainColor};
     border: 2px solid ${colors.mainColor};
     padding: 10px 20px;
     cursor: pointer;
@@ -31,14 +31,22 @@ const TestQna = () => {
     const [isActiveType, setIsActiveType] = useState(activeType);
     const [isHungry, setIsHungry] = useState(true);
 
+    const renderQuestion = (isActiveType) => {
+        if (isActiveType === 'before') {
+            return "특정 음식이 먹고싶나요?";
+        } else if (isActiveType === 'after') {
+            return "식사 후 괜히 먹었다는 후회감이 드나요?";
+        }
+    };
+
     const handleSelectClick = (value) => {
         setIsHungry(value);
     };
 
     useEffect(() => {
         console.log("테스트 종류: ", isActiveType);
-        console.log("진짜 배고픔인가?: ", isHungry);
-    }, [isHungry]);
+        console.log("결과 값: ", isHungry);
+    }, [isActiveType, isHungry]);
 
     const handleResultClick = () => {
         navigate(`/result/${isActiveType}/${isHungry}`);
@@ -47,11 +55,21 @@ const TestQna = () => {
     return (
         <>
             <p>테스트 종류: {isActiveType}</p>
-            <p>지금 배고프시나요?</p>
+            <p>{renderQuestion(isActiveType)}</p>
 
             <ButtonContainer>
-                <QnaButton active={isHungry === true ? "true" : "false"} onClick={() => handleSelectClick(true)}>네(진짜 배고픔)</QnaButton>
-                <QnaButton active={isHungry === false ? "true" : "false"} onClick={() => handleSelectClick(false)}>아니오(가짜배고픔)</QnaButton>
+                {isActiveType === 'before' && (
+                    <>
+                        <QnaButton active={isHungry === true} onClick={() => handleSelectClick(true)}>네(진짜 배고픔)</QnaButton>
+                        <QnaButton active={isHungry === false} onClick={() => handleSelectClick(false)}>아니오(가짜 배고픔)</QnaButton>
+                    </>
+                )}
+                {isActiveType === 'after' && (
+                    <>
+                        <QnaButton active={isHungry === true} onClick={() => handleSelectClick(true)}>네(가짜 배고픔)</QnaButton>
+                        <QnaButton active={isHungry === false} onClick={() => handleSelectClick(false)}>아니오(진짜 배고픔)</QnaButton>
+                    </>
+                )}
             </ButtonContainer>
 
             <ResultButton onClick={handleResultClick}>결과 확인</ResultButton>
