@@ -10,7 +10,7 @@ const TimeContainer = styled.div`
     border: none;
     border-radius: 1.6rem;
     margin-top: 2rem;
-    padding-left: 3.9rem;
+    padding: 0 2.3rem;
 `;
 
 const TimeTitle = styled.p`
@@ -44,7 +44,6 @@ const TestButton = styled.button`
     font-weight: 500;
     font-size: 1.4rem;
     color: white;
-    margin-right: 2rem;
     margin-top: 2.9rem;
     border: none;
     border-radius: 0.8rem;

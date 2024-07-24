@@ -17,10 +17,11 @@ const EatContainer = styled.div`
 
 const EatTitleP = styled.p`
     width: 5.6rem;
+    height: 3.8rem;
     font-size: 1.6rem;
     color: ${colors.white};
     font-weight: 600;
-    white-space: nowrap;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
 `
