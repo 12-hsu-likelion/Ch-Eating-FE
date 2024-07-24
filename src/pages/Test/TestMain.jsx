@@ -62,11 +62,7 @@ const TestMain = () => {
     }, [activeType]);
 
     const handleTestButtonClick = () => {
-        if (activeType === 'before') {
-            navigate('/test/before');
-        } else if (activeType === 'after') {
-            navigate('/test/after');
-        }
+        navigate(`/test/${activeType}`);
     };
 
     return (
