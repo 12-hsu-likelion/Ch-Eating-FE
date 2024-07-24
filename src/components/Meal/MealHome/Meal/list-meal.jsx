@@ -14,6 +14,11 @@ const ListContainer = styled.div`
     gap: 0.8rem;
 `
 
+const NotContainer = styled.div`
+    width: 100%;
+    text-align: center;
+`
+
 const NotP = styled.p`
     font-size: 1.6rem;
     font-weight: 300;
@@ -66,7 +71,9 @@ const ListMeal = () => {
                     ))}
                 </ListContainer>
             ) : (
-                <NotP>아직 식사량을 기록하지 않았어요!</NotP>
+                <NotContainer>
+                    <NotP>아직 식사량을 기록하지 않았어요!</NotP>
+                </NotContainer>
             )}
         </>
     )
