@@ -14,9 +14,13 @@ const InputContainer = styled.input`
     margin-bottom: 4.2rem;
 `
 
-const InputPost = () => {
+const InputPost = ({ onChange, value }) => {
     return (
-        <InputContainer />
+        <InputContainer
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+        />
     )
 }
 
