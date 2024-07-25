@@ -16,6 +16,8 @@ import TestQna from "./pages/Test/TestQna";
 import TestResult from "./pages/Test/TestResult";
 import MealHome from "./pages/Meal/MealHome";
 import MealPost from './pages/Meal/MealPost';
+import MealEdit from "./pages/Meal/MealEdit";
+import Notice from "./pages/Notice/Notice";
 
 import DeletePls from './pages/Login/DeletePls';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -23,8 +25,8 @@ import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
   const location = useLocation();
-  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post';
-  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post';
+  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice";
+  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice";
 
   return (
     <>
@@ -43,6 +45,8 @@ function App() {
         <Route path="/result/:activeType/:testResult" element={<TestResult />} />
         <Route path="/meal" element={<MealHome />} />
         <Route path="/post" element={<MealPost />} />
+        <Route path="/edit/:id" element={<MealEdit />} />
+        <Route path="/notice" element={<Notice />} />
         <Route element={<ProtectedRoute />}>
         {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
           <Route path='shouldbedeleted' element={<DeletePls />} />

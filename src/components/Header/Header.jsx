@@ -6,6 +6,8 @@ import axios from "axios";
 import HeaderLogo from "../../assets/images/headerLogo.png";
 import HeaderNot from "../../assets/images/headerNot.png";
 import HeaderYes from "../../assets/images/headerYes.png";
+import HeaderNoticeNot from "../../assets/images/headerNoticeNot.png";
+import HeaderNoticeYes from "../../assets/images/headerNoticeYes.png";
 
 const HeaderContainer = styled.div`
     width: 90%;
@@ -33,6 +35,11 @@ const HeaderP = styled.p`
     color: ${colors.subColor};
 `
 
+const HeaderRight = styled.div`
+    display: flex;
+    gap: 2rem;
+`
+
 const HeaderImg = styled.img`
     width: 2.8rem;
     height: 2.8rem;
@@ -42,12 +49,14 @@ const HeaderImg = styled.img`
 const Header = () => {
     const navigate = useNavigate();
     const [meal, setMeal] = useState(false);
+    const [notice, setNotice] = useState(false);
 
+    // 헤더 맨 오른쪽 얼굴 사진
     useEffect(() => {
-        fetchData();
+        fetchDataMeal();
     }, []);
 
-    const fetchData = async () => {
+    const fetchDataMeal = async () => {
         try {
             const response = await axios.get('https://jsonplaceholder.typicode.com/users');
             setMeal(response.data.length > 0);
@@ -56,9 +65,27 @@ const Header = () => {
         }
     };
 
+    useEffect(() => {
+        fetchDataNotice();
+    }, []);
+
+    // 헤더 알림 표시 -> 알림 표시된 사진이 뜨는 기준을 모르겠어서 나중에 다시 해놓겠습니다.
+    const fetchDataNotice = async () => {
+        try {
+            const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+            setNotice(response.data.length > 0);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const handleHomeClick = () => {
         navigate("/");
     };
+
+    const handleNoticeClick = () => {
+        navigate("/notice");
+    }
 
     const handleMypageClick = () => {
         navigate("/mypage");
@@ -71,9 +98,11 @@ const Header = () => {
                         <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
                         <HeaderP>Ch-Eating</HeaderP>
                     </HeaderLeft>
-                    {location.pathname !== '/mypage' && (
+
+                    <HeaderRight>
+                        <HeaderImg src={notice ? HeaderNoticeYes : HeaderNoticeNot} alt="headerNoticeNot" onClick={handleNoticeClick} />
                         <HeaderImg src={meal ? HeaderYes : HeaderNot} alt={meal ? "headerYes" : "headerNot"} onClick={handleMypageClick} />
-                    )}
+                    </HeaderRight>
                 </HeaderContainer>
         </div>
     )
