@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
-// 로그인 하는 함수 1
+// 로그인 하는 함수 1 => 해결
 // 아이디 중복 확인하는 함수 1
 // 아이디가 있는지 확인하는 함수 1
 // 재설정된 비밀번호를 보내는 함수 1
@@ -240,21 +240,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
     return [state, fetchData];
 }
 
-// export const useShouldBeDeleted = (setUserInfo) => {
-//     const fetchData = async() => {
-//         try{
-//             const response = await currentApi.get("/test");
-            
-//             console.log(response.data);
-//             setUserInfo(response.data);
-//         }catch(e){
-//             console.log(e);
-//         }
-//     }
-
-//     return fetchData;
-// }
-
+// 로그인이 필요한 페이지의 상위 컴포넌트가 렌더링 되면 실행될 함수
 export const useAxios = () => {
     const [state, dispatch] = useReducer(reducer, {
         isLogin: undefined
@@ -274,6 +260,7 @@ export const useAxios = () => {
                 ox: true
             })
         }catch(e){
+            alert("로그인이 필요한 서비스입니다.");
             console.log(e);
             dispatch({
                 type: "ISLOGIN",
@@ -281,6 +268,10 @@ export const useAxios = () => {
             })
         }
     }
+
+    useEffect(()=>{
+        fetch();
+    }, []);
 
     return [state, fetch];
 }

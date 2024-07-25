@@ -3,11 +3,7 @@ import { useAxios } from '../hooks/useAsync';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-    const [state, fetch] = useAxios();
-
-    useEffect(()=>{
-        fetch();
-    }, []);
+    const [state, refetch] = useAxios();
 
     if(state.isLogin === undefined){
         return;
