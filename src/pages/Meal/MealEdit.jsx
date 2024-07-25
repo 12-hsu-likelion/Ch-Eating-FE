@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import axios from "axios";
-import InputPost from "../../components/Meal/MealPost/Input/input-post";
-import ListType from "../../components/Meal/MealPost/Type/list-type";
-import { useNavigate } from "react-router-dom";
+import InputEdit from "../../components/Meal/MealEdit/Input/input-edit";
+import ListType from "../../components/Meal/MealEdit/Type/list-type";
 
 const MealContainer = styled.div`
     width: 90%;
@@ -37,14 +37,14 @@ const MealPostP = styled.p`
     color: ${colors.gray5};
 `
 
-const SubmitButtonContainer = styled.div`
+const ButtonContainer = styled.div`
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 `
 
-const SubmitButton = styled.button`
-    width: 100%;
+const EditButton = styled.button`
+    width: 48.5%;
     height: 5.6rem;
     background-color: ${({ disabled }) => (disabled ? colors.gray2 : colors.mainColor)};
     border: none;
@@ -59,14 +59,37 @@ const SubmitButton = styled.button`
     color: ${({ disabled }) => (disabled ? colors.gray3 : colors.gray1)};
 `
 
-const MealPost = () => {
+const MealEdit = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const [brandName, setBrandName] = useState("");
     const [postType, setPostType] = useState("");
     const [menuName, setMenuName] = useState("");
     const [mealAmount, setMealAmount] = useState("");
     const [details, setDetails] = useState("");
     const [form, setForm] = useState(false);
+
+    // 정보 받아오기
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+                const editData = response.data;
+                setBrandName(editData.name);
+                setPostType(editData.id);
+                setMenuName(editData.username);
+                setMealAmount(editData.id);
+                setDetails(editData.email);
+                setForm(true);
+            } catch (error) {
+                console.error("Error: ", error);
+            }
+        };
+
+        fetchData();
+    }, [id]); 
+
 
     const handleTypeSelect = (type) => {
         setPostType(type);
@@ -76,7 +99,6 @@ const MealPost = () => {
         //console.log(postType);
     }, [postType]);
 
-
     useEffect(() => {
         if (brandName && postType && menuName && mealAmount && details) {
             setForm(true);
@@ -85,16 +107,29 @@ const MealPost = () => {
         }
     }, [brandName, postType, menuName, mealAmount, details]);
 
-    const handleSubmit = async () => {
+
+    // 삭제 통신
+    const handleDelete = async () => {
         try {
-            const response = await axios.post("https://jsonplaceholder.typicode.com/users", {
+            const response = await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            console.log("삭제 통신 완료: ", response.data);
+            navigate("/meal");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    // 수정 통신
+    const handleEdit = async () => {
+        try {
+            const response = await axios.patch(`https://jsonplaceholder.typicode.com/users/${id}`, {
                 brandName: brandName,
                 postType: postType,
                 menuName: menuName,
                 mealAmount: mealAmount,
                 details: details
             });
-            console.log("통신 완료: ", response.data);
+            console.log("수정 통신 완료: ", response.data);
             navigate("/meal");
         } catch (error) {
             console.error("Error:", error);
@@ -109,27 +144,28 @@ const MealPost = () => {
 
                 <PostContainer>
                     <MealPostP>브랜드명</MealPostP>
-                    <InputPost value={brandName} onChange={setBrandName} />
+                    <InputEdit value={brandName} onChange={setBrandName} />
 
                     <MealPostP>종류</MealPostP>
-                    <ListType onTypeSelect={handleTypeSelect} />
+                    <ListType onTypeSelect={handleTypeSelect} initTypeSelect={postType}/>
                     
                     <MealPostP>메뉴명</MealPostP>
-                    <InputPost value={menuName} onChange={setMenuName} />
+                    <InputEdit value={menuName} onChange={setMenuName} />
 
                     <MealPostP>식사량</MealPostP>
-                    <InputPost value={mealAmount} onChange={setMealAmount} />
+                    <InputEdit value={mealAmount} onChange={setMealAmount} />
 
                     <MealPostP>세부사항</MealPostP>
-                    <InputPost value={details} onChange={setDetails} />
+                    <InputEdit value={details} onChange={setDetails} />
                 </PostContainer>
 
-                <SubmitButtonContainer>
-                    <SubmitButton disabled={!form} onClick={handleSubmit}>등록하기</SubmitButton>
-                </SubmitButtonContainer>
+                <ButtonContainer>
+                    <EditButton onClick={handleDelete}>삭제하기</EditButton>
+                    <EditButton disabled={!form} onClick={handleEdit}>수정하기</EditButton>
+                </ButtonContainer>
             </MealContainer>
         </div>
     )
 }
 
-export default MealPost;
+export default MealEdit;

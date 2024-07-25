@@ -92,6 +92,7 @@ const ListMeal = () => {
                     {filteredMealData.map(meal => (
                         <ItemMeal 
                             key={meal.id} 
+                            id={meal.id}
                             name={meal.name} 
                             username={meal.username}
                             email={meal.email}
