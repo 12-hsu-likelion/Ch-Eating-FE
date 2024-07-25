@@ -44,17 +44,19 @@ const SubmitButtonContainer = styled.div`
 `
 
 const SubmitButton = styled.button`
-    width: 70%;
-    height: 4rem;
-    background-color: ${colors.mainColor};
+    width: 100%;
+    height: 5.6rem;
+    background-color: ${({ disabled }) => (disabled ? colors.gray2 : colors.mainColor)};
     border: none;
-    border-radius: 3rem;
-    color: ${colors.gray1};
-    cursor: pointer;
+    border-radius: 0.8rem;
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: ${({ disabled }) => (disabled ? colors.gray3 : colors.gray1)};
 `
 
 const MealPost = () => {
@@ -64,6 +66,7 @@ const MealPost = () => {
     const [menuName, setMenuName] = useState("");
     const [mealAmount, setMealAmount] = useState("");
     const [details, setDetails] = useState("");
+    const [form, setForm] = useState(false);
 
     const handleTypeSelect = (type) => {
         setPostType(type);
@@ -72,6 +75,15 @@ const MealPost = () => {
     useEffect(() => {
         //console.log(postType);
     }, [postType]);
+
+
+    useEffect(() => {
+        if (brandName && postType && menuName && mealAmount && details) {
+            setForm(true);
+        } else {
+            setForm(false);
+        }
+    }, [brandName, postType, menuName, mealAmount, details]);
 
     const handleSubmit = async () => {
         try {
@@ -113,7 +125,7 @@ const MealPost = () => {
                 </PostContainer>
 
                 <SubmitButtonContainer>
-                    <SubmitButton onClick={handleSubmit}>제출 버튼</SubmitButton>
+                    <SubmitButton disabled={!form} onClick={handleSubmit}>등록하기</SubmitButton>
                 </SubmitButtonContainer>
             </MealContainer>
         </div>
