@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import colors from "../../styles/colors";
-import NoticeLogo from "../../assets/images/noticeLogo.png";
+import colors from "../../../styles/colors";
+import NoticeLogo from "../../../assets/images/noticeLogo.png";
 
 const ItemContainer = styled.div`
     width: 100%;
     height: 10rem;
-    background-color: ${colors.backgroundColor};
+    background-color: ${colors.violet10};
     display: flex;
     justify-content: center;
     align-items: center;
