@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import colors from "../../../../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const ItemContainer = styled.div`
     width: 100%;
@@ -10,6 +11,7 @@ const ItemContainer = styled.div`
     border: none;
     border-radius: 0.4rem;
     background-color: ${colors.mainColor};
+    cursor: pointer;
 `
 
 const InnerContainer = styled.div`
@@ -48,8 +50,14 @@ const TitleP2 = styled.p`
 `
 
 const ItemMeal = ({id, name, username, email}) => {
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        navigate(`/edit/${id}`);
+    }
+
     return (
-        <ItemContainer key={id}>
+        <ItemContainer key={id} onClick={handleEdit}>
             <InnerContainer>
                 <TitleContainer>
                     <TitleP1>{name}</TitleP1>
