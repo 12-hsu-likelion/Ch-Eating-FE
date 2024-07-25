@@ -8,7 +8,8 @@ import ListFilter from '../Filter/list-filter';
 
 const ListContainer = styled.div`
     width: 100%; 
-    margin: 3.6rem 0 6.1rem 0;
+    margin-top: 3.6rem;
+    margin-bottom: 6.1rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;

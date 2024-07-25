@@ -22,19 +22,29 @@ const InnerContainer = styled.div`
 
 const TitleContainer = styled.div`
     display: flex;
+    width: 100%;
+    height: 2.4rem;
     align-items: flex-end;
     gap: 0.8rem;
 `
 
 const TitleP1 = styled.p`
+    max-width: 60%;
     font-size: 2rem;
     font-weight: 600;
     color: ${colors.gray1};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const TitleP2 = styled.p`
+    max-width: 40%;
     font-size: 1.2rem;
     color: ${colors.gray3};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const ItemMeal = ({id, name, username, email}) => {
