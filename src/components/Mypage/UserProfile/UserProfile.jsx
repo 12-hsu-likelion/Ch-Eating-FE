@@ -30,7 +30,6 @@ const UserProfileP2 = styled.p`
 
 const UserProfile = () => {
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
     const [active1, setActive1] = useState(false);
     const [active2, setActive2] = useState(false);
 
@@ -42,7 +41,6 @@ const UserProfile = () => {
                 console.log(userData);
 
                 setName(userData.name || '정보 없음');
-                setPhone(userData.phone || '정보 없음');
 
                 // 프로필 변화 -> 통신할 때 다시 확인할 것
                 setActive1(userData.active.notice1 || false);
@@ -72,11 +70,6 @@ const UserProfile = () => {
             <ProfileContainer style={{marginTop: "3.2rem"}}>
                 <UserProfileP2>이름</UserProfileP2>
                 <UserProfileP2>{name}</UserProfileP2>
-            </ProfileContainer>
-            
-            <ProfileContainer style={{marginTop: "2rem"}}>
-                <UserProfileP2>전화번호</UserProfileP2>
-                <UserProfileP2>{phone}</UserProfileP2>
             </ProfileContainer>
         </>
     )
