@@ -40,10 +40,10 @@ const TestResult = () => {
     let resultImage;
     switch (activeType) {
         case 'before':
-            resultImage = testResult === "true" ? ResultBeforeYes : ResultBeforeNot;
+            resultImage = testResult === "realhunger" ? ResultBeforeYes : ResultBeforeNot;
             break;
         case 'after':
-            resultImage = testResult === "true" ? ResultAfterNot : ResultAfterYes;
+            resultImage = testResult === "realhunger" ? ResultAfterYes : ResultAfterNot;
             break;
         default:
             console.log("error");

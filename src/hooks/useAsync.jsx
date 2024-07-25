@@ -275,3 +275,25 @@ export const useAxios = () => {
 
     return [state, fetch];
 }
+
+export const useTestResultAsync = (answer, type, currentTime) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+// before 일 때 가짜
+// 1번: 식사 후 3시간 이내라면, 2번: 네, 3번: 아니오, 4번: 아니오, 5번: 4이상일때
+console.log(answer, type, currentTime);
+    if(type === "before"){
+
+    }
+    else{
+
+    }
+
+// after 일 때 가짜
+// 
+    async function postData(){
+        
+    }
+
+    return [state, postData];
+}

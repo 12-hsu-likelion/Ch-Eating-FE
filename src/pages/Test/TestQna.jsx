@@ -6,6 +6,7 @@ import questionType from '../../components/Test/TestQuestion';
 import TestNumber from '../../components/Test/TestNumber';
 import dropDown from '../../assets/images/drop_down.png';
 import { useTimeInput } from '../../hooks/useTimeInput';
+import BeforeLastAnswer from '../../components/Test/BeforeLastAnswer';
 
 const TestQna = () => {
     const { activeType } = useParams();
@@ -15,7 +16,7 @@ const TestQna = () => {
         activeType === 'before' ? questionType.before : questionType.after
     );
     const [currentQuestion, setCurrentQuestion] = useState(1);
-    const [hungerScore, setHungerScore] = useState(0);
+    let fakeHungerCount = 0;
 
     const [inputHour, handleInputHour, setInputHour] = useTimeInput('', 'hour');
     const [inputMin, handleInputMin, setInputMin] = useTimeInput('', 'min');
@@ -62,18 +63,70 @@ const TestQna = () => {
         }))
     }
 
+    // 결과를 도출하고 통신을 보내고 사용자를 안내하는 함수
+    async function getTestResult(answer){
+        const value = Object.values(answer);
+
+        if(activeType === "before"){
+            value.map((e, i)=>{
+                if(i === 0){
+                    const diff = (currentTime - e + 1440) % 1440;
+                    if (diff <= 180 || diff >= 1440 - 180) {
+                        fakeHungerCount += 1;
+                    }
+                }
+                else if(i === 1){
+                    fakeHungerCount += e === "네" ? 1 : 0;
+                }
+                else if(i === 2 || i === 3){
+                    fakeHungerCount += e === "아니오" ? 1 : 0;
+                }
+                else{
+                    fakeHungerCount += e >= 4 ? 1 : 0;
+                }
+            })
+        }else{
+            value.map(e=>{
+                if(e !== "아니오"){
+                    fakeHungerCount++;
+                }
+            })
+        }
+
+        const isFakeHunger = fakeHungerCount > questions.length / 2 ? true : false;
+
+        try{
+            console.log({
+                user: "유저아이디",
+                testType: activeType,
+                isFakeHunger: isFakeHunger,
+            })
+        }catch(e){
+            console.log(e);
+        }
+
+        if(isFakeHunger){
+            navigate(`/result/${activeType}/fakehunger`);
+        }
+        else{
+            navigate(`/result/${activeType}/realhunger`);
+        }
+    }
+
     function gotoNextOrPrev(e) {
         if (e.target.textContent === "이전") {
             setCurrentQuestion(prev => prev - 1);
         }
         else {
-            if(currentQuestion === questions.length){
+            if (currentQuestion === questions.length) {
                 const currentAnswer = activeType === "before" ? beforeAnswer : afterAnswer;
 
-                if(Object.values(currentAnswer.answer).some(value => value === '')){
+                if (Object.values(currentAnswer.answer).some(value => value === '')) {
                     alert("모든 항목에 답해주세요");
                     return;
                 }
+
+                getTestResult(currentAnswer.answer);
 
                 return;
             }
@@ -83,7 +136,7 @@ const TestQna = () => {
 
     useEffect(() => {
         const now = new Date();
-        setCurrentTime(now.getTime());
+        setCurrentTime(now.getHours() * 60 + now.getMinutes());
     }, []);
 
     useEffect(() => {
@@ -101,21 +154,20 @@ const TestQna = () => {
     }, [inputHour, inputMin]);
 
     useEffect(() => {
-        if(currentQuestion !== 1 && activeType === "before"){
+        if (currentQuestion !== 1 && activeType === "before") {
 
-            setBeforeAnswer(prev=>({
+            if (inputHour === "" && inputMin === "") {
+                return;
+            }
+            setBeforeAnswer(prev => ({
                 ...prev,
                 answer: {
                     ...prev.answer,
-                    1: `${inputHour ? inputHour : "00"}:${inputMin ? inputMin : "00"}`
+                    [1]: Number(inputHour) * 60 + Number(inputMin)
                 }
             }))
         }
     }, [currentQuestion]);
-
-    useEffect(() => {
-        console.log(beforeAnswer);
-    }, [beforeAnswer])
 
     return (
         <StyledTestQna className='pageContainer'>
@@ -138,8 +190,17 @@ const TestQna = () => {
 
                 <div className="question-content">
                     <p style={{ marginTop: '98px', marginBottom: '10px' }}>질문</p>
-                    <h4 className='question'>{questions[currentQuestion - 1]}</h4>
-                    <p style={{ marginBottom: '45px' }}>답변</p>
+                    <h4
+                        className='question'
+                        style={{
+                            marginBottom: (activeType === "before" && currentQuestion === 1) ? "62px" :
+                                ((activeType === "before" && currentQuestion === 3) || (activeType === "after" && currentQuestion === 3)) ? "69px" :
+                                    "92.5px"
+                        }}
+                    >
+                        {questions[currentQuestion - 1]}
+                    </h4>
+                    <p style={{ marginBottom: (activeType === "before" && currentQuestion === 1) ? "45px" : "27px" }}>답변</p>
                     <div className="answer-wrapper">
                         {activeType === 'before' && currentQuestion === 1 && (
                             <div className='answer-for-question1'>
@@ -192,7 +253,7 @@ const TestQna = () => {
                         ) : null}
 
                         {activeType === 'before' && currentQuestion === 5 && (
-                            <div>asdas654454555dad</div>
+                            <BeforeLastAnswer beforeAnswer={beforeAnswer} setBeforeAnswer={setBeforeAnswer} />
                         )}
                     </div>
                 </div>
@@ -248,7 +309,6 @@ const StyledTestQna = styled.section`
                 color: ${colors.black};
                 font-size: 20px;
                 font-weight: 500;
-                margin-bottom: 62px;
             }
 
             .answer-wrapper {
