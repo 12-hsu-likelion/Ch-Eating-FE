@@ -2,14 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { useCalendarContext } from '../../../context/CalendarContext';
 import CalendarDay from './CalendarDay';
+import { format } from 'date-fns';
 
 const CalendarDaysWrapper = () => {
     const {daysInMonth, currentDate} = useCalendarContext();
+    const date = new Date();
+    const formattedDate = format(date, 'yyyy-MM-dd');
 
     return (
         <StyledCalendarDayWrapper>
             {daysInMonth.map((dayInfo, i)=>{
-                return <CalendarDay isPrevMonth = {dayInfo.month !== currentDate.month} key={i} dayInfo = {dayInfo} />
+                return <CalendarDay isCurrent = {formattedDate === dayInfo.date} isPrevMonth = {dayInfo.month !== currentDate.month} key={i} dayInfo = {dayInfo} />
             })}
         </StyledCalendarDayWrapper>
     );

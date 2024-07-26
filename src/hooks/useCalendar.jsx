@@ -9,21 +9,23 @@ import {
     subMonths,
     getDay,
 } from 'date-fns';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export const useCalendar = () => {
+    // 현재 날짜 년도, 월, 일 구하기
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [isWeeklySelected, setIsWeeklySelected] = useState(true);
     const [currentYear, currentMonth, currentDay] = format(currentDate, "yyyy-MM-dd").split("-");
 
     const startCurrentMonth = startOfMonth(currentDate);
     const endCurrentMonth = endOfMonth(currentDate);
 
+    // 현재 날짜의 주차 구하기(현재 월을 기준으로)
+    const [currentWeek, setCurrentWeek] = useState(Math.floor(currentDay / 7) + 1);
+
     const startOfFirstWeek = startOfWeek(startCurrentMonth, { weekStartsOn: 1 });
     const endOfLastWeek = endOfWeek(endCurrentMonth, { weekStartsOn: 1 });
 
-    console.log(endOfLastWeek);
-
+    // 현재 월에 포함되어 있는 모든 날짜 구하기(이전 월도 포함해서)
     const daysInMonth = eachDayOfInterval({
         start: startOfFirstWeek,
         end: endOfLastWeek
@@ -34,6 +36,25 @@ export const useCalendar = () => {
         day: format(day, "dd"),
         dayIndexOfWeek: getDay(day),
     }));
+    
+    // 현재 월을 7일씩 나누어 주차 별 배열 구하기
+    const splitByWeek = () => {
+        const result = [];
+
+        for(let i = 0; i < daysInMonth.length; i += 7){
+            result.push(daysInMonth.filter(dayInfo=>dayInfo.month===currentMonth).slice(i, i + 7));
+        }
+
+        return result;
+    }
+
+    // 주차 별로 나뉘어져 있는 배열
+    const splitedArrayByWeek = useMemo(()=>{
+        return splitByWeek();
+    }, [daysInMonth, currentMonth]);
+
+    const [isWeeklySelected, setIsWeeklySelected] = useState(true);
+    const [selectedWeek, setSelectedWeek] = useState(splitedArrayByWeek[currentWeek - 1]);
 
     const handlePrevMonth = () => {
         setCurrentDate(prev => subMonths(prev, 1));
@@ -43,24 +64,36 @@ export const useCalendar = () => {
         setCurrentDate(prev => addMonths(prev, 1));
     };
 
+    // 주별, 월별 선택하는 함수
     const handleSelectWeeklyOrMonthly = () => {
         setIsWeeklySelected(prev=>!prev);
     }
+
+    // 선택한 월의 조회하고자 하는 주차를 선택하는 함수
+    const handleSelectWeekOfSelectedMonth = (indexOfWeek) =>{
+        console.log(indexOfWeek);
+    }   
 
     return {
         currentDate: {
             year: currentYear,
             month: currentMonth,
-            day: currentDay
+            week: currentWeek,
+            day: currentDay,
         },
-        daysInMonth,
         dispatch: {
             handlePrevMonth,
             handleNextMonth,
-            handleSelectWeeklyOrMonthly
+            handleSelectWeeklyOrMonthly,
+            handleSelectWeekOfSelectedMonth
         },
         currentSelect:{
             isWeeklySelected,
-        }
+            selectedWeek
+        },
+        // 선택한 월을 1주차~마지막주차까지 나누어져 있는 배열
+        splitedArrayByWeek,
+        // 현재 월의 모든 일을 담은 배열
+        daysInMonth,
     };
 };
