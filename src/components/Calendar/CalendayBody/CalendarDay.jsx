@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import colors from '../../../styles/colors';
 import CalendarTestBar from './CalendarTestBar';
 
-const CalendarDay = ({ dayInfo, isPrevMonth }) => {
+const CalendarDay = ({ dayInfo, isPrevMonth, isCurrent }) => {
     const { date, year, month, day, dayIndexOfWeek } = dayInfo;
     // 정보 객체 받아와서 fake인지 아닌지 확인하기
 
     return (
-        <StyledCalendarDay $isPrevMonth = {isPrevMonth}>
+        <StyledCalendarDay $isCurrent = {isCurrent} $isPrevMonth = {isPrevMonth}>
             <span>
                 {Number(day)}
             </span>
@@ -32,7 +32,7 @@ const StyledCalendarDay = styled.li`
 
     pointer-events: ${({$isPrevMonth})=>$isPrevMonth ? "none" : "auto"};
     opacity: ${({$isPrevMonth})=>$isPrevMonth ? 0 : 1};
-    background-color: ${colors.white};
+    background-color: ${({$isCurrent})=> $isCurrent ? colors.violet10 : colors.white};
 
     span{
         font-size: 16px;
