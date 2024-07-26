@@ -1,27 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
-import CalendarHeader from '../../components/Calendar/CalendarHeader';
-import { useCalendarContext } from "../../context/CalendarContext";
-import CalendarBody from '../../components/Calendar/CalendarBody';
+import CalendarHeader from '../../components/Calendar/CalendarHeader/CalendarHeader';
+import { CalendarProvider } from "../../context/CalendarContext";
+import CalendarBody from '../../components/Calendar/CalendayBody/CalendarBody';
+import CalendarBottom from '../../components/Calendar/CalendarBottom/CalendarBottom';
 
 const Calender = () => {
-    const s = useCalendarContext();
-
-    useEffect(()=>{
-        console.log(s);
-    }, [s]);
 
     return (
-        <StyledCalendar className='pageContainer'>
-            <div className="calendar-wrapper">
-                <div className="title">
-                    캘린더
+        <CalendarProvider>
+            <StyledCalendar className='pageContainer'>
+                <div className="calendar-wrapper">
+                    <div className="title">
+                        캘린더
+                    </div>
+                    <CalendarHeader />
+                    <CalendarBody />
+                    <CalendarBottom />
                 </div>
-                <CalendarHeader />
-                <CalendarBody />
-            </div>
-        </StyledCalendar>
+            </StyledCalendar>
+        </CalendarProvider>
     );
 };
 
