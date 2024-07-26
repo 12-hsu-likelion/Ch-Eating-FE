@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import prev from "../../assets/images/month_prev.png";
-import next from "../../assets/images/month_next.png";
-import { useCalendarContext } from '../../context/CalendarContext';
-import colors from '../../styles/colors';
+import prev from "../../../assets/images/month_prev.png";
+import next from "../../../assets/images/month_next.png";
+import { useCalendarContext } from '../../../context/CalendarContext';
+import colors from '../../../styles/colors';
 
 const CalendarHeader = () => {
     const { currentDate, dispatch } = useCalendarContext();

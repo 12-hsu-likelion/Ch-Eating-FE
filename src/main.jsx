@@ -5,16 +5,13 @@ import { Provider } from 'react-redux';
 import store from "./Redux/store.js";
 import { BrowserRouter as Router } from 'react-router-dom';
 import GlobalStyle from './styles/globalStyles';
-import { CalendarProvider } from './context/CalendarContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-  <Provider store = {store}>
+  <Provider store={store}>
     <Router>
       <GlobalStyle />
-      <CalendarProvider>
-        <App />
-      </CalendarProvider>
+      <App />
     </Router>
   </Provider>
   /* </React.StrictMode>, */

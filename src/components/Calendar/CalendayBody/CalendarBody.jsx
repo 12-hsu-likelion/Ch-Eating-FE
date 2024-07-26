@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import colors from '../../styles/colors';
-import CalendarDays from './CalendarDays';
+import colors from '../../../styles/colors';
+import CalendarDaysWrapper from './CalendarDaysWrapper';
 
 const CalendarBody = () => {
     const weeks = ["월", "화", "수", "목", "금", "토", "일"];
+
     return (
         <StyledCalendarBody>
             <div className="top"></div>
@@ -13,8 +14,9 @@ const CalendarBody = () => {
                     return <li key={i}>{e}</li>
                 })}
             </ul>
-            <CalendarDays />
+            <CalendarDaysWrapper />
         </StyledCalendarBody>
+        
     );
 };
 
@@ -22,6 +24,8 @@ const StyledCalendarBody = styled.div`
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 0px 16px 0px #0000001A;
+    margin-bottom: 51px;
+    min-height: 420px;
 
     .top{
         height: 24px;
