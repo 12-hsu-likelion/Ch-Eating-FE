@@ -50,7 +50,7 @@ const Footer = () => {
     };
 
     const handleCalenderButtonClick = () => {
-        navigate('/calender');
+        navigate('/calendar');
     };
 
     const handleMealButtonClick = () => {
