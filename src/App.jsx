@@ -21,12 +21,13 @@ import Notice from "./pages/Notice/Notice";
 
 import DeletePls from './pages/Login/DeletePls';
 import ProtectedRoute from './routes/ProtectedRoute';
+import Calendar from './pages/Calendar/Calendar';
 
 
 function App() {
   const location = useLocation();
-  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice";
-  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice";
+  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar";
+  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar";
 
   return (
     <>
@@ -47,6 +48,7 @@ function App() {
         <Route path="/post" element={<MealPost />} />
         <Route path="/edit/:id" element={<MealEdit />} />
         <Route path="/notice" element={<Notice />} />
+        <Route path='/calendar' element={<Calendar />} />
         <Route element={<ProtectedRoute />}>
         {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
           <Route path='shouldbedeleted' element={<DeletePls />} />

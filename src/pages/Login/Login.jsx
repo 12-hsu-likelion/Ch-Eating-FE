@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import sign_up_logo from "../../assets/images/sign_up_logo.png";
 import axios from "axios";
 import { useLoginAsync } from "../../hooks/useAsync";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [id, handleId, setId] = useInput("");
@@ -14,6 +15,8 @@ const Login = () => {
     const [message, setMessage] = useState("");
 
     const idRef = useRef();
+
+    const navigate = useNavigate();
 
     const [loginState, onLogin] = useLoginAsync(id, pw, setError, setMessage);
 
