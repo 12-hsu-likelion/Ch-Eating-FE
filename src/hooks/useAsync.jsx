@@ -22,18 +22,18 @@ export const currentApi = axios.create({
 
 currentApi.interceptors.request.use(
     async (config) => {
-      const accessToken = localStorage.getItem('accessToken');
-      
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-  
-      return config;
+        const accessToken = localStorage.getItem('accessToken');
+
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+
+        return config;
     },
     (error) => {
-      return Promise.reject(error);
+        return Promise.reject(error);
     }
-  );
+);
 
 const initialState = {
     loading: false,
@@ -105,13 +105,13 @@ export const useRequestAuthCodeAsync = (phoneNumber, ref, setErrors, setInputTes
                 phoneNumberError: true
             }));
             // 전화번호가 없을 시 상태코드 받아와서 밑에 코드 실행
-            if(error.response.status === 401){
+            if (error.response.status === 401) {
                 setInputTestMsg(prev => ({
                     ...prev,
                     phoneNumberMsg: "가입되지 않은 전화번호입니다"
                 }))
             }
-            else{
+            else {
                 setInputTestMsg(prev => ({
                     ...prev,
                     phoneNumberMsg: "오류가 발생했습니다"
@@ -167,13 +167,13 @@ export const useVerifyAuthCodeAsync = (phoneNumber, code, setErrors, setInputTes
                 verificationCodeError: true
             }));
             // 상태 코드 고칠 것
-            if(error.response.status === 400){
+            if (error.response.status === 400) {
                 setInputTestMsg(prev => ({
                     ...prev,
                     codeMsg: "인증번호가 올바르지 않습니다"
                 }));
             }
-            else{
+            else {
                 setInputTestMsg(prev => ({
                     ...prev,
                     codeMsg: "에러가 발생했습니다"
@@ -187,8 +187,8 @@ export const useVerifyAuthCodeAsync = (phoneNumber, code, setErrors, setInputTes
         }
     }
 
-    useEffect(()=>{
-        if(skip) return;
+    useEffect(() => {
+        if (skip) return;
 
         fetchData();
     }, deps);
@@ -201,12 +201,12 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
 
-    const fetchData = async() => {
-        
+    const fetchData = async () => {
+
         dispatch({
             type: "LOADING"
         })
-        try{
+        try {
             const response = await currentApi.post("/login", {
                 id,
                 password
@@ -224,13 +224,13 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             localStorage.setItem("userInfo", JSON.stringify(response.data.others));
 
             navigate("/shouldbedeleted");
-        }catch(error){
+        } catch (error) {
 
             dispatch({
                 type: "ERROR",
                 error
             })
-            
+
             setMessage(error.response.data.message);
 
             setError(true);
@@ -245,21 +245,21 @@ export const useAxios = () => {
     const [state, dispatch] = useReducer(reducer, {
         isLogin: undefined
     });
-    const fetch = async() => {
-        try{
+    const fetch = async () => {
+        try {
             const response = await currentApi.get("/isLogin");
 
-            if(response.status === 210){
+            if (response.status === 210) {
                 localStorage.setItem("accessToken", response.data.accessToken);
             }
-            
+
             console.log(response);
-            
+
             dispatch({
                 type: "ISLOGIN",
                 ox: true
             })
-        }catch(e){
+        } catch (e) {
             alert("로그인이 필요한 서비스입니다.");
             console.log(e);
             dispatch({
@@ -269,9 +269,47 @@ export const useAxios = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch();
     }, []);
 
     return [state, fetch];
+}
+
+// 월이 바뀔 때마다 월에 대한 정보를 요청하는 함수
+// 이건 !!!!!!CalendarDaysWrapper!!!!!에서 사용함
+export const useGetMonthData = (monthInfo) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function fetchData() {
+        dispatch({
+            type: "LOADING"
+        });
+
+        try{
+            // const response = currentApi.get(`/api/ch-eating/calendar/calendar-details-monthly`, {
+            //     params: {
+            //         month: monthInfo
+            //     }
+            // });
+            const response = await currentApi.get("/getmonthdata", {
+                params: {
+                    month: monthInfo
+                }
+            });
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            })
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    return [state, fetchData];
 }

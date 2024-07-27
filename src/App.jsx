@@ -22,6 +22,7 @@ import Notice from "./pages/Notice/Notice";
 import DeletePls from './pages/Login/DeletePls';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Calendar from './pages/Calendar/Calendar';
+import DetailedAnalytics from './pages/Calendar/DetailedAnalytics';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/edit/:id" element={<MealEdit />} />
         <Route path="/notice" element={<Notice />} />
         <Route path='/calendar' element={<Calendar />} />
+        <Route path='/detailedanalytics/:date' element={<DetailedAnalytics />} />
         <Route element={<ProtectedRoute />}>
         {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
           <Route path='shouldbedeleted' element={<DeletePls />} />
