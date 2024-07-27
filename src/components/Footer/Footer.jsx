@@ -42,7 +42,7 @@ const Footer = () => {
     const navigate = useNavigate();
 
     const handleHomeButtonClick = () => {
-        navigate('/');
+        navigate('/home');
     };
 
     const handleTestButtonClick = () => {

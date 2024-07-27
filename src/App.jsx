@@ -31,8 +31,8 @@ import MyHungerAnalytics from './pages/Calendar/MyHungerAnalytics';
 function App() {
   const location = useLocation();
 
-  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
-  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
+  const showHeader = location.pathname === '/home' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
+  const showFooter = location.pathname === '/home' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
 
   return (
     <>
