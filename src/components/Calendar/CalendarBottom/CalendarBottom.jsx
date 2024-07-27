@@ -1,25 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PeriodSelector from './PeriodSelector';
-import { useCalendarContext } from '../../../context/CalendarContext';
+import HungerAnalytics from './HungerAnalytics';
 
 const CalendarBottom = () => {
-
-    const s = useCalendarContext();
-
-    useEffect(()=>{
-        console.log(s)
-    }, [s]);
 
     return (
         <StyledCalendarBottom>
             <PeriodSelector />
+            <HungerAnalytics />
         </StyledCalendarBottom>
     );
 };
 
 const StyledCalendarBottom = styled.div`
-    
+    margin-bottom: 80px;
 `;
 
 export default CalendarBottom;

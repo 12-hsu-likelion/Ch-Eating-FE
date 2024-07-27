@@ -59,10 +59,10 @@ export const useCalendar = () => {
         setSelectedWeek(splitedArrayByWeek[0]);
     }, [splitedArrayByWeek]);
 
-    useEffect(() => {
-        console.log("선택된 주차:");
-        console.log(selectedWeek);
-    }, [selectedWeek]);
+    // useEffect(() => {
+    //     console.log("선택된 주차:");
+    //     console.log(selectedWeek);
+    // }, [selectedWeek]);
 
     // 연도와 월을 담고 있는 배열
     const years = useMemo(() => {

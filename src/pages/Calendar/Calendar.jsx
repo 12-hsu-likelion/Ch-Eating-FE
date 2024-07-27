@@ -25,6 +25,7 @@ const Calender = () => {
 };
 
 const StyledCalendar = styled.section`
+    overflow: auto;
 
     .calendar-wrapper{
         margin: 57px 16px 0 16px;
