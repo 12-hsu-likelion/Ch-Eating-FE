@@ -3,6 +3,8 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
+import OnBoarding from './pages/OnBoarding/OnBoarding';
+
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
@@ -28,6 +30,7 @@ import MyHungerAnalytics from './pages/Calendar/MyHungerAnalytics';
 
 function App() {
   const location = useLocation();
+
   const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
   const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
 
@@ -35,7 +38,8 @@ function App() {
     <>
       {showHeader && <Header />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<OnBoarding />} />
+        <Route path="/home" element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signupcomplete' element={<SignUpComplete />} />
