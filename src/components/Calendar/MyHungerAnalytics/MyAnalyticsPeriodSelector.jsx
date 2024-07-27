@@ -4,18 +4,24 @@ import colors from '../../../styles/colors';
 import { useCalendarContext } from '../../../context/CalendarContext';
 import WeekDropDown from '../WeekDropDown';
 
-const PeriodSelector = () => {
+const MyAnalyticsPeriodSelector = () => {
     const { currentSelect, dispatch } = useCalendarContext();
-    const { isWeeklySelected } = currentSelect;
+    const {isDailySelected} = currentSelect;
+
+    const s = useCalendarContext();
+
+    console.log(s);
 
     return (
         <StyledPeriodSelector>
-            <div className="weekly-monthly-switcher">
-                <StyledSpan onClick={dispatch.handleSelectWeeklyOrMonthly} $isSelected={isWeeklySelected}>주간</StyledSpan>
-                <StyledSpan onClick={dispatch.handleSelectWeeklyOrMonthly} $isSelected={!isWeeklySelected}>월간</StyledSpan>
+            <div className="daily-weekly-switcher">
+                <StyledSpan onClick={dispatch.handleSelectDailyOrWeekly} $isSelected = {isDailySelected}>일간</StyledSpan>
+                <StyledSpan onClick={dispatch.handleSelectDailyOrWeekly} $isSelected = {!isDailySelected}>주간</StyledSpan>
             </div>
 
-            <WeekDropDown />
+            {!isDailySelected && (
+                <WeekDropDown />
+            )}
         </StyledPeriodSelector>
     );
 };
@@ -26,7 +32,7 @@ const StyledPeriodSelector = styled.div`
     justify-content: space-between;
     margin-bottom: 12px;
 
-    .weekly-monthly-switcher{
+    .daily-weekly-switcher{
         display: flex;
         border-radius: 21px;
         background-color: ${colors.gray2};
@@ -48,4 +54,4 @@ const StyledSpan = styled.span`
     }
 `;
 
-export default PeriodSelector;
+export default MyAnalyticsPeriodSelector;

@@ -22,13 +22,14 @@ import Notice from "./pages/Notice/Notice";
 import DeletePls from './pages/Login/DeletePls';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Calendar from './pages/Calendar/Calendar';
-import DetailedAnalytics from './pages/Calendar/DetailedAnalytics';
+import DetailedDailyAnalytics from './pages/Calendar/DetailedDailyAnalytics';
+import MyHungerAnalytics from './pages/Calendar/MyHungerAnalytics';
 
 
 function App() {
   const location = useLocation();
-  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar";
-  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar";
+  const showHeader = location.pathname === '/' || location.pathname === '/mypage' || location.pathname.startsWith('/test')  || location.pathname.startsWith('/result') || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
+  const showFooter = location.pathname === '/' || location.pathname === '/mypage' || location.pathname === '/test' || location.pathname === '/meal' || location.pathname === '/post' || location.pathname.startsWith('/edit') || location.pathname === "/notice" || location.pathname === "/calendar" || location.pathname.startsWith("/detailedanalytics") || location.pathname === "/myhungeranalytics";
 
   return (
     <>
@@ -50,7 +51,9 @@ function App() {
         <Route path="/edit/:id" element={<MealEdit />} />
         <Route path="/notice" element={<Notice />} />
         <Route path='/calendar' element={<Calendar />} />
-        <Route path='/detailedanalytics/:date' element={<DetailedAnalytics />} />
+        {/* DetailedDailyAnalytics는 캘린더에서 일을 클릭했을 때 이동하는 페이지 */}
+        <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} />
+        <Route path='/myhungeranalytics' element = {<MyHungerAnalytics />} />
         <Route element={<ProtectedRoute />}>
         {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
           <Route path='shouldbedeleted' element={<DeletePls />} />
