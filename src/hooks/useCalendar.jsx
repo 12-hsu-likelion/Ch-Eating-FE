@@ -9,18 +9,18 @@ import {
     subMonths,
     getDay,
 } from 'date-fns';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export const useCalendar = () => {
-    // 현재 날짜 년도, 월, 일 구하기
-    const [currentDate, setCurrentDate] = useState(new Date());
+export const useCalendar = (date) => {
+    // 같은 context로 묶을 수 없으니 date를 설정하도록
+    const [currentDate, setCurrentDate] = useState(date);
     const [currentYear, currentMonth, currentDay] = format(currentDate, "yyyy-MM-dd").split("-");
 
     const startCurrentMonth = startOfMonth(currentDate);
     const endCurrentMonth = endOfMonth(currentDate);
 
     // 현재 날짜의 주차 구하기(현재 월을 기준으로)
-    const [currentWeek, setCurrentWeek] = useState(Math.floor(currentDay / 7) + 1);
+    const [currentWeek, setCurrentWeek] = useState(Math.floor(currentDay / 7));
 
     const startOfFirstWeek = startOfWeek(startCurrentMonth, { weekStartsOn: 1 });
     const endOfLastWeek = endOfWeek(endCurrentMonth, { weekStartsOn: 1 });
@@ -37,25 +37,32 @@ export const useCalendar = () => {
         dayIndexOfWeek: getDay(day),
     }));
 
-    // 현재 월을 7일씩 나누어 주차 별 배열 구하기
-    const splitByWeek = () => {
-        const result = [];
-        const current = daysInMonth.filter(dayInfo => dayInfo.month === currentMonth);
+    // 주차 별 배열 구하기
 
-        for (let i = 0; i < current.length; i += 7) {
-            result.push(current.slice(i, i + 7));
+    const splitByWeek = useCallback(() => {
+        const result = [];
+
+        for (let i = 0; i < daysInMonth.length; i += 7) {
+            result.push(daysInMonth.slice(i, i + 7));
         }
 
         return result;
-    }
+    }, [daysInMonth]);
 
     // 주차 별로 나뉘어져 있는 배열 useMemo가 없다면 selectedWeek를 계산하는 useEffect가 무한 루프에 빠짐!!!!!
     const splitedArrayByWeek = useMemo(() => splitByWeek(), [currentMonth]);
 
     const [isWeeklySelected, setIsWeeklySelected] = useState(true);
-    const [selectedWeek, setSelectedWeek] = useState(splitedArrayByWeek[0]);
+    const [isDailySelected, setIsDailySelected] = useState(true);
+
+    const isInitialRender = useRef(true);
+    const [selectedWeek, setSelectedWeek] = useState(splitedArrayByWeek[currentWeek]);
 
     useEffect(() => {
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
         setSelectedWeek(splitedArrayByWeek[0]);
     }, [splitedArrayByWeek]);
 
@@ -91,6 +98,10 @@ export const useCalendar = () => {
         setIsWeeklySelected(prev => !prev);
     }
 
+    const handleSelectDailyOrWeekly = () => {
+        setIsDailySelected(prev => !prev);
+    }
+
     // 선택한 월의 조회하고자 하는 주차를 선택하는 함수
     const handleSelectWeekOfSelectedMonth = (indexOfWeek) => {
         setSelectedWeek(splitedArrayByWeek[indexOfWeek]);
@@ -111,11 +122,13 @@ export const useCalendar = () => {
             handlePrevMonth,
             handleNextMonth,
             handleSelectWeeklyOrMonthly,
+            handleSelectDailyOrWeekly,
             handleSelectWeekOfSelectedMonth,
             handleSelectMonthOfCurrentYear
         },
         currentSelect: {
             isWeeklySelected,
+            isDailySelected,
             selectedWeek,
             selectedMonth
         },

@@ -3,8 +3,8 @@ import { useCalendar } from "../hooks/useCalendar";
 
 const CalendarContext = createContext(); 
 
-export function CalendarProvider({ children }) {
-    const calendar = useCalendar();
+export function CalendarProvider({ children, date }) {
+    const calendar = useCalendar(date);
 
     return (
         <CalendarContext.Provider value={calendar}>
