@@ -43,12 +43,7 @@ const Notice = () => {
 
             <NoticeContainer style={{ marginTop: "3.2rem" }}>
                 <Notice2>알림</Notice2>
-                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "notice1")} />
-            </NoticeContainer>
-
-            <NoticeContainer style={{ marginTop: "2rem" }}>
-                <Notice2>카카오톡 알림톡</Notice2>
-                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "notice2")} />
+                <ToggleButton defaultActive={true} onClick={(active) => handleToggle(active, "notice")} />
             </NoticeContainer>
         </>
     );
