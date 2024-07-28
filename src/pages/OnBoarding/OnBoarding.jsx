@@ -30,14 +30,12 @@ const OnBoardingBottomContainer = styled.div`
     background-color: ${colors.backgroundColor};
     border: 0.1rem solid ${colors.gray2};
     width: 100%;
-    height: calc(100vh - 63.2rem);
+    min-height: calc(100vh - 63.2rem);
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    padding-top: 3rem;
-    padding-bottom: 1rem;
+    padding-top: 4rem;
 `;
 
 const BottomTitleContainer = styled.div`
@@ -62,6 +60,8 @@ const ButtonContainer = styled.div`
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    margin-top: ${props => props.disabled ? '10.4rem' : '2.4rem'};
+    margin-bottom: 3.6rem;
 `;
 
 const CircleContainer = styled.div`
@@ -97,6 +97,7 @@ const LoginButton = styled.button`
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin-top: 2.3rem;
 `
 
 const OnBoarding = () => {
@@ -145,7 +146,7 @@ const OnBoarding = () => {
 
                             <LoginButton disabled={currentIndex !== OnBoardingData.length - 1} onClick={handleLoginClick}>로그인/회원가입 하기</LoginButton>
                     
-                            <ButtonContainer>
+                            <ButtonContainer disabled={currentIndex !== OnBoardingData.length - 1}>
                                 <NextP onClick={handlePrevious} disabled={currentIndex === 0}>이전</NextP>
 
                                 <CircleContainer>
