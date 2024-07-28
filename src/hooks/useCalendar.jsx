@@ -8,6 +8,7 @@ import {
     startOfWeek,
     subMonths,
     getDay,
+    differenceInWeeks,
 } from 'date-fns';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -19,11 +20,11 @@ export const useCalendar = (date) => {
     const startCurrentMonth = startOfMonth(currentDate);
     const endCurrentMonth = endOfMonth(currentDate);
 
-    // 현재 날짜의 주차 구하기(현재 월을 기준으로)
-    const [currentWeek, setCurrentWeek] = useState(Math.floor(currentDay / 7));
-
     const startOfFirstWeek = startOfWeek(startCurrentMonth, { weekStartsOn: 1 });
     const endOfLastWeek = endOfWeek(endCurrentMonth, { weekStartsOn: 1 });
+
+    // 현재 날짜의 주차 구하기(현재 월을 기준으로)
+    const [currentWeek, setCurrentWeek] = useState(differenceInWeeks(currentDate, startOfFirstWeek));
 
     // 현재 월에 포함되어 있는 모든 날짜 구하기(이전 월도 포함해서)
     const daysInMonth = eachDayOfInterval({
@@ -38,7 +39,6 @@ export const useCalendar = (date) => {
     }));
 
     // 주차 별 배열 구하기
-
     const splitByWeek = useCallback(() => {
         const result = [];
 
@@ -53,7 +53,6 @@ export const useCalendar = (date) => {
     const splitedArrayByWeek = useMemo(() => splitByWeek(), [currentMonth]);
 
     const [isWeeklySelected, setIsWeeklySelected] = useState(true);
-    const [isDailySelected, setIsDailySelected] = useState(true);
 
     const isInitialRender = useRef(true);
     const [selectedWeek, setSelectedWeek] = useState(splitedArrayByWeek[currentWeek]);
@@ -98,10 +97,6 @@ export const useCalendar = (date) => {
         setIsWeeklySelected(prev => !prev);
     }
 
-    const handleSelectDailyOrWeekly = () => {
-        setIsDailySelected(prev => !prev);
-    }
-
     // 선택한 월의 조회하고자 하는 주차를 선택하는 함수
     const handleSelectWeekOfSelectedMonth = (indexOfWeek) => {
         setSelectedWeek(splitedArrayByWeek[indexOfWeek]);
@@ -122,13 +117,11 @@ export const useCalendar = (date) => {
             handlePrevMonth,
             handleNextMonth,
             handleSelectWeeklyOrMonthly,
-            handleSelectDailyOrWeekly,
             handleSelectWeekOfSelectedMonth,
             handleSelectMonthOfCurrentYear
         },
         currentSelect: {
             isWeeklySelected,
-            isDailySelected,
             selectedWeek,
             selectedMonth
         },

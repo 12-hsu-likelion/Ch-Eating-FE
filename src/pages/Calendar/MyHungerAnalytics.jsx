@@ -4,6 +4,7 @@ import { CalendarProvider } from '../../context/CalendarContext';
 import { useLocation } from 'react-router-dom';
 import colors from '../../styles/colors';
 import MyAnalyticsPeriodSelector from '../../components/Calendar/MyHungerAnalytics/MyAnalyticsPeriodSelector';
+import AnalyticsWrapper from '../../components/Calendar/MyHungerAnalytics/AnalyticsWrapper';
 
 const MyHungerAnalytics = () => {
     const location = useLocation();
@@ -19,6 +20,7 @@ const MyHungerAnalytics = () => {
                     </div>
 
                     <MyAnalyticsPeriodSelector />
+                    <AnalyticsWrapper />
                 </div>
             </StyledMyHungerAnalytics>
         </CalendarProvider>

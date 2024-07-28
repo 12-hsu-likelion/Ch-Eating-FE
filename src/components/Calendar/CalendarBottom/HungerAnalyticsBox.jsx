@@ -12,7 +12,7 @@ const HungerAnalyticsBox = ({type, data = "데이터"}) => {
     // 만약에 지금이 주간 선택이라면 보내야할 데이터는 selectedWeek
     // 월간 선택이라면 보내야할 데이터는 selectedMonth
 
-    const sendData = isWeeklySelected ? selectedWeek[0].date : `${selectedMonth.year}-${selectedMonth.month.replace("월", "").toString().padStart("2", 0)}-01`;
+    const sendData = isWeeklySelected ? selectedWeek[3].date : `${selectedMonth.year}-${selectedMonth.month.replace("월", "").toString().padStart("2", 0)}-01`;
 
     return (
         <StyledHungerAnalyticsBox onClick={()=>navigate("/myhungeranalytics", {

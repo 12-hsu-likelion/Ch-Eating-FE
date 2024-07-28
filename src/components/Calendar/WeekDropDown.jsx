@@ -88,6 +88,7 @@ const StyledUl = styled.ul`
     width: 100%;
     color: ${colors.gray6};
     background-color: ${colors.gray2};
+    z-index: 50;
 
     li{
         text-align: center;
