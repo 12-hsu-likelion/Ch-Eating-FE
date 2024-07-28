@@ -1,8 +1,38 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { keyframes, css } from 'styled-components';
 import colors from "../../styles/colors";
 import OnBoardingData from '../../utils/OnBoarding/OnBoardingData';
 import { useNavigate } from 'react-router-dom';
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const fadeOut = keyframes`
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+`;
+
+const bounce = keyframes`
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-0.5rem);
+    }
+    100% {
+        transform: translateY(0);
+    }
+`;
 
 const OnBoardingContainer = styled.div`
     width: 100%;
@@ -24,6 +54,13 @@ const OnBoardingBackground = styled.div`
 const OnBoardingImage = styled.img`
     width: 37.8rem;
     height: auto;
+    transition: opacity 1s;
+    ${props => props.fade === 'out' && css`
+        animation: ${fadeOut} 1s forwards;
+    `}
+    ${props => props.fade === 'in' && css`
+        animation: ${fadeIn} 1s forwards;
+    `}
 `;
 
 const OnBoardingBottomContainer = styled.div`
@@ -42,12 +79,22 @@ const BottomTitleContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-`
+    transition: opacity 1s;
+    ${props => props.fade === 'out' && css`
+        animation: ${fadeOut} 1s forwards;
+    `}
+    ${props => props.fade === 'in' && css`
+        animation: ${fadeIn} 1s forwards;
+    `}
+`;
 
 const OnBoardingTitle = styled.p`
     font-size: 2.4rem;
     font-weight: 600;
     color: ${colors.mainColor};
+    ${props => props.animate === 'true' && css`
+        animation: ${bounce} 1s ease-in-out;
+    `};
 `;
 
 const OnBoardingSubTitle = styled.p`
@@ -72,7 +119,7 @@ const CircleContainer = styled.div`
 const Circle = styled.div`
     width: 1rem;
     height: 1rem;
-    background-color: ${props => props.active == "true" ? colors.mainColor : colors.gray2};
+    background-color: ${props => props.active === "true" ? colors.mainColor : colors.gray2};
     border: none;
     border-radius: 50%;
 `;
@@ -80,7 +127,7 @@ const Circle = styled.div`
 const NextP = styled.p`
     font-size: 2rem;
     color: ${props => props.disabled ? colors.backgroundColor : colors.violet90};
-    cursor: ${props => props.disabled ? '' : 'pointer'};
+    cursor: ${props => props.disabled ? 'default' : 'pointer'};
     white-space: nowrap;
 `;
 
@@ -98,21 +145,61 @@ const LoginButton = styled.button`
     align-items: center;
     text-align: center;
     margin-top: 2.3rem;
-`
+
+    ${props => props.fade === 'out' && css`
+        animation: ${fadeOut} 1s forwards;
+    `}
+    ${props => props.fade === 'in' && css`
+        animation: ${fadeIn} 1s forwards;
+    `}
+`;
 
 const OnBoarding = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [fadeState, setFadeState] = useState('in');
+    const [nextIndex, setNextIndex] = useState(null);
+    const [animateTitle, setAnimateTitle] = useState(false);
+    const [fadeInStarted, setFadeInStarted] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (fadeState === 'out') {
+            const timer = setTimeout(() => {
+                setCurrentIndex(nextIndex);
+                setFadeState('in');
+                setFadeInStarted(false);
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [fadeState]);
+
+    useEffect(() => {
+        if (fadeState === 'in') {
+            setFadeInStarted(true);
+            const timer = setTimeout(() => {
+                setAnimateTitle(true);
+                const bounceTimer = setTimeout(() => {
+                    setAnimateTitle(false);
+                }, 1000);
+                return () => clearTimeout(bounceTimer);
+            }, 100);
+
+            return () => clearTimeout(timer);
+        }
+    }, [fadeState]);
 
     const handleNext = () => {
         if (currentIndex < OnBoardingData.length - 1) {
-            setCurrentIndex(currentIndex + 1);
+            setFadeState('out');
+            setNextIndex((currentIndex + 1) % OnBoardingData.length);
         }
     };
 
     const handlePrevious = () => {
         if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
+            setFadeState('out');
+            setNextIndex((currentIndex - 1 + OnBoardingData.length) % OnBoardingData.length);
         }
     };
 
@@ -135,16 +222,20 @@ const OnBoarding = () => {
                 {OnBoardingData.length > 0 && (
                     <OnBoardingItem>
                         <OnBoardingBackground>
-                            <OnBoardingImage src={currentImageUrl} alt={OnBoardingData[currentIndex].title} />
+                            <OnBoardingImage
+                                src={currentImageUrl}
+                                alt={OnBoardingData[currentIndex].title}
+                                fade={fadeState}
+                            />
                         </OnBoardingBackground>
 
                         <OnBoardingBottomContainer>
-                            <BottomTitleContainer>
-                                <OnBoardingTitle>{OnBoardingData[currentIndex].title}</OnBoardingTitle>
+                            <BottomTitleContainer fade={fadeState}>
+                                <OnBoardingTitle animate={animateTitle ? 'true' : 'false'}>{OnBoardingData[currentIndex].title}</OnBoardingTitle>
                                 <OnBoardingSubTitle>{splitSubtitle}</OnBoardingSubTitle>
                             </BottomTitleContainer>
 
-                            <LoginButton disabled={currentIndex !== OnBoardingData.length - 1} onClick={handleLoginClick}>로그인/회원가입 하기</LoginButton>
+                            <LoginButton fade={fadeState}  disabled={currentIndex !== OnBoardingData.length - 1} onClick={handleLoginClick}>로그인/회원가입 하기</LoginButton>
                     
                             <ButtonContainer disabled={currentIndex !== OnBoardingData.length - 1}>
                                 <NextP onClick={handlePrevious} disabled={currentIndex === 0}>이전</NextP>
