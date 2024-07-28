@@ -28,6 +28,7 @@ const MyHungerAnalytics = () => {
 };
 
 const StyledMyHungerAnalytics = styled.section`
+
     .my-hunger-analytics-wrapper{
         margin: 57px 16px 0 16px;
 

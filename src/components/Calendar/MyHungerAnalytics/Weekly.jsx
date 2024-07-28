@@ -8,12 +8,10 @@ const Weekly = () => {
         <StyledWeekly>
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <StackGraph />
             </div>
 
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
-                <StackGraph />
             </div>
         </StyledWeekly>
     );
