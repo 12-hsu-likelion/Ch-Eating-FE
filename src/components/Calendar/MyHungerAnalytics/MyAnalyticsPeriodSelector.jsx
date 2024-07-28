@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import colors from '../../../styles/colors';
 import { useCalendarContext } from '../../../context/CalendarContext';
@@ -6,8 +6,12 @@ import WeekDropDown from '../WeekDropDown';
 
 const MyAnalyticsPeriodSelector = () => {
     const { currentSelect, dispatch } = useCalendarContext();
-    const {isDailySelected} = currentSelect;
+    const {isWeeklySelected, selectedWeek} = currentSelect;
 
+    useEffect(()=>{
+        // 여기에 밑의 데이터를 fetch하는 함수 작성
+    }, [selectedWeek]);
+    
     const s = useCalendarContext();
 
     console.log(s);
@@ -15,13 +19,12 @@ const MyAnalyticsPeriodSelector = () => {
     return (
         <StyledPeriodSelector>
             <div className="daily-weekly-switcher">
-                <StyledSpan onClick={dispatch.handleSelectDailyOrWeekly} $isSelected = {isDailySelected}>일간</StyledSpan>
-                <StyledSpan onClick={dispatch.handleSelectDailyOrWeekly} $isSelected = {!isDailySelected}>주간</StyledSpan>
+                <StyledSpan onClick={dispatch.handleSelectWeeklyOrMonthly} $isSelected = {isWeeklySelected}>일간</StyledSpan>
+                <StyledSpan onClick={dispatch.handleSelectWeeklyOrMonthly} $isSelected = {!isWeeklySelected}>주간</StyledSpan>
             </div>
 
-            {!isDailySelected && (
-                <WeekDropDown />
-            )}
+            <WeekDropDown />
+
         </StyledPeriodSelector>
     );
 };
@@ -30,7 +33,7 @@ const StyledPeriodSelector = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 37px;
 
     .daily-weekly-switcher{
         display: flex;
