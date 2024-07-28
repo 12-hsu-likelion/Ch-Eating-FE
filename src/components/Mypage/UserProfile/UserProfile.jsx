@@ -30,8 +30,7 @@ const UserProfileP2 = styled.p`
 
 const UserProfile = () => {
     const [name, setName] = useState('');
-    const [active1, setActive1] = useState(false);
-    const [active2, setActive2] = useState(false);
+    const [active, setActive] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,8 +42,7 @@ const UserProfile = () => {
                 setName(userData.name || '정보 없음');
 
                 // 프로필 변화 -> 통신할 때 다시 확인할 것
-                setActive1(userData.active.notice1 || false);
-                setActive2(userData.active.notice2 || false);
+                setActive(userData.active.notice || false);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -55,7 +53,7 @@ const UserProfile = () => {
     }, []);
 
     const getImage = () => {
-        if (!active1 && !active2) {
+        if (!active) {
             return NoticeNot;
         } else {
             return NoticeYes;

@@ -80,7 +80,7 @@ const Header = () => {
     };
 
     const handleHomeClick = () => {
-        navigate("/");
+        navigate("/home");
     };
 
     const handleNoticeClick = () => {
