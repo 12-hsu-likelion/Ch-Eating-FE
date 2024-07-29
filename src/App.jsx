@@ -39,13 +39,11 @@ function App() {
       {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<OnBoarding />} />
-        <Route path="/home" element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signupcomplete' element={<SignUpComplete />} />
-        <Route path='/resetpassword' element={<ResetPwd />} />
-        <Route path="/findid" element={<FindId />} />
-        <Route path='/viewuserid' element={<ViewUserId />} />
+
+        <Route path="/home" element={<Home />} />
         <Route path='/mypage' element={<Mypage />} />
         <Route path="/test" element={<TestMain />} />
         <Route path="/test/:activeType" element={<TestQna />} />
