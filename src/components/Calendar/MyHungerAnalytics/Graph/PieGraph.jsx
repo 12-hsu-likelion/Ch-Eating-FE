@@ -138,7 +138,9 @@ const PieGraph = ({type}) => {
             scale: 0,
             delay: .2
         })
-    }, [currentSelect.selectedWeek]);
+    }, [type === "weekly" ? currentSelect.selectedWeek : currentSelect.selectedMonth]);
+
+    console.log("파이 그래프를 위한 데이터(오브젝트에서 배열로 변환한): ", dataArray);
 
     return (
         <StyledPieGraph className='pie-graph' width={180} height={180} ref={canvasRef}>

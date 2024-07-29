@@ -1,24 +1,71 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import StackGraph from './Graph/StackGraph';
 import colors from '../../../styles/colors';
-import { useCalendarContext } from '../../../context/CalendarContext';
 import PieGraph from './Graph/PieGraph';
 import BarGraph from './Graph/BarGraph';
+import { eachDayOfInterval, endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from 'date-fns';
+import { useCalendarContext } from '../../../context/CalendarContext';
 
 const Weekly = () => {
-    const { splitedArrayByWeek, currentSelect } = useCalendarContext();
 
-    console.log(splitedArrayByWeek, currentSelect);
+    const { currentSelect } = useCalendarContext();
+    const { selectedMonth } = currentSelect;
+
+    const tempDate = useMemo(() => new Date(`${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/)[0]}-01`), [selectedMonth]);
+
+    const startCurrentMonth = useMemo(() => startOfMonth(tempDate), [tempDate]);
+    const endCurrentMonth = useMemo(() => endOfMonth(tempDate), [tempDate]);
+
+    const firstDayOfFirstWeek = useMemo(() => format(startOfWeek(startCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [startCurrentMonth]);
+    const lastDayOfLastWeek = useMemo(() => format(endOfWeek(endCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [endCurrentMonth]);
+
+    console.log("현재 선택된 월의 첫 날과 끝 날: ", firstDayOfFirstWeek, lastDayOfLastWeek);
+
+    const daysInMonth = eachDayOfInterval({
+        start: firstDayOfFirstWeek,
+        end: lastDayOfLastWeek
+    }).map((day) => format(day, "M/d"));
+
+    const calcWeeks = useCallback(() => {
+        const result = [];
+
+        for (let i = 0; i < daysInMonth.length; i += 7) {
+            result.push(daysInMonth.slice(i, i + 7));
+        }
+
+        return result;
+    }, [selectedMonth]);
+
+
+    const weekChunks = useMemo(() => {
+        return calcWeeks();
+    }, [selectedMonth]);
+
+    // 이게 받은 데이터라고 치면
+    const shouldBeDeletedData1 = Array.from({ length: weekChunks.length }, (_, i) => {
+        const random = Math.floor(Math.random() * 5 + 1);
+
+        return random + i;
+    })
+
+    const shouldBeDeletedData2 = Array.from({ length: weekChunks.length }, (_, i) => {
+        const random = Math.floor(Math.random() * 20 + 1);
+
+        return random + i;
+    })
+    console.log("나눠진 달의 배열", weekChunks);
+    
+
     return (
         <StyledWeekly>
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <BarGraph />
+                <BarGraph weekChunks={weekChunks} data = {shouldBeDeletedData1} />
             </div>
 
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
+                <BarGraph weekChunks={weekChunks} data = {shouldBeDeletedData2} />
             </div>
 
             <div className="pie-graph-wrapper">
