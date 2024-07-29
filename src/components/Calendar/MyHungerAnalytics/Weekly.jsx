@@ -4,6 +4,7 @@ import StackGraph from './Graph/StackGraph';
 import colors from '../../../styles/colors';
 import { useCalendarContext } from '../../../context/CalendarContext';
 import PieGraph from './Graph/PieGraph';
+import BarGraph from './Graph/BarGraph';
 
 const Weekly = () => {
     const { splitedArrayByWeek, currentSelect } = useCalendarContext();
@@ -13,6 +14,7 @@ const Weekly = () => {
         <StyledWeekly>
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
+                <BarGraph />
             </div>
 
             <div className="bar-graph-wrapper">
