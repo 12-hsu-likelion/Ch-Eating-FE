@@ -13,7 +13,7 @@ const StackGraph = () => {
     return (
         <StyledStackGraph>
             {weeks.map((week, i) => {
-                return <StyledWeek className='dd' key={i}>
+                return <StyledWeek key={i}>
                     <div className="stack-wrapper">
                         {Array.from({ length: data[i] }).map((_, j) => {
                             return <StackBar key={j} />
