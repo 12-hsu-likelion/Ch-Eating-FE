@@ -34,7 +34,7 @@ const TestResult = () => {
     console.log(testResult);
 
     const handleResultClick = () => {
-        navigate("/");
+        navigate("/home");
     };
 
     let resultImage;

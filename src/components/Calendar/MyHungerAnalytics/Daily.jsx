@@ -20,7 +20,7 @@ const Daily = () => {
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph />
+                    <PieGraph type={"weekly"} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>
@@ -32,6 +32,7 @@ const Daily = () => {
 };
 
 const StyledDaily = styled.div`
+
     h2{
         margin-bottom: 33px;
         font-weight: 400;
@@ -87,7 +88,6 @@ const StyledDaily = styled.div`
         }
     }
 
-    
-`
+`;
 
 export default Daily;

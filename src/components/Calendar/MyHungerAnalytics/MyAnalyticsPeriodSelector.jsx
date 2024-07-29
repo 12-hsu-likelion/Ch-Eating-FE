@@ -14,7 +14,7 @@ const MyAnalyticsPeriodSelector = () => {
     
     const s = useCalendarContext();
 
-    console.log(s);
+    console.log(currentSelect);
 
     return (
         <StyledPeriodSelector>
