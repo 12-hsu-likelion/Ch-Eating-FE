@@ -11,10 +11,6 @@ const MyAnalyticsPeriodSelector = () => {
     useEffect(()=>{
         // 여기에 밑의 데이터를 fetch하는 함수 작성
     }, [selectedWeek]);
-    
-    const s = useCalendarContext();
-
-    console.log(currentSelect);
 
     return (
         <StyledPeriodSelector>

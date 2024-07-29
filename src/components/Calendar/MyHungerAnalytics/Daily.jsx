@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import StackGraph from './Graph/StackGraph';
 import colors from '../../../styles/colors';
 import PieGraph from './Graph/PieGraph';
+import { useCalendarContext } from '../../../context/CalendarContext';
 
 const Daily = () => {
+    const {currentSelect} = useCalendarContext();
+    const {selectedWeek} = useMemo(()=>currentSelect, [currentSelect]);
+    const firstDayOfFirstWeek = useMemo(()=>selectedWeek[0].date , [selectedWeek]);
+    const lastDayOfLastWeek = useMemo(()=>selectedWeek[selectedWeek.length - 1].date, [selectedWeek]);
+
+    console.log("현재 선택된 주간의 첫 날과 끝 날: ", firstDayOfFirstWeek, lastDayOfLastWeek);
+
     return (
         <StyledDaily>
             <div className="stack-graph-wrapper">
