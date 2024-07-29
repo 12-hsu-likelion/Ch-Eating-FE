@@ -6,12 +6,11 @@ import After from "../Time/TimeDetail/After";
 import Meal from "../Time/TimeDetail/Meal";
 
 const ItemContainer = styled.div`
-    background-color: pink;
     padding: 0.5rem;
     margin: 0.2rem 0;
     width: 100%;
     display: flex;
-    margin-bottom: 2.8rem;
+    margin-bottom: 2rem;
 `;
 
 const TimeP = styled.p`
