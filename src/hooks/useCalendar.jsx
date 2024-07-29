@@ -22,6 +22,7 @@ export const useCalendar = (date) => {
 
     const startOfFirstWeek = startOfWeek(startCurrentMonth, { weekStartsOn: 1 });
     const endOfLastWeek = endOfWeek(endCurrentMonth, { weekStartsOn: 1 });
+    
 
     // 현재 날짜의 주차 구하기(현재 월을 기준으로)
     const [currentWeek, setCurrentWeek] = useState(differenceInWeeks(currentDate, startOfFirstWeek));

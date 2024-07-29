@@ -29,6 +29,9 @@ const WeekDropDown = () => {
         setMonthTitle(selectedMonth.month);
     }, [selectedMonth]);
 
+    const s = useCalendarContext();
+    console.log(s);
+
     return (
         <StyledWeekDropDown $isWeeklySelected={isWeeklySelected} onClick={()=>setOptionIsOpen(prev=>!prev)}>
             <div className="img-wrapper">

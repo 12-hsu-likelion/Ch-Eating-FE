@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useCalendarContext } from '../../../../context/CalendarContext';
+import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from 'date-fns';
 
 const BarGraph = () => {
-
     const { currentSelect } = useCalendarContext();
     const { selectedMonth } = currentSelect;
 
-    const s = "11월";
-    console.log(s.split(""));
-    const tempDate = `${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/).replace("")}-01`;
-    console.log(tempDate);
+    const tempDate = useMemo(() => new Date(`${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/)[0]}-01`), [selectedMonth]);
 
+    const startCurrentMonth = useMemo(() => startOfMonth(tempDate), [tempDate]);
+    const endCurrentMonth = useMemo(() => endOfMonth(tempDate), [tempDate]);
+
+    const firstDayOfFirstWeek = useMemo(() => format(startOfWeek(startCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [startCurrentMonth]);
+    const lastDayOfLastWeek = useMemo(() => format(endOfWeek(endCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [endCurrentMonth]);
+
+    console.log(firstDayOfFirstWeek, lastDayOfLastWeek);
 
     return (
         <StyledBarGraph>

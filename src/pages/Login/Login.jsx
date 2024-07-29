@@ -42,15 +42,6 @@ const Login = () => {
                         )}
                     </div>
                     <button disabled={(id.length < 6 || pw.length < 8)} onClick={onLogin}>로그인하기</button>
-                    <div className="id-pw-recovery">
-                        <span onClick={()=>{
-                            navigate("/findid")
-                        }}>아이디 찾기</span>
-                        <span>|</span>
-                        <span onClick={() => {
-                            navigate("/resetpassword");
-                        }}>비밀번호 찾기</span>
-                    </div>
                 </div>
 
                 <div className="navi-to-signup">
@@ -142,20 +133,6 @@ const StyledLogin = styled.section`
                     color: #9FA4A8;
                     background-color: ${colors.gray2};
                     pointer-events: none;
-                }
-            }
-
-            .id-pw-recovery{
-                width: 153px;
-                display: flex;
-                justify-content: space-between;
-                margin: 0 auto;
-                color: #9FA4A8;
-                font-size: 12px;
-
-                span:first-child,
-                span:last-child{
-                    cursor: pointer;
                 }
             }
         }
