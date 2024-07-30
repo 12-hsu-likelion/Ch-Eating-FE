@@ -339,9 +339,9 @@ export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
         }
     }
 
-    useEffect(()=>{
-        getWeeklyFakeHungerStats();
-    }, deps);
+    // useEffect(()=>{
+    //     getWeeklyFakeHungerStats();
+    // }, deps);
 
     return [state, getWeeklyFakeHungerStats];
 }
@@ -378,10 +378,9 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
         }
     };
 
-    useEffect(()=>{
-        console.log("월간 실행중")
-        getMonthlyFakeHungerStats();
-    }, [deps]);
+    // useEffect(()=>{
+    //     getMonthlyFakeHungerStats();
+    // }, [deps]);
     
     return [state, getMonthlyFakeHungerStats];
 }
