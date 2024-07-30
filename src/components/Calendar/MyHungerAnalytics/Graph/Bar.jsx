@@ -30,7 +30,7 @@ const Bar = ({ max, data }) => {
 const StyledBar = styled.div`
     width: 14px;
     position: absolute;
-    bottom: 13px; 
+    bottom: 15px; 
     background-color: ${colors.error};
     left: 50%;
     transform: translateX(-50%);

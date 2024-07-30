@@ -7,6 +7,7 @@ import TestNumber from '../../components/Test/TestNumber';
 import dropDown from '../../assets/images/drop_down.png';
 import { useTimeInput } from '../../hooks/useTimeInput';
 import BeforeLastAnswer from '../../components/Test/BeforeLastAnswer';
+import { currentApi } from '../../hooks/useAsync';
 
 const TestQna = () => {
     const { activeType } = useParams();
@@ -95,14 +96,25 @@ const TestQna = () => {
 
         const isFakeHunger = fakeHungerCount > questions.length / 2 ? true : false;
 
+        const testName = activeType === "before" ? "식전 배고픔 테스트" : "식후 배고픔 테스트"
+        const testResult = isFakeHunger ? "가짜 배고픔" : "진짜 배고픔"
+
+        console.log({
+            testName,
+            testResult
+        })
+
         try{
-            console.log({
-                user: "유저아이디",
-                testType: activeType,
-                isFakeHunger: isFakeHunger,
-            })
+            const response = await currentApi.post("/api/tests/test", {
+                testName,
+                testResult
+            });
+
+            console.log(response.data);
         }catch(e){
             console.log(e);
+            alert("오류가 발생했습니다.");
+            return;
         }
 
         if(isFakeHunger){

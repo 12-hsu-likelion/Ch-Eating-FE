@@ -4,8 +4,7 @@ import { useInput } from "../../hooks/useInput";
 import { inputRegexs } from "../../components/LoginAndSignUp/inputRegexs";
 import Msg from "../../components/LoginAndSignUp/InputMessage";
 import { useEffect, useState } from "react";
-import gsap from "gsap";
-import { useNavigate } from "react-router-dom";
+import { useCheckIdDup, useOnSignUp } from "../../hooks/useAsync";
 
 const SignUp = () => {
     const [id, handleId, setId] = useInput("");
@@ -27,8 +26,6 @@ const SignUp = () => {
         pwError: false,
         matchError: false,
     });
-
-    const navigate = useNavigate();
 
     const [isFocused, setIsFocused] = useState({
         idFocus: false,
@@ -109,37 +106,10 @@ const SignUp = () => {
         }
     }, [pw, matchPw]);
 
-    const onSubmit = async () => {
-        try {
-            console.log({
-                id: id,
-                pw: pw,
-                name: name,
-            });
-            navigate("/signupcomplete");
-        } catch (e) {
-            console.log(e);
-        }
-    };
+    // 통신 함수
 
-    const checkIdDup = () => {
-        if (errors.idError.formatError) {
-            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요");
-            return;
-        }
-
-        setErrors(prev => ({
-            ...prev,
-            idError: {
-                ...prev.idError,
-                dupError: false
-            }
-        }));
-        setInputTestMsg(prev => ({
-            ...prev,
-            idMsg: "사용 가능한 아이디입니다"
-        }));
-    };
+    const [idDupState, checkIdDup] = useCheckIdDup(id, errors, setErrors, setInputTestMsg);
+    const [signUpState, onSignUp] = useOnSignUp(id, pw, name);
 
     return (
         <StyledSignUp className="pageContainer">
@@ -241,7 +211,7 @@ const SignUp = () => {
                 </div>
 
                 <button
-                    onClick={onSubmit}
+                    onClick={onSignUp}
                     className="next"
                     disabled={
                         name.length <= 2 ||
@@ -251,7 +221,7 @@ const SignUp = () => {
                         errors.matchError
                     }
                 >
-                    다음
+                    확인
                 </button>
             </div>
         </StyledSignUp>

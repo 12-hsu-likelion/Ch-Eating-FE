@@ -42,7 +42,8 @@ const StyledBarGraph = styled.ul`
         transform: translateX(-50%);
         height: 1px;
         background-color: #CACDD2;
-        bottom: 11.5px;
+        bottom: 14px;
+        z-index: 10;
     }
 `;
 
