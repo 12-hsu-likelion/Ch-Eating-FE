@@ -2,13 +2,15 @@ import axios from "axios";
 import { useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
-// 로그인 하는 함수 1 => 해결
-// 아이디 중복 확인하는 함수 1
-// 아이디가 있는지 확인하는 함수 1
-// 재설정된 비밀번호를 보내는 함수 1
-// 회원가입 보내는 함수 1
-// 전화번호로 인증코드 날리는 함수 3 => 해결
-// 인증번호 입력 함수 3 => 해결
+// 로그인 관련
+// 1. 로그인 하는 함수
+// 2. 아이디 중복 확인하는 함수
+// 3. 회원가입 보내는 함수
+// 4. islogin 관련 함수
+
+// 캘린더 관련
+// 5. 캘린더에 표시할 월에 대한 정보를 표시하는 함수
+// 6. 캘린더 페이지의 하단에 데이터의 정보를 받아오는 함수
 
 // 밑의 currentApi는 나중에 반드시 바꿔야함
 export const currentApi = axios.create({
@@ -70,132 +72,6 @@ function reducer(state, action) {
     }
 }
 
-// 핸드폰 번호로 코드를 전송하라는 요청을 보내는 함수
-export const useRequestAuthCodeAsync = (phoneNumber, ref, setErrors, setInputTestMsg, deps = [], skip = true) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    const fetchData = async () => {
-        dispatch({
-            type: "LOADING"
-        });
-
-        try {
-            const response = await currentApi.post("/makeauthcode", {
-                phoneNumber
-            })
-
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: false
-            }));
-            alert(`${phoneNumber}로 6자리 인증코드가 발송되었습니다!`);
-            setTimeout(() => {
-                if (ref.current) {
-                    ref.current.focus();
-                }
-            }, 0);
-
-            dispatch({
-                type: "SUCCESS",
-                data: response.data
-            })
-        } catch (error) {
-            setErrors(prev => ({
-                ...prev,
-                phoneNumberError: true
-            }));
-            // 전화번호가 없을 시 상태코드 받아와서 밑에 코드 실행
-            if (error.response.status === 401) {
-                setInputTestMsg(prev => ({
-                    ...prev,
-                    phoneNumberMsg: "가입되지 않은 전화번호입니다"
-                }))
-            }
-            else {
-                setInputTestMsg(prev => ({
-                    ...prev,
-                    phoneNumberMsg: "오류가 발생했습니다"
-                }))
-            }
-
-            dispatch({
-                type: "ERROR",
-                error
-            })
-        }
-    }
-
-    useEffect(() => {
-        if (skip) return;
-
-        fetchData();
-    }, deps);
-
-    return [state, fetchData];
-};
-
-// 인증 코드를 받아와서 인증 코드가 일치하는지 확인하는 함수
-export const useVerifyAuthCodeAsync = (phoneNumber, code, setErrors, setInputTestMsg, deps = [], skip = true) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    const fetchData = async () => {
-        dispatch({
-            type: "LOADING"
-        })
-        try {
-            const response = await currentApi.post("/verify", {
-                code,
-                phoneNumber
-            });
-
-            setErrors(prev => ({
-                ...prev,
-                verificationCodeError: false
-            }));
-            setInputTestMsg(prev => ({
-                ...prev,
-                codeMsg: "인증되었습니다"
-            }));
-
-            dispatch({
-                type: "SUCCESS",
-                data: response.data
-            })
-        } catch (error) {
-            setErrors(prev => ({
-                ...prev,
-                verificationCodeError: true
-            }));
-            // 상태 코드 고칠 것
-            if (error.response.status === 400) {
-                setInputTestMsg(prev => ({
-                    ...prev,
-                    codeMsg: "인증번호가 올바르지 않습니다"
-                }));
-            }
-            else {
-                setInputTestMsg(prev => ({
-                    ...prev,
-                    codeMsg: "에러가 발생했습니다"
-                }));
-            }
-
-            dispatch({
-                type: "ERROR",
-                error
-            })
-        }
-    }
-
-    useEffect(() => {
-        if (skip) return;
-
-        fetchData();
-    }, deps);
-
-    return [state, fetchData];
-}
-
 // 로그인 하는 함수
 export const useLoginAsync = (id, password, setError, setMessage) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -207,9 +83,9 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             type: "LOADING"
         })
         try {
-            const response = await currentApi.post("/login", {
-                id,
-                password
+            const response = await currentApi.post("/api/users/signIn", {
+                userId: id,
+                userPassword: password
             });
 
             dispatch({
@@ -218,6 +94,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             });
 
             setError(false);
+
 
             // 여기도 바꿔야함
             localStorage.setItem("accessToken", response.data.accessToken);
@@ -240,6 +117,121 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
     return [state, fetchData];
 }
 
+// 아이디 중복 확인하는 함수
+export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function checkIpDup() {
+        if (errors.idError.formatError) {
+            alert("올바른 아이디 형식을 입력 후 중복 확인을 해주세요");
+            return;
+        }
+
+        dispatch({
+            type: "LOADING"
+        })
+
+        try {
+            const response = await currentApi.get("/api/users/checkUserIdExists", {
+                params: {
+                    userId: id
+                }
+            })
+
+            console.log(response.data);
+            if(response.data.data === "사용 가능한 아이디입니다."){
+                setErrors(prev=>({
+                    ...prev,
+                    idError: {
+                        ...prev.idError,
+                        dupError: false
+                    }
+                }))
+
+                setInputTestMsg(prev=>({
+                    ...prev,
+                    idMsg: response.data.data
+                }))
+            }else{
+                setErrors(prev=>({
+                    ...prev,
+                    idError: {
+                        ...prev.idError,
+                        dupError: true
+                    }
+                }))
+
+                setInputTestMsg(prev=>({
+                    ...prev,
+                    idMsg: response.data.data
+                }))
+            }
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            });
+        } catch (error) {
+            dispatch({
+                type: "ERROR",
+                error
+            })
+
+            setErrors(prev => ({
+                ...prev,
+                idError: {
+                    ...prev.idError,
+                    dupError: true
+                }
+            }))
+
+            setInputTestMsg(prev => ({
+                ...prev,
+                idMsg: "오류가 발생했습니다."
+            }))
+        }
+    }
+
+    return [state, checkIpDup];
+};
+
+// 회원가입하는 함수
+export const useOnSignUp = (userId, userName, userPassword) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const navigate = useNavigate();
+
+    async function onSignUp(){
+        dispatch({
+            type: "LOADING"
+        })
+
+        try{
+            const response = await currentApi.post("/api/users/signUp", {
+                userId,
+                userName,
+                userPassword,
+                userRoles: ["ROLE_CLIENT"]
+            });
+
+            console.log(response.data);
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            });
+
+            navigate("/signupcomplete");
+
+        }catch(error){
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    return [state, onSignUp];
+}
+
 // 로그인이 필요한 페이지의 상위 컴포넌트가 렌더링 되면 실행될 함수
 export const useAxios = () => {
     const [state, dispatch] = useReducer(reducer, {
@@ -247,9 +239,9 @@ export const useAxios = () => {
     });
     const fetch = async () => {
         try {
-            const response = await currentApi.get("/isLogin");
+            const response = await currentApi.get("/api/users/isLogin");
 
-            if (response.status === 210) {
+            if (!!response.data.accessToken) {
                 localStorage.setItem("accessToken", response.data.accessToken);
             }
 
@@ -286,17 +278,53 @@ export const useGetMonthData = (monthInfo) => {
             type: "LOADING"
         });
 
-        try{
+        try {
             // const response = currentApi.get(`/api/ch-eating/calendar/calendar-details-monthly`, {
             //     params: {
             //         month: monthInfo
             //     }
             // });
-            const response = await currentApi.get("/getmonthdata", {
+            const response = await currentApi.get("/api/calendar/calendar-details-monthly", {
                 params: {
                     month: monthInfo
                 }
             });
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            })
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    return [state, fetchData];
+}
+
+// week를 새로 선택할 때마다 week의 가짜 배고픔 요일, 시간, 횟수를 가져오는 함수
+// 이것과 바로 아래의 month는 HungerAnalytics에서 사용함
+export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function getWeeklyFakeHungerStats(){
+        dispatch({
+            type: "LOADING"
+        });
+
+        try{
+            const response = await currentApi.get("/api/fake-hunger-stats/weekly", {
+                params: {
+                    startDate,
+                    endDate
+                }
+            })
+
+            console.log(response.data);
 
             dispatch({
                 type: "SUCCESS",
@@ -311,5 +339,49 @@ export const useGetMonthData = (monthInfo) => {
         }
     }
 
-    return [state, fetchData];
+    useEffect(()=>{
+        getWeeklyFakeHungerStats();
+    }, deps);
+
+    return [state, getWeeklyFakeHungerStats];
+}
+
+// month를 새로 선택할 때마다 month의 가짜 배고픔 요일, 시간, 횟수를 가져오는 함수
+export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function getMonthlyFakeHungerStats() {
+        dispatch({
+            type: "LOADING"
+        });
+
+        try{
+            const response = await currentApi.get("/api/tests/byMonth", {
+                params: {
+                    year,
+                    month
+                }
+            });
+
+            console.log(response.data);
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            })
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    };
+
+    useEffect(()=>{
+        console.log("월간 실행중")
+        getMonthlyFakeHungerStats();
+    }, [deps]);
+    
+    return [state, getMonthlyFakeHungerStats];
 }

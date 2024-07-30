@@ -120,7 +120,7 @@ const StyledWeekly = styled.div`
 
             .time-6{
                 top: 50%;
-                right: 0;
+                right: 5px;
                 transform: translateY(-50%);
             }
 
