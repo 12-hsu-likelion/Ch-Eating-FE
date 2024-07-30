@@ -433,10 +433,12 @@ const StyledPrevOrNextButton = styled.button`
     height: 56px;
     pointer-events: ${({ $inVisible }) => $inVisible ? "none" : "auto"};
     opacity: ${({ $inVisible }) => $inVisible ? 0 : 1};
+    transition: color .25s, transform .25s;
 
     &:active{
         color: ${colors.gray1};
         background-color: ${colors.mainColor};
+        transform: scale(.96);
     };
 `;
 

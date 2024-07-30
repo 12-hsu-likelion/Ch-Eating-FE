@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from '../../../styles/colors';
 import CalendarTestBar from './CalendarTestBar';
 
@@ -38,6 +38,13 @@ const StyledCalendarDay = styled.li`
     flex-direction: column;
     align-items: center;
     padding: 11px;
+
+    ${({ $isCurrent }) =>
+        !$isCurrent && css`
+            &:hover{
+            background-color: #dedbe0;
+            }
+        `}
 
     pointer-events: ${({ $isPrevMonth }) => $isPrevMonth ? "none" : "auto"};
     opacity: ${({ $isPrevMonth }) => $isPrevMonth ? 0 : 1};

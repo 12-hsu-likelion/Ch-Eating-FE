@@ -39,9 +39,12 @@ const StyledHungerAnalyticsBox = styled.li`
     border: .5px solid ${colors.gray2};
     background-color: ${colors.gray1};
     cursor: pointer;
+    transition: .5s ease;
 
     &:active{
         background-color: ${colors.gray2};
+        transform: scale(1.03);
+        border: .5px solid #d3dbe2;
     }
 
     .analytics-type{
