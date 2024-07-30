@@ -37,6 +37,7 @@ const CalendarDaysWrapper = () => {
         return <StyledLoading>로딩중...</StyledLoading>
     }
 
+    // 이거 나중에 통신 완료되면 temp가 아니라 monthState.data의 어쩌고로 바꿔야함
     const transformedData = temp.data.reduce((acc, item, i)=>{
         const { date, beforeTests, mealTimes, afterTests } = item;
         acc[date] = { beforeTests, mealTimes, afterTests };

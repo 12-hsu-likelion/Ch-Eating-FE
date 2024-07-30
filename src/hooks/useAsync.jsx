@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 // 3. 회원가입 보내는 함수
 // 4. islogin 관련 함수
 
+// 캘린더 관련
+// 5. 캘린더에 표시할 월에 대한 정보를 표시하는 함수
+// 6. 캘린더 페이지의 하단에 데이터의 정보를 받아오는 함수
 
 // 밑의 currentApi는 나중에 반드시 바꿔야함
 export const currentApi = axios.create({
@@ -203,7 +206,7 @@ export const useOnSignUp = (userId, userName, userPassword) => {
         })
 
         try{
-            const response = await currentApi.post("api/users/signUp", {
+            const response = await currentApi.post("/api/users/signUp", {
                 userId,
                 userName,
                 userPassword,
@@ -236,9 +239,9 @@ export const useAxios = () => {
     });
     const fetch = async () => {
         try {
-            const response = await currentApi.get("/isLogin");
+            const response = await currentApi.get("/api/users/isLogin");
 
-            if (response.status === 210) {
+            if (!!response.data.accessToken) {
                 localStorage.setItem("accessToken", response.data.accessToken);
             }
 
@@ -301,4 +304,84 @@ export const useGetMonthData = (monthInfo) => {
     }
 
     return [state, fetchData];
+}
+
+// week를 새로 선택할 때마다 week의 가짜 배고픔 요일, 시간, 횟수를 가져오는 함수
+// 이것과 바로 아래의 month는 HungerAnalytics에서 사용함
+export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function getWeeklyFakeHungerStats(){
+        dispatch({
+            type: "LOADING"
+        });
+
+        try{
+            const response = await currentApi.get("/api/fake-hunger-stats/weekly", {
+                params: {
+                    startDate,
+                    endDate
+                }
+            })
+
+            console.log(response.data);
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            })
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    useEffect(()=>{
+        getWeeklyFakeHungerStats();
+    }, deps);
+
+    return [state, getWeeklyFakeHungerStats];
+}
+
+// month를 새로 선택할 때마다 month의 가짜 배고픔 요일, 시간, 횟수를 가져오는 함수
+export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function getMonthlyFakeHungerStats() {
+        dispatch({
+            type: "LOADING"
+        });
+
+        try{
+            const response = await currentApi.get("/api/tests/byMonth", {
+                params: {
+                    year,
+                    month
+                }
+            });
+
+            console.log(response.data);
+
+            dispatch({
+                type: "SUCCESS",
+                data: response.data
+            })
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    };
+
+    useEffect(()=>{
+        console.log("월간 실행중")
+        getMonthlyFakeHungerStats();
+    }, [deps]);
+    
+    return [state, getMonthlyFakeHungerStats];
 }
