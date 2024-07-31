@@ -63,4 +63,4 @@ const Mypage = () => {
     )
 }
 
-export default Transition(Mypage);
+export default Mypage;
