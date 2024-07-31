@@ -73,21 +73,23 @@ function reducer(state, action) {
     }
 }
 
-// 로그인 하는 함수
+// 로그인 하는 함수 ok
 export const useLoginAsync = (id, password, setError, setMessage) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
 
     const fetchData = async () => {
-
         dispatch({
             type: "LOADING"
         })
+
         try {
             const response = await API.post("/api/users/signIn", {
                 userId: id,
                 userPassword: password
             });
+
+            console.log(response.data)
 
             dispatch({
                 type: "SUCCESS",
@@ -95,20 +97,16 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             });
 
             setError(false);
+            
+            localStorage.setItem("accessToken", response.data.data.accessToken);
 
-
-            // 여기도 바꿔야함
-            localStorage.setItem("accessToken", response.data.accessToken);
-            localStorage.setItem("userInfo", JSON.stringify(response.data.others));
-
-            navigate("/shouldbedeleted");
+            navigate("/home");
         } catch (error) {
-
             dispatch({
                 type: "ERROR",
                 error
             })
-
+            console.log(error);
             setMessage(error.response.data.message);
 
             setError(true);
@@ -118,7 +116,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
     return [state, fetchData];
 }
 
-// 아이디 중복 확인하는 함수
+// 아이디 중복 확인하는 함수 ok
 export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -133,7 +131,7 @@ export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
         })
 
         try {
-            const response = await currentApi.get("/api/users/checkUserIdExists", {
+            const response = await API.get("/api/users/checkUserIdExists", {
                 params: {
                     userId: id
                 }
@@ -196,8 +194,8 @@ export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
     return [state, checkIpDup];
 };
 
-// 회원가입하는 함수
-export const useOnSignUp = (userId, userName, userPassword) => {
+// 회원가입하는 함수 ok
+export const useOnSignUp = (userName, userId, userPassword) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
 
@@ -205,9 +203,10 @@ export const useOnSignUp = (userId, userName, userPassword) => {
         dispatch({
             type: "LOADING"
         })
+        console.log("asdsa")
 
         try{
-            const response = await currentApi.post("/api/users/signUp", {
+            const response = await API.post("/api/users/signUp", {
                 userId,
                 userName,
                 userPassword,
@@ -222,7 +221,8 @@ export const useOnSignUp = (userId, userName, userPassword) => {
 
             navigate("/signupcomplete");
 
-        }catch(error){
+        } catch(error){
+            console.log(error)
             dispatch({
                 type: "ERROR",
                 error
@@ -240,7 +240,7 @@ export const useAxios = () => {
     });
     const fetch = async () => {
         try {
-            const response = await currentApi.get("/api/users/isLogin");
+            const response = await API.get("/api/users/isLogin");
 
             if (!!response.data.accessToken) {
                 localStorage.setItem("accessToken", response.data.accessToken);
@@ -253,8 +253,8 @@ export const useAxios = () => {
                 ox: true
             })
         } catch (e) {
-            alert("로그인이 필요한 서비스입니다.");
             console.log(e);
+            alert("로그인이 필요한 서비스입니다.");
             dispatch({
                 type: "ISLOGIN",
                 ox: false
@@ -262,9 +262,9 @@ export const useAxios = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect(()=>{
         fetch();
-    }, []);
+    }, [])
 
     return [state, fetch];
 }
