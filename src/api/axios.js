@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const host = window.location.hostname === "localhost" 
+  ? 'http://43.201.132.101:8080/'
+  : "api";
+
 export const API = axios.create({
-    baseURL: "http://43.201.132.101:8080/",
+    baseURL: host,
     headers: {
         "Content-Type": "application/json",
 
