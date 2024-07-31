@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import colors from "../../styles/colors";
+import {API} from "../../api/axios";
 import axios from "axios";
 import InputPost from "../../components/Meal/MealPost/Input/input-post";
 import ListType from "../../components/Meal/MealPost/Type/list-type";
@@ -61,6 +62,7 @@ const SubmitButton = styled.button`
 
 const MealPost = () => {
     const navigate = useNavigate();
+    const [userId, setUserId] = useState("");
     const [brandName, setBrandName] = useState("");
     const [postType, setPostType] = useState("");
     const [menuName, setMenuName] = useState("");
@@ -85,14 +87,31 @@ const MealPost = () => {
         }
     }, [brandName, postType, menuName, mealAmount, details]);
 
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchUserId();
+    }, []);
+
     const handleSubmit = async () => {
         try {
-            const response = await axios.post("https://jsonplaceholder.typicode.com/users", {
-                brandName: brandName,
-                postType: postType,
-                menuName: menuName,
-                mealAmount: mealAmount,
-                details: details
+            const response = await API.post("/api/meal", {
+                userId: userId,
+                meals: [
+                    {
+                        mealType: postType,
+                        mealBrand: brandName,
+                        mealName: menuName,
+                        mealAmount: mealAmount,
+                        mealDetail: details
+                    }
+                ]
             });
             console.log("통신 완료: ", response.data);
             navigate("/meal");

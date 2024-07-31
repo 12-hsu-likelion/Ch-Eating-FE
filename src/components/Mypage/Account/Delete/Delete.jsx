@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../../../../styles/colors";
-import axios from "axios";
 import DeleteIcon from "../../../../assets/images/DeleteIcon.png";
+import { API } from "../../../../api/axios";
 
 const DeleteModalContainer = styled.div`
     width: 34rem;
@@ -56,10 +56,10 @@ const DeleteButton = styled.button`
 
 const Delete = ({ onDeleteConfirm, onDeleteCancel }) => {
     const handleDeleteConfirm = async () => {
-        console.log("회원 탈퇴 진행할 것임");
+        //console.log("회원 탈퇴 진행할 것임");
         try {
-            const response = await axios.delete("https://jsonplaceholder.typicode.com/users/1");
-            console.log("회원 탈퇴 서버 통신 성공: ", response.data);
+            const response = await API.delete("/api/users/delete");
+            //console.log("회원 탈퇴 서버 통신 성공: ", response.data);
             localStorage.clear();
             onDeleteConfirm();
 
@@ -69,7 +69,7 @@ const Delete = ({ onDeleteConfirm, onDeleteCancel }) => {
     };
 
     const handleDeleteCancel = () => {
-        console.log("회원 탈퇴 안함. 모달창 다시 닫음");
+        //console.log("회원 탈퇴 안함. 모달창 다시 닫음");
         onDeleteCancel();
     };
 

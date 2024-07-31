@@ -16,8 +16,8 @@ const ListEat = ({eat}) => {
                 {eat.map((item, index) => (
                     <ItemEat 
                         key={index} 
-                        title={item.name} 
-                        sub={item.username}
+                        title={item.mealName} 
+                        sub={item.mealAmount}
 
                     />
                 ))}

@@ -49,7 +49,7 @@ const TitleP2 = styled.p`
     text-overflow: ellipsis;
 `
 
-const ItemMeal = ({id, name, username, email}) => {
+const ItemMeal = ({id, name, amount, detail}) => {
     const navigate = useNavigate();
 
     const handleEdit = () => {
@@ -61,9 +61,9 @@ const ItemMeal = ({id, name, username, email}) => {
             <InnerContainer>
                 <TitleContainer>
                     <TitleP1>{name}</TitleP1>
-                    <TitleP2>{username}</TitleP2>
+                    <TitleP2>{amount}</TitleP2>
                 </TitleContainer>
-                <TitleP2 style={{color: colors.gray4, fontWeight: 300}}>{email}</TitleP2>
+                <TitleP2 style={{color: colors.gray4, fontWeight: 300}}>{detail}</TitleP2>
             </InnerContainer>
         </ItemContainer>
     )

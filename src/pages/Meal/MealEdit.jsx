@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import axios from "axios";
+import {API} from "../../api/axios";
 import InputEdit from "../../components/Meal/MealEdit/Input/input-edit";
 import ListType from "../../components/Meal/MealEdit/Type/list-type";
 
@@ -62,6 +62,7 @@ const EditButton = styled.button`
 const MealEdit = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const [userId, setUserId] = useState("");
 
     const [brandName, setBrandName] = useState("");
     const [postType, setPostType] = useState("");
@@ -74,21 +75,27 @@ const MealEdit = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
-                const editData = response.data;
-                setBrandName(editData.name);
-                setPostType(editData.id);
-                setMenuName(editData.username);
-                setMealAmount(editData.id);
-                setDetails(editData.email);
-                setForm(true);
+                const response = await API.get("api/meal/meals");
+                console.log("서버 응답 데이터:", response.data);
+
+                const mealData = response.data.data.find(meal => meal.mealId === parseInt(id));
+                console.log("찾은 데이터:", mealData);
+
+                if (mealData) {
+                    setBrandName(mealData.mealBrand);
+                    setPostType(mealData.mealType);
+                    setMenuName(mealData.mealName);
+                    setMealAmount(mealData.mealAmount);
+                    setDetails(mealData.mealDetail);
+                    setForm(true);
+                }
             } catch (error) {
                 console.error("Error: ", error);
             }
         };
 
         fetchData();
-    }, [id]); 
+    }, [id]);
 
 
     const handleTypeSelect = (type) => {
@@ -109,25 +116,41 @@ const MealEdit = () => {
 
 
     // 삭제 통신
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchUserId();
+    }, []);
+
     const handleDelete = async () => {
         try {
-            const response = await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            const response = await API.delete(`api/meal/${id}`, {
+                data: { userId: userId }
+            });
             console.log("삭제 통신 완료: ", response.data);
+            alert("삭제가 완료되었습니다.");
             navigate("/meal");
         } catch (error) {
             console.error("Error:", error);
         }
     };
 
-    // 수정 통신
+
+    // 수정 통신 -> 백엔드 측 로직이 조금 잘못되어 있는 것 같습니다!
     const handleEdit = async () => {
         try {
-            const response = await axios.patch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-                brandName: brandName,
-                postType: postType,
-                menuName: menuName,
+            const response = await API.put(`api/meal/${id}`, {
+                mealBrand: menuName,
+                mealType: brandName,
+                mealName: postType,
                 mealAmount: mealAmount,
-                details: details
+                mealDetail: details
             });
             console.log("수정 통신 완료: ", response.data);
             navigate("/meal");

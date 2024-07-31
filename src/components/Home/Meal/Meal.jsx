@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import {API} from "../../../api/axios";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 import NotEat from "./NotEat/NotEat";
@@ -28,8 +28,9 @@ const Meal = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-                setEat(response.data);
+                const response = await API.get('/api/meal/meals');
+                setEat(response.data.data);
+                console.log(response);
             } catch (error) {
                 console.error('Error:', error);
             }
