@@ -48,9 +48,11 @@ const ListMeal = () => {
     const getFilteredData = () => {
         let filteredData = [...meals];
 
-        if (searchInput.trim() !== '') {
+        const normalizedSearchInput = searchInput ? searchInput.toLowerCase() : '';
+
+        if (normalizedSearchInput.trim() !== '') {
             filteredData = filteredData.filter(item =>
-                item.mealName.toLowerCase().includes(searchInput.toLowerCase())
+                item.mealName ? item.mealName.toLowerCase().includes(normalizedSearchInput) : false
             );
         }
 
@@ -64,12 +66,12 @@ const ListMeal = () => {
     };
 
     const handleInputChange = (e) => {
-        setSearchInput(e.target.value);
+        setSearchInput(e.target.value || '');
     };
 
     const handleSelectedItemsChange = (selectedItems) => {
         setSelectedFilterItems(selectedItems);
-        console.log("선택된 필터 아이템들:", selectedItems);
+        // console.log("선택된 필터 아이템들:", selectedItems);
     };
 
     const filteredMealData = getFilteredData();
