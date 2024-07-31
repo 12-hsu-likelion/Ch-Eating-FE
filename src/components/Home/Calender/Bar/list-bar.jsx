@@ -11,7 +11,8 @@ const ListBarContainer = styled.div`
     gap: 0.5rem;
 `;
 
-const ListBar = () => {
+const ListBar = ({ date }) => {
+    // 아직 구현안함 -> 아마 date 각각 7번 통신으로 갈듯
     const [success, setSuccess] = useState([]);
 
     useEffect(() => {
