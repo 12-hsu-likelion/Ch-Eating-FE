@@ -31,12 +31,15 @@ const DateP = styled.p`
 `;
 
 const ItemDate = ({date, day, istoday, isfirst, islast}) => {
+    const formattedDate = date.toISOString().split('T')[0];
+    console.log(formattedDate);
+
     return (
         <DateContainer istoday={istoday} isfirst={isfirst} islast={islast}>
                 <DateItem>
                     <DayP>{day}</DayP>
                     <DateP>{date.getDate()}</DateP>
-                    <ListBar />
+                    <ListBar date={formattedDate}/>
                 </DateItem>
         </DateContainer>
     );
