@@ -12,27 +12,44 @@ const ListBarContainer = styled.div`
 `;
 
 const ListBar = ({ date }) => {
-    // 아직 구현안함 -> 아마 date 각각 7번 통신으로 갈듯
-    const [success, setSuccess] = useState([]);
+    const [testResults, setTestResults] = useState([]);
 
     useEffect(() => {
-        const fetchSuccess = async () => {
+        const fetchTestResults = async () => {
             try {
-                const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-                setSuccess(response.data);
+                const response = await axios.get("https://jsonplaceholder.typicode.com/users", {
+                    params: { date }
+                });
+                console.log(response);
+
+                if (response.data && Array.isArray(response.data)) {
+                    setTestResults(response.data);
+                } else if (response.data && Array.isArray(response.data.data)) {
+                    setTestResults(response.data.data);
+                } else {
+                    console.error('Unexpected response structure:', response.data);
+                    setTestResults([]);
+                }
             } catch (error) {
                 console.error('Error:', error);
+                setTestResults([]); 
             }
         };
 
-        fetchSuccess();
-    }, []);
+        fetchTestResults();
+    }, [date]);
 
     return (
         <ListBarContainer>
-            {success.slice(0, 3).map(success => (
-                <ItemBar key={success.id} />
-            ))}
+            {testResults
+                .filter(result => result.testResult === '가짜 배고픔')
+                .slice(0, 3)
+                .map(result => (
+                    <ItemBar 
+                        key={result.testId} 
+                        testWin={result.testWin} 
+                    />
+                ))}
         </ListBarContainer>
     );
 };

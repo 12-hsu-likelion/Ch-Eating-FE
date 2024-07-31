@@ -6,12 +6,12 @@ const Bar = styled.div`
     height: 0.6rem;
     border: none;
     border-radius: 5rem;
-    background-color: ${colors.subColor};
+    background-color: ${props => props.testWin ? colors.subColor : colors.error};
 `
 
-const ItemBar = () => {
+const ItemBar = ({ testWin }) => {
     return (
-        <Bar />
+        <Bar testWin={testWin} />
     )
 }
 
