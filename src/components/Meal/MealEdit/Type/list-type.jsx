@@ -19,27 +19,21 @@ const ItemContainer = styled.div`
 `;
 
 const ListType = ({ onTypeSelect, initTypeSelect }) => {
-    const [selectedItem, setSelectedItem] = useState(null);
     const [selectedType, setSelectedType] = useState("");
 
     useEffect(() => {
-        const initItem = FilterData.find(item => item.id === initTypeSelect);
+        const initItem = FilterData.find(item => item.type === initTypeSelect);
         if (initItem) {
-            setSelectedItem(initItem.id);
             setSelectedType(initItem.type);
             onTypeSelect(initItem.type);
         }
     }, [initTypeSelect, onTypeSelect]);
 
-    const handleSetActiveItem = (id, type) => {
-        setSelectedItem(id === selectedItem ? null : id);
-        setSelectedType(type);
-        onTypeSelect(type);
+    const handleSetActiveType = (id, type) => {
+        const newType = selectedType === type ? "" : type;
+        setSelectedType(newType);
+        onTypeSelect(newType);
     };
-
-    useEffect(() => {
-        //console.log(selectedType);
-    }, [selectedType]);
 
     return (
         <ListContainer>
@@ -50,8 +44,8 @@ const ListType = ({ onTypeSelect, initTypeSelect }) => {
                         id={item.id}
                         name={item.name}
                         type={item.type}
-                        setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        setActiveItem={handleSetActiveType}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
@@ -63,8 +57,8 @@ const ListType = ({ onTypeSelect, initTypeSelect }) => {
                         id={item.id}
                         name={item.name}
                         type={item.type}
-                        setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        setActiveItem={handleSetActiveType}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
@@ -76,8 +70,8 @@ const ListType = ({ onTypeSelect, initTypeSelect }) => {
                         id={item.id}
                         name={item.name}
                         type={item.type}
-                        setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        setActiveItem={handleSetActiveType}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
