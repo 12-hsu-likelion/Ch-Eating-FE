@@ -25,14 +25,13 @@ const FilterButton = styled.button`
     }
 `;
 
-
-const ItemFilter = ({ key, type, name, isActive, handleSelection }) => {
+const ItemFilter = ({ id, type, name, isActive, handleSelection }) => {
     const handleClick = () => {
         handleSelection(type, !isActive);
     };
 
     return (
-        <FilterButton active={isActive.toString()} onClick={handleClick} key={key}>
+        <FilterButton active={isActive.toString()} onClick={handleClick}>
             {name}
         </FilterButton>
     );

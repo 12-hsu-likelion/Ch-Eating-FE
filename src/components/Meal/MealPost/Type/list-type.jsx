@@ -19,13 +19,12 @@ const ItemContainer = styled.div`
 `;
 
 const ListType = ({ onTypeSelect }) => {
-    const [selectedItem, setSelectedItem] = useState(null);
     const [selectedType, setSelectedType] = useState("");
 
     const handleSetActiveItem = (id, type) => {
-        setSelectedItem(id === selectedItem ? null : id);
-        setSelectedType(type);
-        onTypeSelect(type);
+        const newType = selectedType === type ? "" : type;
+        setSelectedType(newType);
+        onTypeSelect(newType);
     };
 
     useEffect(() => {
@@ -42,7 +41,7 @@ const ListType = ({ onTypeSelect }) => {
                         name={item.name}
                         type={item.type}
                         setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
@@ -55,7 +54,7 @@ const ListType = ({ onTypeSelect }) => {
                         name={item.name}
                         type={item.type}
                         setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
@@ -68,7 +67,7 @@ const ListType = ({ onTypeSelect }) => {
                         name={item.name}
                         type={item.type}
                         setActiveItem={handleSetActiveItem}
-                        active={selectedItem === item.id}
+                        active={selectedType === item.type}
                     />
                 ))}
             </ItemContainer>
