@@ -3,7 +3,6 @@ import Calender from "../../components/Home/Calender/Calender";
 import Time from "../../components/Home/Time/Time";
 import Meal from "../../components/Home/Meal/Meal";
 import { CalendarProvider } from "../../context/CalendarContext";
-import Transition from "../../routes/Transition";
 
 const Home = () => {
     const date = new Date();
@@ -19,4 +18,4 @@ const Home = () => {
     )
 }
 
-export default Transition(Home);
+export default Home;

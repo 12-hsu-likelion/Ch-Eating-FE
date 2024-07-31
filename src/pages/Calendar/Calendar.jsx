@@ -5,7 +5,6 @@ import CalendarHeader from '../../components/Calendar/CalendarHeader/CalendarHea
 import { CalendarProvider } from "../../context/CalendarContext";
 import CalendarBody from '../../components/Calendar/CalendayBody/CalendarBody';
 import CalendarBottom from '../../components/Calendar/CalendarBottom/CalendarBottom';
-import Transition from '../../routes/Transition';
 
 const Calender = () => {
     const [date, setDate] = useState(new Date());
@@ -40,4 +39,4 @@ const StyledCalendar = styled.section`
     }
 `;
 
-export default Transition(Calender);
+export default Calender;
