@@ -34,12 +34,15 @@ function App() {
   return (
     <>
       {showHeader && <Header />}
-        <Routes>
-          <Route path="/" element={<OnBoarding />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/signupcomplete' element={<SignUpComplete />} />
+      <Routes>
+        <Route path="/" element={<OnBoarding />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/signupcomplete' element={<SignUpComplete />} />
 
+        <Route element={<ProtectedRoute />}>
+          {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
+          {/* <Route path='shouldbedeleted' element={<DeletePls />} /> */}
           <Route path="/home" element={<Home />} />
           <Route path='/mypage' element={<Mypage />} />
           <Route path="/test" element={<TestMain />} />
@@ -53,11 +56,8 @@ function App() {
           {/* DetailedDailyAnalytics는 캘린더에서 일을 클릭했을 때 이동하는 페이지 */}
           <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
-          <Route element={<ProtectedRoute />}>
-            {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
-            <Route path='shouldbedeleted' element={<DeletePls />} />
-          </Route>
-        </Routes>
+        </Route>
+      </Routes>
       {showFooter && <Footer />}
     </>
   );

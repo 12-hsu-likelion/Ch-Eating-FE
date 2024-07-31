@@ -109,7 +109,7 @@ const SignUp = () => {
     // 통신 함수
 
     const [idDupState, checkIdDup] = useCheckIdDup(id, errors, setErrors, setInputTestMsg);
-    const [signUpState, onSignUp] = useOnSignUp(id, pw, name);
+    const [signUpState, onSignUp] = useOnSignUp(name, id, pw);
 
     return (
         <StyledSignUp className="pageContainer">
