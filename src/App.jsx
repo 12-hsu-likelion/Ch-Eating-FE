@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       {showHeader && <Header />}
-        <Routes location={location} key={location.pathname}>
+        <Routes>
           <Route path="/" element={<OnBoarding />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
