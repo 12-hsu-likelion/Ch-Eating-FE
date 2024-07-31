@@ -7,6 +7,7 @@ import Account from "../../components/Mypage/Account/Account";
 import Logout from "../../components/Mypage/Account/Logout/Logout";
 import Delete from "../../components/Mypage/Account/Delete/Delete";
 import RealDelete from "../../components/Mypage/Account/Delete/RealDelete";
+import Transition from "../../routes/Transition";
 
 const MypageContainer = styled.div`
     width: 100%;
@@ -62,4 +63,4 @@ const Mypage = () => {
     )
 }
 
-export default Mypage;
+export default Transition(Mypage);

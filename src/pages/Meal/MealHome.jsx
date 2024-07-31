@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import ListMeal from "../../components/Meal/MealHome/Meal/list-meal";
 import { useNavigate } from 'react-router-dom';
+import Transition from "../../routes/Transition";
 
 const MealContainer = styled.div`
     width: 90%;
@@ -66,4 +67,4 @@ const MealHome = () => {
     )
 }
 
-export default MealHome;
+export default Transition(MealHome);
