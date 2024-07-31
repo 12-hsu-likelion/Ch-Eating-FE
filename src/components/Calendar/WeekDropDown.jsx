@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import calendar_select from "../../assets/images/calendar_select.png";
 import colors from '../../styles/colors';
 import { useCalendarContext } from '../../context/CalendarContext';
@@ -101,7 +101,13 @@ const StyledUl = styled.ul`
 const StyledLi = styled.li`
     text-align: center;
     white-space: nowrap;
-    background-color: ${({$isCurrent})=>$isCurrent ? "#C7C8CC" : colors.gray2};
+    background-color: ${({$isCurrent})=>$isCurrent ? "#d8d8db" : colors.gray2};
+
+    ${({ $isCurrent }) => !$isCurrent && css`
+        &:hover {
+            background-color: #d8d8db;
+        }
+    `}
 `;
 
 export default WeekDropDown;

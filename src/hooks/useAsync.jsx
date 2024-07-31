@@ -279,11 +279,6 @@ export const useGetMonthData = (monthInfo) => {
         });
 
         try {
-            // const response = currentApi.get(`/api/ch-eating/calendar/calendar-details-monthly`, {
-            //     params: {
-            //         month: monthInfo
-            //     }
-            // });
             const response = await currentApi.get("/api/calendar/calendar-details-monthly", {
                 params: {
                     month: monthInfo
