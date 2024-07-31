@@ -43,8 +43,7 @@ const RealDelete = () => {
     const navigate = useNavigate();
 
     const handleRealDelete = () => {
-        console.log("진짜 탈퇴 안내 완료");
-
+        //console.log("진짜 탈퇴 안내 완료");
         navigate("/login");
     };
     return (

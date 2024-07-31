@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
+import { API } from "../../../api/axios";
 
 const AccountP = styled.p`
     font-size: 2.4rem;
@@ -15,16 +16,24 @@ const AccountP2 = styled.p`
 `;
 
 const Account = ({ onLogoutClick, onDeleteClick }) => {
-    const handleLogoutClick = () => {
-        if (onLogoutClick) {
-            onLogoutClick();
+    const handleLogoutClick = async () => {
+        try {
+            await API.post('/api/users/logout');
+            localStorage.removeItem('accessToken');
+
+            if (onLogoutClick) {
+                onLogoutClick();
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
     const handleDeleteClick = () => {
         if (onDeleteClick) {
             onDeleteClick();
-        }    
+        }
     };
 
     return (
