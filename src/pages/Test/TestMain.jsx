@@ -4,6 +4,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import TestBefore from "../../assets/images/testBefore.png";
 import TestAfter from "../../assets/images/testAfter.png";
+import Transition from '../../routes/Transition';
 
 const TestContainer = styled.div`
     padding-top: 6.1rem;
@@ -85,4 +86,4 @@ const TestMain = () => {
     );
 };
 
-export default TestMain;
+export default Transition(TestMain);
