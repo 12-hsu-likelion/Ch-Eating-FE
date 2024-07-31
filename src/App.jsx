@@ -1,5 +1,4 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { AnimatePresence } from "framer-motion";
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -35,7 +34,6 @@ function App() {
   return (
     <>
       {showHeader && <Header />}
-      <AnimatePresence mode='wait'>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<OnBoarding />} />
           <Route path='/login' element={<Login />} />
@@ -60,7 +58,6 @@ function App() {
             <Route path='shouldbedeleted' element={<DeletePls />} />
           </Route>
         </Routes>
-      </AnimatePresence>
       {showFooter && <Footer />}
     </>
   );

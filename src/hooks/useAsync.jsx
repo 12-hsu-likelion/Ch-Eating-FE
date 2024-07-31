@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+import { API } from "../api/axios";
 
 // 로그인 관련
 // 1. 로그인 하는 함수
@@ -83,7 +84,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             type: "LOADING"
         })
         try {
-            const response = await currentApi.post("/api/users/signIn", {
+            const response = await API.post("/api/users/signIn", {
                 userId: id,
                 userPassword: password
             });
