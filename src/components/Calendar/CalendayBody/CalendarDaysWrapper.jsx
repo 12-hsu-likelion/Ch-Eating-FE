@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { useCalendarContext } from '../../../context/CalendarContext';
 import CalendarDay from './CalendarDay';
@@ -17,7 +17,7 @@ const CalendarDaysWrapper = () => {
 
     const [monthState, monthFetchData] = useGetMonthData(Number(year), Number(month));
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         monthFetchData();
     }, [month]);
 

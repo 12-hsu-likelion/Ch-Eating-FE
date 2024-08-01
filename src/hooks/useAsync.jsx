@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useReducer } from "react";
+import { useEffect, useLayoutEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../api/axios";
 
@@ -97,7 +97,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
             });
 
             setError(false);
-            
+
             localStorage.setItem("accessToken", response.data.data.accessToken);
 
             navigate("/home");
@@ -138,8 +138,8 @@ export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
             })
 
             console.log(response.data);
-            if(response.data.data === "사용 가능한 아이디입니다."){
-                setErrors(prev=>({
+            if (response.data.data === "사용 가능한 아이디입니다.") {
+                setErrors(prev => ({
                     ...prev,
                     idError: {
                         ...prev.idError,
@@ -147,12 +147,12 @@ export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
                     }
                 }))
 
-                setInputTestMsg(prev=>({
+                setInputTestMsg(prev => ({
                     ...prev,
                     idMsg: response.data.data
                 }))
-            }else{
-                setErrors(prev=>({
+            } else {
+                setErrors(prev => ({
                     ...prev,
                     idError: {
                         ...prev.idError,
@@ -160,7 +160,7 @@ export const useCheckIdDup = (id, errors, setErrors, setInputTestMsg) => {
                     }
                 }))
 
-                setInputTestMsg(prev=>({
+                setInputTestMsg(prev => ({
                     ...prev,
                     idMsg: response.data.data
                 }))
@@ -199,13 +199,13 @@ export const useOnSignUp = (userName, userId, userPassword) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
 
-    async function onSignUp(){
+    async function onSignUp() {
         dispatch({
             type: "LOADING"
         })
         console.log("asdsa")
 
-        try{
+        try {
             const response = await API.post("/api/users/signUp", {
                 userId,
                 userName,
@@ -221,7 +221,7 @@ export const useOnSignUp = (userName, userId, userPassword) => {
 
             navigate("/signupcomplete");
 
-        } catch(error){
+        } catch (error) {
             console.log(error)
             dispatch({
                 type: "ERROR",
@@ -234,7 +234,7 @@ export const useOnSignUp = (userName, userId, userPassword) => {
 }
 
 // 로그인이 필요한 페이지의 상위 컴포넌트가 렌더링 되면 실행될 함수
-export const useAxios = () => {
+export const useAxios = (path) => {
     const [state, dispatch] = useReducer(reducer, {
         isLogin: undefined
     });
@@ -262,9 +262,9 @@ export const useAxios = () => {
         }
     }
 
-    useEffect(()=>{
+    useLayoutEffect(() => {
         fetch();
-    }, [])
+    }, [path]);
 
     return [state, fetch];
 }
@@ -312,12 +312,12 @@ export const useGetMonthData = (year, month) => {
 export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    async function getWeeklyFakeHungerStats(){
+    async function getWeeklyFakeHungerStats() {
         dispatch({
             type: "LOADING"
         });
 
-        try{
+        try {
             const response = await API.get("/api/tests/statistics/byDateRange", {
                 params: {
                     startDate,
@@ -329,7 +329,7 @@ export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
                 type: "SUCCESS",
                 data: response.data
             })
-        }catch(error){
+        } catch (error) {
             console.log(error);
             dispatch({
                 type: "ERROR",
@@ -338,7 +338,7 @@ export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
         }
     }
 
-    useEffect(()=>{
+    useLayoutEffect(() => {
         getWeeklyFakeHungerStats();
     }, deps);
 
@@ -354,7 +354,7 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
             type: "LOADING"
         });
 
-        try{
+        try {
             const response = await API.get("/api/tests/statistics", {
                 params: {
                     year,
@@ -366,7 +366,7 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
                 type: "SUCCESS",
                 data: response.data
             })
-        }catch(error){
+        } catch (error) {
             console.log(error);
             dispatch({
                 type: "ERROR",
@@ -375,9 +375,9 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
         }
     };
 
-    useEffect(()=>{
+    useLayoutEffect(() => {
         getMonthlyFakeHungerStats();
     }, [deps]);
-    
+
     return [state, getMonthlyFakeHungerStats];
 }

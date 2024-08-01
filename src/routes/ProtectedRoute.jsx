@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAxios } from '../hooks/useAsync';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-    const [state, refetch] = useAxios();
+    const location = useLocation();
+    const [state, refetch] = useAxios(location.pathname);
 
     if(state.isLogin === undefined){
         return;
