@@ -27,7 +27,30 @@ const ContentContainer = styled.div`
     padding-left: 2%;
 `
 
-const ItemTime = ({ time, before, after, meal }) => {
+const parseCreateTime = (createTimeStr) => {
+    if (!createTimeStr || typeof createTimeStr !== 'string') {
+        return new Date(0);
+    }
+    return new Date(createTimeStr.replace(/-/g, '/'));
+}
+
+const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
+    // 시간별로 나눈 배열 합치기
+    const events = [
+        ...before.map(item => ({ ...item, type: 'before' })),
+        ...after.map(item => ({ ...item, type: 'after' })),
+        ...meal.map(item => ({ ...item, type: 'meal' }))
+    ];
+
+
+    // 빠른 순으로 정렬
+    const sortedEvents = events.sort((a, b) => {
+        return parseCreateTime(a.createTime) - parseCreateTime(b.createTime);
+    });
+
+    console.log("Time:", time);
+    console.log("정렬된 배열:", sortedEvents);
+
     const formatTime = (time) => {
         return time < 10 ? `0${time}` : `${time}`;
     };
@@ -36,12 +59,21 @@ const ItemTime = ({ time, before, after, meal }) => {
         <ItemContainer>
             <TimeP>{formatTime(time)}:00</TimeP>
             <ContentContainer>
-                {before && <Before data={before}/>}
-                {after && <After data={after}/>}
-                {meal && <Meal />}
+                {sortedEvents.map((event, index) => {
+                    switch (event.type) {
+                        case 'before':
+                            return <Before key={index} data={[event]} />;
+                        case 'after':
+                            return <After key={index} data={[event]} />;
+                        case 'meal':
+                            return <Meal key={index} />;
+                        default:
+                            return null;
+                    }
+                })}
             </ContentContainer>
         </ItemContainer>
     );
-}
+};
 
 export default ItemTime;

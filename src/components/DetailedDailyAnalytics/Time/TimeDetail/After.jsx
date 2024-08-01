@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import colors from "../../../../styles/colors";
 import styled from "styled-components";
-import {API} from "../../../../api/axios";
+import { API } from "../../../../api/axios";
 
 const AfterContainer = styled.div`
     width: 100%;
@@ -34,11 +34,11 @@ const ButtonContainer = styled.div`
 const QnaButton = styled.button`
     width: 20%;
     height: 2.6rem;
-    background-color: ${colors.violet10};
+    background-color: ${props => props.isClicked ? colors.mainColor : colors.violet10};
     border: none;
     border-radius: 0.8rem;
     font-size: 1.2rem;
-    color: ${colors.gray4};
+    color: ${props => props.isClicked ? colors.gray1 : colors.gray4};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,12 +47,25 @@ const QnaButton = styled.button`
 `;
 
 const After = ({ data }) => {
-    //console.log("After:", data);
+    const [clickedButtons, setClickedButtons] = useState({});
+
+    useEffect(() => {
+        const initialClickedState = data.reduce((acc, item) => {
+            acc[item.testId] = item.testWin;
+            return acc;
+        }, {});
+        setClickedButtons(initialClickedState);
+    }, [data]);
 
     const handleQnaClick = async (testId, testWin) => {
         try {
             const response = await API.patch(`api/tests/${testId}/win`, { testWin });
             console.log(response.data);
+            
+            setClickedButtons(prev => ({
+                ...prev,
+                [testId]: testWin
+            }));
         } catch (error) {
             console.error('Error:', error);
         }
@@ -63,7 +76,8 @@ const After = ({ data }) => {
             {data.map((item, index) => {
                 const testId = item.testId;
                 const testResult = item.testResult;
-                
+                const isClicked = clickedButtons[testId];
+
                 return (
                     <React.Fragment key={index}>
                         <AfterContainer testResult={testResult}>
@@ -74,8 +88,8 @@ const After = ({ data }) => {
                             <FalseContainer>
                                 <AfterP style={{ color: colors.black }}>배고픔을 이겨냈나요?</AfterP>
                                 <ButtonContainer>
-                                    <QnaButton onClick={() => handleQnaClick(testId, '승리')}>네</QnaButton>
-                                    <QnaButton onClick={() => handleQnaClick(testId, '패배')}>아니요</QnaButton>
+                                    <QnaButton isClicked={isClicked === '승리'} onClick={() => handleQnaClick(testId, '승리')}>네</QnaButton>
+                                    <QnaButton isClicked={isClicked === '패배'} onClick={() => handleQnaClick(testId, '패배')}>아니요</QnaButton>
                                 </ButtonContainer>
                             </FalseContainer>
                         )}
