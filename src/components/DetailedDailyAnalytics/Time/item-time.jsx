@@ -18,31 +18,60 @@ const TimeP = styled.p`
     text-align: center;
     font-size: 1.2rem;
     font-weight: 600;
-    color: ${colors.gray6};
-`
+    color: ${props => props.hasData ? colors.gray6 : colors.gray4};
+`;
 
 const ContentContainer = styled.div`
     width: 90%;
     height: 100%;
     padding-left: 2%;
-`
+`;
 
-const ItemTime = ({ time, before, after, meal }) => {
+const parseCreateTime = (createTimeStr) => {
+    if (!createTimeStr || typeof createTimeStr !== 'string') {
+        return new Date(0);
+    }
+    return new Date(createTimeStr.replace(/-/g, '/'));
+};
+
+const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
+    // 시간별로 나눈 배열 합치기
+    const events = [
+        ...before.map(item => ({ ...item, type: 'before' })),
+        ...after.map(item => ({ ...item, type: 'after' })),
+        ...meal.map(item => ({ ...item, type: 'meal' }))
+    ];
+
+    // 빠른 순으로 정렬
+    const sortedEvents = events.sort((a, b) => {
+        return parseCreateTime(a.createTime) - parseCreateTime(b.createTime);
+    });
+
+    const hasData = before.length > 0 || after.length > 0 || meal.length > 0;
+
     const formatTime = (time) => {
         return time < 10 ? `0${time}` : `${time}`;
     };
 
-
     return (
         <ItemContainer>
-            <TimeP>{formatTime(time)}:00</TimeP>
+            <TimeP hasData={hasData}>{formatTime(time)}:00</TimeP>
             <ContentContainer>
-                {before && <Before data={before}/>}
-                {after && <After data={after}/>}
-                {meal && <Meal />}
+                {sortedEvents.map((event, index) => {
+                    switch (event.type) {
+                        case 'before':
+                            return <Before key={index} data={[event]} />;
+                        case 'after':
+                            return <After key={index} data={[event]} />;
+                        case 'meal':
+                            return <Meal key={index} data={[event]}/>;
+                        default:
+                            return null;
+                    }
+                })}
             </ContentContainer>
         </ItemContainer>
     );
-}
+};
 
 export default ItemTime;

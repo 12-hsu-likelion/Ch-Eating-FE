@@ -17,11 +17,15 @@ const MealP = styled.p`
     color: ${colors.gray6};
 `
 
-const Meal = () => {
+const Meal = ({ data }) => {
     return (
-        <MealContainer>
-            <MealP>식사</MealP>
-        </MealContainer>
+        <>
+            <React.Fragment key={index}>
+                <MealContainer>
+                    <MealP>식사</MealP>
+                </MealContainer>
+            </React.Fragment>
+        </>
     )
 }
 

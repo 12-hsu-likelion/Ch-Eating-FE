@@ -3,7 +3,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useLocation } from 'react-router-dom';
 import ListTime from '../../components/DetailedDailyAnalytics/Time/list-time';
-import axios from "axios";
+import { API } from "../../api/axios";
 
 const TopContainer = styled.div`
     display: flex;
@@ -11,13 +11,13 @@ const TopContainer = styled.div`
     width: 100%;
     align-items: center;
     margin-top: 6rem;
-`
+`;
 
 const TopBar = styled.div`
     width: 38%;
     height: 0.2rem;
     background-color: ${colors.mainColor};
-`
+`;
 
 const TopDateContainer = styled.div`
     position: relative;
@@ -25,7 +25,7 @@ const TopDateContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`
+`;
 
 const TopDate = styled.p`
     font-size: 2rem;
@@ -33,7 +33,7 @@ const TopDate = styled.p`
     color: ${colors.mainColor};
     text-align: center;
     z-index: 2;
-`
+`;
 
 const TopTextBackground = styled.div`
     width: 65%;
@@ -42,7 +42,7 @@ const TopTextBackground = styled.div`
     position: absolute;
     margin-top: 1rem;
     border: none;
-`
+`;
 
 const BottomContainer = styled.div`
     width: 100%;
@@ -50,56 +50,85 @@ const BottomContainer = styled.div`
     margin-top: 4rem;
     padding-left: 3.6rem;
     margin-bottom: 5.5rem;
-`
-
+`;
 
 const DetailedDailyAnalytics = () => {
     const location = useLocation();
-    const {year, month, day} = location.state.dayInfo || {};
-
+    const { year, month, day } = location.state.dayInfo || {};
+    const [userId, setUserId] = useState("");
     const [before, setBefore] = useState([]);
     const [after, setAfter] = useState([]);
     const [meal, setMeal] = useState([]);
 
+    const getFormattedDate = (year, month, day) => {
+        const formattedMonth = String(month).padStart(2, '0');
+        const formattedDay = String(day).padStart(2, '0');
+        return `${year}-${formattedMonth}-${formattedDay}`;
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserId = async () => {
             try {
-                const response = await axios.get("https://jsonplaceholder.typicode.com/todos");
-                setBefore(response.data);
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
             } catch (error) {
-                console.error("Error: ", error);
+                console.error("Error:", error);
             }
         };
-
-        fetchData();
+        fetchUserId();
     }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchMeals = async () => {
+            if (!userId) return;
+
             try {
-                const response = await axios.get("https://jsonplaceholder.typicode.com/todos");
-                setAfter(response.data);
+                const response = await API.get('/api/meal/meals', {
+                    params: { userId: userId }
+                });
+
+                const formattedDate = getFormattedDate(year, month, day);
+
+                const filteredMeals = response.data.data.filter(meal =>
+                    meal.createAt === formattedDate
+                );
+
+                setMeal(filteredMeals);
             } catch (error) {
-                console.error("Error: ", error);
+                console.error('Error:', error);
             }
         };
-
-        fetchData();
-    }, []);
+        fetchMeals();
+    }, [userId, year, month, day]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchTests = async () => {
+            const formattedDate = getFormattedDate(year, month, day);
+
             try {
-                const response = await axios.get("https://jsonplaceholder.typicode.com/users");
-                setMeal(response.data);
+                const response = await API.get(`/api/tests/byDate`, {
+                    params: { date: formattedDate }
+                });
+
+                const beforeTests = response.data.data.filter(test =>
+                    test.testName === "식전 배고픔 테스트"
+                );
+
+                const afterTests = response.data.data.filter(test =>
+                    test.testName === "식후 배고픔 테스트"
+                );
+
+                setBefore(beforeTests);
+                setAfter(afterTests);
+                //console.log(before);
+                //console.log(after);
             } catch (error) {
-                console.error("Error: ", error);
+                console.error("Error:", error);
             }
         };
 
-        fetchData();
-    }, []);
+        fetchTests();
+    }, [year, month, day]);
 
     return (
         <div className="pageContainer">
@@ -113,7 +142,7 @@ const DetailedDailyAnalytics = () => {
             </TopContainer>
 
             <BottomContainer>
-                <ListTime before={before} after={after} meal={meal}/>
+                <ListTime before={before} after={after} meal={meal} />
             </BottomContainer>
         </div>
     );
