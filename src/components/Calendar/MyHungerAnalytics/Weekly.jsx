@@ -71,7 +71,7 @@ const Weekly = () => {
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph type={"monthly"} />
+                    <PieGraph type={"monthly"} data = {totalFakeHungerTimeDistribution} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>
@@ -140,3 +140,11 @@ const StyledWeekly = styled.div`
 `
 
 export default Weekly;
+
+const totalFakeHungerTimeDistribution = [
+    5, 6, 4, 7, 3, 8, 6, 4, 7, 5,
+    8, 3, 6, 4, 7, 5, 8, 3, 6, 4,
+    7, 5, 8, 3, 6, 4, 7, 5, 8, 3,
+    6, 4, 7, 5, 8, 3, 6, 4, 7, 5,
+    8, 3, 6, 4, 7, 5, 8, 3, 6, 4
+];

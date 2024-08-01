@@ -97,11 +97,9 @@ const data = {
 }
 
 
-const PieGraph = ({type}) => {
+const PieGraph = ({ type, data }) => {
     const canvasRef = useRef();
     const { currentSelect } = useCalendarContext();
-    // 반드시 data값을(아마 위처럼 오브젝트 형식으로 올텐데) 배열로 변환할 것
-    const dataArray = Object.values(data[type].fakeHungerTimeDistribution);
 
     // 밑의 의존성 배열에는 데이터 값을 넣어야 함
     useEffect(() => {
@@ -110,9 +108,9 @@ const PieGraph = ({type}) => {
         const radius = canvas.width / 2;
         const segmentAngle = (2 * Math.PI) / 24;
 
-        const max = Math.max(...dataArray);
+        const max = Math.max(...data);
 
-        const colors = dataArray.map(e => {
+        const colors = data.map(e => {
             const saturation = (e / max) * 100;
             const saturation2 = 17 - (e * 17 / max);
             // 0부터 10까지의 값이 있다고 치면 17을 나눠야 함 10일 때는 0을 가지고, 0일때는 17을 가져야해
@@ -139,8 +137,6 @@ const PieGraph = ({type}) => {
             delay: .2
         })
     }, [type === "weekly" ? currentSelect.selectedWeek : currentSelect.selectedMonth]);
-
-    console.log("파이 그래프를 위한 데이터(오브젝트에서 배열로 변환한): ", dataArray);
 
     return (
         <StyledPieGraph className='pie-graph' width={180} height={180} ref={canvasRef}>

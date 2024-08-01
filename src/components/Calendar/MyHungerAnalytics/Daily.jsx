@@ -1,34 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import StackGraph from './Graph/StackGraph';
 import colors from '../../../styles/colors';
 import PieGraph from './Graph/PieGraph';
 import { useCalendarContext } from '../../../context/CalendarContext';
+import { useGetWeeklyStatics } from '../../../hooks/useAsync';
 
 const Daily = () => {
-    const {currentSelect} = useCalendarContext();
-    const {selectedWeek} = useMemo(()=>currentSelect, [currentSelect]);
-    const firstDayOfFirstWeek = useMemo(()=>selectedWeek[0].date , [selectedWeek]);
-    const lastDayOfLastWeek = useMemo(()=>selectedWeek[selectedWeek.length - 1].date, [selectedWeek]);
+    const { currentSelect } = useCalendarContext();
+    const { selectedWeek } = useMemo(() => currentSelect, [currentSelect]);
+    const firstDayOfFirstWeek = useMemo(() => selectedWeek[0].date, [selectedWeek]);
+    const lastDayOfLastWeek = useMemo(() => selectedWeek[selectedWeek.length - 1].date, [selectedWeek]);
 
-    console.log("현재 선택된 주간의 첫 날과 끝 날: ", firstDayOfFirstWeek, lastDayOfLastWeek);
+    const [dailyState, refetch] = useGetWeeklyStatics(firstDayOfFirstWeek, lastDayOfLastWeek);
+
+    useLayoutEffect(() => {
+        // refetch();
+    }, [selectedWeek]);
 
     return (
         <StyledDaily>
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <StackGraph />
+                <StackGraph data={periodStatistics.map(e => e.totalFakeHungerOccurrences)} />
             </div>
 
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
-                <StackGraph />
+                <StackGraph data={periodStatistics.map(e => e.totalFakeHungerFailures)} />
             </div>
 
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph type={"weekly"} />
+                    <PieGraph type={"weekly"} data={totalFakeHungerTimeDistribution} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>
@@ -99,3 +104,22 @@ const StyledDaily = styled.div`
 `;
 
 export default Daily;
+
+
+const periodStatistics = [
+    { "date": "2024-07-29", "totalFakeHungerOccurrences": 2, "totalFakeHungerFailures": 0 },
+    { "date": "2024-07-30", "totalFakeHungerOccurrences": 1, "totalFakeHungerFailures": 1 },
+    { "date": "2024-07-31", "totalFakeHungerOccurrences": 0, "totalFakeHungerFailures": 0 },
+    { "date": "2024-08-01", "totalFakeHungerOccurrences": 3, "totalFakeHungerFailures": 0 },
+    { "date": "2024-08-02", "totalFakeHungerOccurrences": 1, "totalFakeHungerFailures": 0 },
+    { "date": "2024-08-03", "totalFakeHungerOccurrences": 4, "totalFakeHungerFailures": 1 },
+    { "date": "2024-08-04", "totalFakeHungerOccurrences": 2, "totalFakeHungerFailures": 0 }
+];
+
+const totalFakeHungerTimeDistribution = [
+    1, 2, 0, 3, 0, 0, 4, 0, 1, 2,
+    0, 5, 0, 1, 3, 0, 2, 0, 4, 1,
+    0, 2, 0, 0, 1, 4, 0, 2, 1, 0,
+    3, 0, 0, 2, 0, 1, 0, 0, 0, 5,
+    0, 2, 1, 0, 0, 3, 1, 2, 0, 0
+]

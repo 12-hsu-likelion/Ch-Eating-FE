@@ -3,19 +3,18 @@ import styled from 'styled-components';
 import StackBar from './StackBar';
 import colors from '../../../../styles/colors';
 
-const StackGraph = () => {
+const StackGraph = (data) => {
     // 데이터를 받아오면 밑의 데이터처럼 7개의 요소를 가진 배열로 가공하기
     // 하나는 가짜 배고픔을 느낀 횟수,
     // 또 하나는 가짜 배고픔에 속은 횟수임
     const weeks = ["월", "화", "수", "목", "금", "토", "일"];
-    const data = [1, 2, 5, 4, 5, 0, 6];
 
     return (
         <StyledStackGraph>
             {weeks.map((week, i) => {
                 return <StyledWeek key={i}>
                     <div className="stack-wrapper">
-                        {Array.from({ length: data[i] }).map((_, j) => {
+                        {Array.from({ length: data.data[i] }).map((_, j) => {
                             return <StackBar key={j} />
                         })}
                     </div>
