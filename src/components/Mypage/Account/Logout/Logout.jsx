@@ -43,6 +43,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        localStorage.removeItem('accessToken');
         navigate("/login");
     };
 
