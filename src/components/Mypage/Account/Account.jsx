@@ -17,14 +17,13 @@ const AccountP2 = styled.p`
 
 const Account = ({ onLogoutClick, onDeleteClick }) => {
     const handleLogoutClick = async () => {
-        try {
-            await API.post('/api/users/logout');
-            localStorage.removeItem('accessToken');
+    try {
+        const response = await API.post('/api/users/logout');
+        console.log('Response:', response); 
 
-            if (onLogoutClick) {
-                onLogoutClick();
-            }
-
+        if (onLogoutClick) {
+            onLogoutClick();
+        }
         } catch (error) {
             console.error('Error:', error);
         }
