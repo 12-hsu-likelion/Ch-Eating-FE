@@ -7,7 +7,7 @@ import TestNumber from '../../components/Test/TestNumber';
 import dropDown from '../../assets/images/drop_down.png';
 import { useTimeInput } from '../../hooks/useTimeInput';
 import BeforeLastAnswer from '../../components/Test/BeforeLastAnswer';
-import { currentApi } from '../../hooks/useAsync';
+import { API } from '../../api/axios';
 
 const TestQna = () => {
     const { activeType } = useParams();
@@ -105,7 +105,7 @@ const TestQna = () => {
         })
 
         try{
-            const response = await currentApi.post("/api/tests/test", {
+            const response = await API.post("/api/tests/test", {
                 testName,
                 testResult
             });

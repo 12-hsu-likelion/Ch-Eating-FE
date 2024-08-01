@@ -15,15 +15,13 @@ const CalendarDaysWrapper = () => {
 
     const {year, month} = currentDate;
 
-    const [monthState, monthFetchData] = useGetMonthData(`${year}-${month}`);
+    const [monthState, monthFetchData] = useGetMonthData(Number(year), Number(month));
 
-    // api가 개발 완료된다면 밑에 코드 풀기
     useEffect(()=>{
-        // monthFetchData();
+        monthFetchData();
     }, [month]);
 
     // 밑의 dayInfo는 통신으로 받은 day의 정보가 아님 
-    // 그냥 dayInfo만 받아와서 그 페이지에서 데이터를 get 요청해도 될 듯?
     const gotoDetailedAnalyticsPage = (dayInfo) => {
         
         navigate(`/detailedanalytics/${dayInfo.date}`, {
@@ -37,13 +35,18 @@ const CalendarDaysWrapper = () => {
         return <StyledLoading>로딩중...</StyledLoading>
     }
 
-    // 이거 나중에 통신 완료되면 temp가 아니라 monthState.data의 어쩌고로 바꿔야함
-    const transformedData = temp.data.reduce((acc, item, i)=>{
-        const { date, beforeTests, mealTimes, afterTests } = item;
-        acc[date] = { beforeTests, mealTimes, afterTests };
-        return acc;
-    }, {});
-
+    const transformedData = monthState.data.reduce((acc, item) => {
+      const { createTime } = item;
+      
+      if (!acc[createTime]) {
+          acc[createTime] = [];
+      }
+      
+      acc[createTime].push(item);
+      
+      return acc;
+  }, {});
+  
     return (
         <StyledCalendarDayWrapper>
             {daysInMonth.map((dayInfo, i)=>{
@@ -66,661 +69,48 @@ const StyledCalendarDayWrapper = styled.ul`
     height: fit-content;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    min-height: 380px;
 `;
 
 export default CalendarDaysWrapper;
 
-// 그냥 임시적인 데이터
-const temp = {
-    "month": "2024-07",
-    "data": [
-      {
-        "date": "2024-07-01",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "12:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:30",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "14:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-02",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:30",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "15:00",
-            "result": "FAKE_HUNGER"
-          },
-          {
-            "testTime": "18:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-03",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:30",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-04",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "14:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "16:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-05",
-        "beforeTests": [
-          {
-            "testTime": "07:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:00",
-          "12:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "08:30",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "18:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-06",
-        "beforeTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "13:30",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-07",
-        "beforeTests": [
-          {
-            "testTime": "08:30",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "19:30",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-08",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "11:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-09",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "15:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:30",
-          "19:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "16:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-10",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "13:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "14:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-11",
-        "beforeTests": [
-          {
-            "testTime": "12:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:30",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "15:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-12",
-        "beforeTests": [
-          {
-            "testTime": "07:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "08:30",
-            "result": "FAKE_HUNGER"
-          },
-          {
-            "testTime": "18:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-13",
-        "beforeTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "13:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-14",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "16:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:30",
-          "19:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "17:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-15",
-        "beforeTests": [
-          {
-            "testTime": "08:30",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "14:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-16",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:30",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-17",
-        "beforeTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "13:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "18:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-18",
-        "beforeTests": [
-          {
-            "testTime": "07:30",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:00",
-          "13:00",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "09:30",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-19",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "11:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "17:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-20",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "REAL_HUNGER"
-          },
-          {
-            "testTime": "15:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "13:00",
-          "19:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "16:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-21",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:30",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-22",
-        "beforeTests": [
-          {
-            "testTime": "08:30",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "12:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-23",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:30",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-24",
-        "beforeTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:00",
-          "12:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "12:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-25",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "13:00",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "14:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-26",
-        "beforeTests": [
-          {
-            "testTime": "10:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "13:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "11:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-27",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:00",
-          "12:30",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:00",
-            "result": "FAKE_HUNGER"
-          },
-          {
-            "testTime": "15:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-28",
-        "beforeTests": [
-          {
-            "testTime": "11:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:00",
-          "13:00",
-          "18:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "13:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-29",
-        "beforeTests": [
-          {
-            "testTime": "08:00",
-            "result": "REAL_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "08:30",
-          "12:00",
-          "19:00"
-        ],
-        "afterTests": [
-          {
-            "testTime": "09:00",
-            "result": "FAKE_HUNGER"
-          }
-        ]
-      },
-      {
-        "date": "2024-07-30",
-        "beforeTests": [
-          {
-            "testTime": "09:00",
-            "result": "FAKE_HUNGER"
-          }
-        ],
-        "mealTimes": [
-          "09:30",
-          "13:00",
-          "18:30"
-        ],
-        "afterTests": [
-          {
-            "testTime": "10:00",
-            "result": "REAL_HUNGER"
-          }
-        ]
-      }
-    ]
-  };
+
+// const testResults = [
+//   { userId: 'test123', testId: 1, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-01' },
+//   { userId: 'test123', testId: 2, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-01' },
+//   { userId: 'test123', testId: 3, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-02' },
+//   { userId: 'test123', testId: 4, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-02' },
+//   { userId: 'test123', testId: 5, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-03' },
+//   { userId: 'test123', testId: 6, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-03' },
+//   { userId: 'test123', testId: 7, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-03' },
+//   { userId: 'test123', testId: 8, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-04' },
+//   { userId: 'test123', testId: 9, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-05' },
+//   { userId: 'test123', testId: 10, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-06' },
+//   { userId: 'test123', testId: 11, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-07' },
+//   { userId: 'test123', testId: 12, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-08' },
+//   { userId: 'test123', testId: 13, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-08' },
+//   { userId: 'test123', testId: 14, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-09' },
+//   { userId: 'test123', testId: 15, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-10' },
+//   { userId: 'test123', testId: 16, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-11' },
+//   { userId: 'test123', testId: 17, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-12' },
+//   { userId: 'test123', testId: 18, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-13' },
+//   { userId: 'test123', testId: 19, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-13' },
+//   { userId: 'test123', testId: 20, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-14' },
+//   { userId: 'test123', testId: 21, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-15' },
+//   { userId: 'test123', testId: 22, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-16' },
+//   { userId: 'test123', testId: 23, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-17' },
+//   { userId: 'test123', testId: 24, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-18' },
+//   { userId: 'test123', testId: 25, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-19' },
+//   { userId: 'test123', testId: 26, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-20' },
+//   { userId: 'test123', testId: 27, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-21' },
+//   { userId: 'test123', testId: 28, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-22' },
+//   { userId: 'test123', testId: 29, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-23' },
+//   { userId: 'test123', testId: 30, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-24' },
+//   { userId: 'test123', testId: 31, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-25' },
+//   { userId: 'test123', testId: 32, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-26' },
+//   { userId: 'test123', testId: 33, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-27' },
+//   { userId: 'test123', testId: 34, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-28' },
+//   { userId: 'test123', testId: 35, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-29' },
+//   { userId: 'test123', testId: 36, testName: '식후 배고픔 테스트', testResult: '가짜 배고픔', testWin: null, createTime: '2024-08-30' },
+//   { userId: 'test123', testId: 37, testName: '식전 배고픔 테스트', testResult: '진짜 배고픔', testWin: null, createTime: '2024-08-31' }
+// ];

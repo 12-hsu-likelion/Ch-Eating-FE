@@ -7,23 +7,16 @@ const CalendarDay = ({ data, gotoDetailedAnalyticsPage, dayInfo, isPrevMonth, is
     const { date, year, month, day, dayIndexOfWeek } = dayInfo;
     // 정보 객체 받아와서 fake인지 아닌지 확인하기
 
-    const beforeTests = data?.beforeTests ?? [];
-    const afterTests = data?.afterTests ?? [];
-
-    const allTests = [...beforeTests, ...afterTests];
-
-    const isFakeHunger = allTests.length > 0
-        ? allTests.map(test => test.result === "FAKE_HUNGER")
-        : [];
+    const isFakeHunger = data?.map(e => e.testResult === "가짜 배고픔" ? true : false);
 
     return (
         <StyledCalendarDay onClick={() => gotoDetailedAnalyticsPage(dayInfo)} $isCurrent={isCurrent} $isPrevMonth={isPrevMonth}>
             <span>
                 {Number(day)}
             </span>
-            {isFakeHunger.length > 0 && isFakeHunger.map((isFake, index) => (
-                <CalendarTestBar key={index} isFakeHunger={isFake} />
-            ))}
+            {isFakeHunger && isFakeHunger.map((isFake, i) => {
+                return <CalendarTestBar key={i} isFakeHunger={isFake} />
+            })}
 
         </StyledCalendarDay>
     );
