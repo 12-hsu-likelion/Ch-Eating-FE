@@ -14,7 +14,7 @@ const CalendarBody = () => {
 
         gsap.to(calendarBodyRef.current, {
             delay: .3,
-            clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
         })
     }, []);
 
@@ -35,10 +35,12 @@ const CalendarBody = () => {
 const StyledCalendarBody = styled.div`
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0px 0px 16px 0px #0000001A;
+    /* box-shadow: 0px 0px 16px 0px #0000001A; */
     margin-bottom: 51px;
     min-height: 420px;
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    border: 1.5px solid #0000001A;
+    position: relative;
 
     .top{
         height: 24px;

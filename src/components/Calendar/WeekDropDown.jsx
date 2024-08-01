@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import calendar_select from "../../assets/images/calendar_select.png";
 import colors from '../../styles/colors';
@@ -19,7 +19,7 @@ const WeekDropDown = () => {
     const [weekTitle, setWeekTitle] = useState(`${Number(selectedWeek[0].month)}/${Number(selectedWeek[0].day)}~${Number(selectedWeek[selectedWeek.length - 1].day)}`);
 
     // 선택된 주가 변경될 때마다 week 드롭다운의 title 변경
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         setWeekTitle(`${Number(selectedWeek[0].month)}/${Number(selectedWeek[0].day)}~${Number(selectedWeek[selectedWeek.length - 1].month)}/${Number(selectedWeek[selectedWeek.length - 1].day)}`);
     }, [selectedWeek]);
 
@@ -27,7 +27,7 @@ const WeekDropDown = () => {
     const [monthTitle, setMonthTitle] = useState(selectedMonth.month);
 
     // 선택된 월이 변경될 때마다 month 드롭다운의 title 변경
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         setMonthTitle(selectedMonth.month);
     }, [selectedMonth]);
 
