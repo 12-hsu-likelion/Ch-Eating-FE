@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {API} from "../../../api/axios";
+import { API } from "../../../api/axios";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 import NotEat from "./NotEat/NotEat";
 import ListEat from "./Eat/list-eat";
+import { format, parseISO } from 'date-fns';
 
 const MealContainer = styled.div`
     width: 100%;
@@ -48,8 +49,14 @@ const Meal = () => {
                         userId: userId
                     }
                 });
-                console.log(response);
-                setEat(response.data.data);
+                const meals = response.data.data;
+                
+                const today = new Date();
+                const todayFormatted = format(today, 'yyyy-MM-dd');
+                
+                const todaysMeals = meals.filter(meal => format(parseISO(meal.createAt), 'yyyy-MM-dd') === todayFormatted);
+                
+                setEat(todaysMeals);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -60,9 +67,9 @@ const Meal = () => {
     return (
         <MealContainer>
             <MealP>나의 식사량</MealP>
-            {eat.length === 0 ? <NotEat /> : <ListEat eat={eat}/>}
+            {eat.length === 0 ? <NotEat /> : <ListEat eat={eat} />}
         </MealContainer>
-    )
+    );
 }
 
 export default Meal;

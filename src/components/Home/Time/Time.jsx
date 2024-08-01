@@ -20,7 +20,7 @@ const TimeTitle = styled.p`
 `;
 
 const TimeP = styled.p`
-    color: ${colors.subColor};
+    color: ${({ color }) => color || colors.black};
     font-size: 4.8rem;
     font-weight: 600;
 `;
@@ -56,11 +56,13 @@ const TestButton = styled.button`
 
 const Time = () => {
     const [time, setTime] = useState('');
+    const [timeColor, setTimeColor] = useState(colors.black);
+    const [timeMessage, setTimeMessage] = useState('');
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        const updateTime = () => {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
@@ -68,7 +70,30 @@ const Time = () => {
             const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
             const formattedMinutes = minutes.toString().padStart(2, '0');
             setTime(`${period} ${formattedHours}:${formattedMinutes}`);
-        }, 1000);
+
+            let color = colors.black;
+            let message = '적절한 식사시간이 아니에요.';
+
+            if ((hours >= 7 && hours < 9) || (hours === 9 && minutes === 0) ||
+                (hours >= 12 && hours < 14) || (hours === 14 && minutes === 0) ||
+                (hours >= 18 && hours < 20) || (hours === 20 && minutes === 0)) {
+                color = colors.subColor;
+                message = '이상적인 식사시간이에요!';
+            } else if ((hours >= 21 && hours < 24) || (hours === 0 && minutes === 0) ||
+                (hours >= 0 && hours < 1) || (hours === 1 && minutes === 0)) {
+                color = colors.error;
+                message = '야식 위험시간이에요!';
+            } else {
+                color = colors.black;
+                message = '적절한 식사시간이 아니에요.';
+            }
+
+            setTimeColor(color);
+            setTimeMessage(message);
+        };
+
+        updateTime();
+        const intervalId = setInterval(updateTime, 60000);
 
         return () => clearInterval(intervalId);
     }, []);
@@ -81,8 +106,8 @@ const Time = () => {
         <div className="pageContainer" style={{ display: "flex", justifyContent: "center" }}>
             <TimeContainer>
                 <TimeTitle>현재 시간</TimeTitle>
-                <TimeP>{time}</TimeP>
-                <TimeSub>적절한 식사시간이에요!</TimeSub>
+                <TimeP color={timeColor}>{time}</TimeP>
+                <TimeSub color={timeColor}>{timeMessage}</TimeSub>
 
                 <TestContainer>
                     <TestButton onClick={handleTestButtonClick}>배고픔테스트 하기</TestButton>
