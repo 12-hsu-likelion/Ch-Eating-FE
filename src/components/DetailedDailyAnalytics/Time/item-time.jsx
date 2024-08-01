@@ -64,7 +64,7 @@ const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
                         case 'after':
                             return <After key={index} data={[event]} />;
                         case 'meal':
-                            return <Meal key={index} />;
+                            return <Meal key={index} data={[event]}/>;
                         default:
                             return null;
                     }

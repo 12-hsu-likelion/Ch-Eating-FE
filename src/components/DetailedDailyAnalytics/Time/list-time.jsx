@@ -32,9 +32,19 @@ const extractHour = (createTime) => {
     return date.getHours();
 };
 
+const extractHourFromMeal = (createAtTime) => {
+    if (!createAtTime) {
+        return null;
+    }
+
+    const date = new Date(createAtTime);
+    return date.getHours();
+};
+
 const ListTime = ({ before, after, meal }) => {
     //console.log(before);
     //console.log(after);
+    console.log(meal);
     const timeIntervals = Array.from({ length: 25 }, (_, index) => index);
 
     return (
@@ -43,7 +53,7 @@ const ListTime = ({ before, after, meal }) => {
             {timeIntervals.map(time => {
                 const matchingBefore = before.filter(item => extractHour(item.createTime) === time) || null;
                 const matchingAfter = after.filter(item => extractHour(item.createTime) === time) || null;
-                const matchingMeal = meal.filter(item => extractHour(item.createTime) === time) || null;
+                const matchingMeal = meal.filter(item => extractHourFromMeal(item.createAtTime) === time) || null;
 
                 return (
                     <ItemTime 
