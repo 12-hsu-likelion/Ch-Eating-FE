@@ -1,20 +1,22 @@
+import React from 'react';
 import colors from "../../../../styles/colors";
 import styled from "styled-components";
+import {API} from "../../../../api/axios";
 
 const BeforeContainer = styled.div`
     width: 100%;
     height: 2.8rem;
-    background-color: ${props => (props.istruehunger === "true" ? colors.subColor : colors.error)};
+    background-color: ${props => (props.testResult === "진짜 배고픔" ? colors.subColor : colors.error)};
     display: flex;
     align-items: center;
     padding-left: 1.2rem;
-    margin-bottom:  ${props => (props.istruehunger === "true" ? "0.5rem" : "0rem")};
+    margin-bottom: ${props => (props.testResult === "진짜 배고픔" ? "0.5rem" : "0rem")};
 `;
 
 const BeforeP = styled.p`
     font-size: 1.2rem;
     font-weight: 600;
-    color: ${props => (props.istruehunger === "true" ? colors.gray6 : colors.gray1)};
+    color: ${props => (props.testResult === "진짜 배고픔" ? colors.gray6 : colors.gray1)};
 `;
 
 const FalseContainer = styled.div`
@@ -27,7 +29,7 @@ const ButtonContainer = styled.div`
     display: flex;
     gap: 0.4rem;
     margin-top: 0.8rem;
-`
+`;
 
 const QnaButton = styled.button`
     width: 20%;
@@ -42,27 +44,43 @@ const QnaButton = styled.button`
     align-items: center;
     text-align: center;
     cursor: pointer;
-`
+`;
 
 const Before = ({ data }) => {
-    const istruehunger = data.completed === true;
-    const hungerStatus = istruehunger ? "진짜 배고픔" : "가짜 배고픔";
+    //console.log("Before:", data);
+
+    const handleQnaClick = async (testId, testWin) => {
+        try {
+            const response = await API.patch(`api/tests/${testId}/win`, { testWin });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <>
-            <BeforeContainer istruehunger={istruehunger.toString()}>
-                <BeforeP istruehunger={istruehunger.toString()}>식전 배고픔 테스트: {hungerStatus}</BeforeP>
-            </BeforeContainer>
+            {data.map((item, index) => {
+                const testId = item.testId;
+                const testResult = item.testResult;
+                return (
+                    <React.Fragment key={index}>
+                        <BeforeContainer testResult={testResult}>
+                            <BeforeP testResult={testResult}>식전 배고픔 테스트: {testResult}</BeforeP>
+                        </BeforeContainer>
 
-            {!istruehunger && (
-                <FalseContainer>
-                    <BeforeP style={{ color: colors.black }}>배고픔을 이겨냈나요?</BeforeP>
-                    <ButtonContainer>
-                        <QnaButton>네</QnaButton>
-                        <QnaButton>아니요</QnaButton>
-                    </ButtonContainer>
-                </FalseContainer>
-            )}
+                        {testResult !== "진짜 배고픔" && (
+                            <FalseContainer>
+                                <BeforeP style={{ color: colors.black }}>배고픔을 이겨냈나요?</BeforeP>
+                                <ButtonContainer>
+                                    <QnaButton onClick={() => handleQnaClick(testId, '승리')}>네</QnaButton>
+                                    <QnaButton onClick={() => handleQnaClick(testId, '패배')}>아니요</QnaButton>
+                                </ButtonContainer>
+                            </FalseContainer>
+                        )}
+                    </React.Fragment>
+                );
+            })}
         </>
     );
 }

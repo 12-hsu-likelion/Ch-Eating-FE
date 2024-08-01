@@ -32,7 +32,6 @@ const ItemTime = ({ time, before, after, meal }) => {
         return time < 10 ? `0${time}` : `${time}`;
     };
 
-
     return (
         <ItemContainer>
             <TimeP>{formatTime(time)}:00</TimeP>

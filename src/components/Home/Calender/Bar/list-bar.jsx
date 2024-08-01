@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
-import axios from 'axios';
 import ItemBar from "./item-bar";
+import { API } from "../../../../api/axios";
 
 const ListBarContainer = styled.div`
     width: 3.6rem;
@@ -17,14 +17,12 @@ const ListBar = ({ date }) => {
     useEffect(() => {
         const fetchTestResults = async () => {
             try {
-                const response = await axios.get("https://jsonplaceholder.typicode.com/users", {
+                const response = await API.get("api/tests/byDate", {
                     params: { date }
                 });
-                console.log(response);
+                console.log("서버 응답 데이터:", response.data.data);
 
-                if (response.data && Array.isArray(response.data)) {
-                    setTestResults(response.data);
-                } else if (response.data && Array.isArray(response.data.data)) {
+                if (Array.isArray(response.data.data)) {
                     setTestResults(response.data.data);
                 } else {
                     console.error('Unexpected response structure:', response.data);
@@ -36,7 +34,9 @@ const ListBar = ({ date }) => {
             }
         };
 
-        fetchTestResults();
+        if (date) { 
+            fetchTestResults();
+        }
     }, [date]);
 
     return (
