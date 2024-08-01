@@ -24,20 +24,38 @@ const MealP = styled.p`
 
 const Meal = () => {
     const [eat, setEat] = useState([]);
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserId = async () => {
             try {
-                const response = await API.get('/api/meal/meals');
-                setEat(response.data.data);
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchUserId();
+    }, []);
+
+    useEffect(() => {
+        const fetchMeals = async () => {
+            if (!userId) return;
+
+            try {
+                const response = await API.get('/api/meal/meals', {
+                    params: {
+                        userId: userId
+                    }
+                });
                 console.log(response);
+                setEat(response.data.data);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
-
-        fetchData();
-    }, []);
+        fetchMeals();
+    }, [userId]);
 
     return (
         <MealContainer>
