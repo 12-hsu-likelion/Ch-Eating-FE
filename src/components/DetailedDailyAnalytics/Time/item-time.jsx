@@ -18,7 +18,7 @@ const TimeP = styled.p`
     text-align: center;
     font-size: 1.2rem;
     font-weight: 600;
-    color: ${props => props.hasData ? colors.gray6 : colors.gray4};
+    color: ${props => props.hasdata === 'true' ? colors.gray6 : colors.gray4};
 `;
 
 const ContentContainer = styled.div`
@@ -55,7 +55,7 @@ const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
 
     return (
         <ItemContainer>
-            <TimeP hasData={hasData}>{formatTime(time)}:00</TimeP>
+            <TimeP hasdata={hasData ? 'true' : 'false'}>{formatTime(time)}:00</TimeP>
             <ContentContainer>
                 {sortedEvents.map((event, index) => {
                     switch (event.type) {

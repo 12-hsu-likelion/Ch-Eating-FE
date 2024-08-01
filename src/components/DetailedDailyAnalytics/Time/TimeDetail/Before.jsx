@@ -6,17 +6,17 @@ import { API } from "../../../../api/axios";
 const BeforeContainer = styled.div`
     width: 100%;
     height: 2.8rem;
-    background-color: ${props => (props.testResult === "진짜 배고픔" ? colors.subColor : colors.error)};
+    background-color: ${props => (props.testresult === "진짜 배고픔" ? colors.subColor : colors.error)};
     display: flex;
     align-items: center;
     padding-left: 1.2rem;
-    margin-bottom: ${props => (props.testResult === "진짜 배고픔" ? "0.5rem" : "0rem")};
+    margin-bottom: ${props => (props.testresult === "진짜 배고픔" ? "0.5rem" : "0rem")};
 `;
 
 const BeforeP = styled.p`
     font-size: 1.2rem;
     font-weight: 600;
-    color: ${props => (props.testResult === "진짜 배고픔" ? colors.gray6 : colors.gray1)};
+    color: ${props => (props.testresult === "진짜 배고픔" ? colors.gray6 : colors.gray1)};
 `;
 
 const FalseContainer = styled.div`
@@ -34,11 +34,11 @@ const ButtonContainer = styled.div`
 const QnaButton = styled.button`
     width: 20%;
     height: 2.6rem;
-    background-color: ${props => props.isClicked ? colors.mainColor : colors.violet10};
+    background-color: ${props => props.isclicked === 'true' ? colors.mainColor : colors.violet10};
     border: none;
     border-radius: 0.8rem;
     font-size: 1.2rem;
-    color: ${props => props.isClicked ? colors.gray1 : colors.gray4};
+    color: ${props => props.isclicked === 'true' ? colors.gray1 : colors.gray4};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,16 +80,16 @@ const Before = ({ data }) => {
 
                 return (
                     <React.Fragment key={index}>
-                        <BeforeContainer testResult={testResult}>
-                            <BeforeP testResult={testResult}>식전 배고픔 테스트: {testResult}</BeforeP>
+                        <BeforeContainer testresult={testResult}>
+                            <BeforeP testresult={testResult}>식전 배고픔 테스트: {testResult}</BeforeP>
                         </BeforeContainer>
 
                         {testResult !== "진짜 배고픔" && (
                             <FalseContainer>
                                 <BeforeP style={{ color: colors.black }}>배고픔을 이겨냈나요?</BeforeP>
                                 <ButtonContainer>
-                                    <QnaButton isClicked={isClicked === '승리'} onClick={() => handleQnaClick(testId, '승리')}>네</QnaButton>
-                                    <QnaButton isClicked={isClicked === '패배'} onClick={() => handleQnaClick(testId, '패배')}>아니요</QnaButton>
+                                    <QnaButton isclicked={isClicked === '승리' ? 'true' : 'false'} onClick={() => handleQnaClick(testId, '승리')}>네</QnaButton>
+                                    <QnaButton isclicked={isClicked === '패배' ? 'true' : 'false'} onClick={() => handleQnaClick(testId, '패배')}>아니요</QnaButton>
                                 </ButtonContainer>
                             </FalseContainer>
                         )}
