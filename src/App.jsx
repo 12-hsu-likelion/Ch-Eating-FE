@@ -54,7 +54,8 @@ function App() {
           {/* <Route path="/notice" element={<Notice />} /> */}
           <Route path='/calendar' element={<Calendar />} />
           {/* DetailedDailyAnalytics는 캘린더에서 일을 클릭했을 때 이동하는 페이지 */}
-          <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} />
+          {/* <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} /> */}
+          <Route path="/detailedanalytics/:formattedDate" element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
         </Route>
       </Routes>
