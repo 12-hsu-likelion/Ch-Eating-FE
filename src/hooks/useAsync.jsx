@@ -246,7 +246,7 @@ export const useAxios = () => {
                 localStorage.setItem("accessToken", response.data.accessToken);
             }
 
-            console.log(response);
+            // console.log(response);
 
             dispatch({
                 type: "ISLOGIN",
@@ -271,8 +271,12 @@ export const useAxios = () => {
 
 // 월이 바뀔 때마다 월에 대한 정보를 요청하는 함수
 // 이건 !!!!!!CalendarDaysWrapper!!!!!에서 사용함
-export const useGetMonthData = (monthInfo) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+export const useGetMonthData = (year, month) => {
+    const [state, dispatch] = useReducer(reducer, {
+        loadng: false,
+        data: [],
+        error: null
+    });
 
     async function fetchData() {
         dispatch({
@@ -280,15 +284,16 @@ export const useGetMonthData = (monthInfo) => {
         });
 
         try {
-            const response = await currentApi.get("/api/calendar/calendar-details-monthly", {
+            const response = await API.get("/api/tests/byMonth", {
                 params: {
-                    month: monthInfo
+                    year,
+                    month
                 }
             });
 
             dispatch({
                 type: "SUCCESS",
-                data: response.data
+                data: response.data.data
             })
         } catch (error) {
             console.log(error);
@@ -313,14 +318,12 @@ export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
         });
 
         try{
-            const response = await currentApi.get("/api/fake-hunger-stats/weekly", {
+            const response = await API.get("/api/tests/statistics/byDateRange", {
                 params: {
                     startDate,
                     endDate
                 }
             })
-
-            console.log(response.data);
 
             dispatch({
                 type: "SUCCESS",
@@ -335,15 +338,15 @@ export const useGetWeeklyFakeHungerStats = (startDate, endDate, deps = []) => {
         }
     }
 
-    // useEffect(()=>{
-    //     getWeeklyFakeHungerStats();
-    // }, deps);
+    useEffect(()=>{
+        getWeeklyFakeHungerStats();
+    }, deps);
 
     return [state, getWeeklyFakeHungerStats];
 }
 
 // month를 새로 선택할 때마다 month의 가짜 배고픔 요일, 시간, 횟수를 가져오는 함수
-export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
+export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     async function getMonthlyFakeHungerStats() {
@@ -352,14 +355,12 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
         });
 
         try{
-            const response = await currentApi.get("/api/tests/byMonth", {
+            const response = await API.get("/api/tests/statistics", {
                 params: {
                     year,
                     month
                 }
             });
-
-            console.log(response.data);
 
             dispatch({
                 type: "SUCCESS",
@@ -374,9 +375,9 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = []) => {
         }
     };
 
-    // useEffect(()=>{
-    //     getMonthlyFakeHungerStats();
-    // }, [deps]);
+    useEffect(()=>{
+        getMonthlyFakeHungerStats();
+    }, [deps]);
     
     return [state, getMonthlyFakeHungerStats];
 }

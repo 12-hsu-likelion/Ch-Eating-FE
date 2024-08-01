@@ -4,7 +4,7 @@ import colors from '../../../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarContext } from '../../../context/CalendarContext';
 
-const HungerAnalyticsBox = ({type, data = "데이터"}) => {
+const HungerAnalyticsBox = ({type, data = "로딩중"}) => {
     const {currentSelect} = useCalendarContext();
     const {isWeeklySelected, selectedWeek, selectedMonth} = currentSelect;
     const navigate = useNavigate();
@@ -12,8 +12,21 @@ const HungerAnalyticsBox = ({type, data = "데이터"}) => {
     // 만약에 지금이 주간 선택이라면 보내야할 데이터는 selectedWeek
     // 월간 선택이라면 보내야할 데이터는 selectedMonth
 
-    const sendData = isWeeklySelected ? selectedWeek[selectedWeek.length - 1].date : `${selectedMonth.year}-${selectedMonth.month.replace("월", "").toString().padStart("2", 0)}-01`;
+    const dayMapping = {
+        "MONDAY": "월요일",
+        "TUESDAY": "화요일",
+        "WEDNESDAY": "수요일",
+        "THURSDAY": "목요일",
+        "FRIDAY": "금요일",
+        "SATURDAY": "토요일",
+        "SUNDAY": "일요일"
+      };
 
+    if(dayMapping[data]){
+        data = dayMapping[data];
+    }
+    
+    const sendData = isWeeklySelected ? selectedWeek[selectedWeek.length - 1].date : `${selectedMonth.year}-${selectedMonth.month.replace("월", "").toString().padStart("2", 0)}-01`;
     return (
         <StyledHungerAnalyticsBox onClick={()=>navigate("/myhungeranalytics", {
             state: {
@@ -23,7 +36,7 @@ const HungerAnalyticsBox = ({type, data = "데이터"}) => {
             <div className="analytics-type">
                 {type}
             </div>
-            <span>{data}</span>
+            <span>{data ? data : "없음"}</span>
         </StyledHungerAnalyticsBox>
     );
 };
