@@ -15,7 +15,8 @@ const ListEat = ({eat}) => {
             <ListEatContainer>
                 {eat.map((item, index) => (
                     <ItemEat 
-                        key={index} 
+                        key={index}
+                        id={item.mealId} 
                         title={item.mealName} 
                         sub={item.mealAmount}
 

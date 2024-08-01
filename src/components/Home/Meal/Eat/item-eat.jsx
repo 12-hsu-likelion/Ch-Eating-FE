@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import colors from "../../../../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const EatContainer = styled.div`
     width: calc(100% - 0rem / 4);
@@ -37,9 +38,15 @@ const EatSubP = styled.p`
     text-overflow: ellipsis;
 `
 
-const ItemEat = ({title, sub}) => {
+const ItemEat = ({id, title, sub}) => {
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        navigate(`/edit/${id}`);
+    }
+
     return (
-        <EatContainer>
+        <EatContainer key={id} onClick={handleEdit}>
             <EatTitleP>{title}</EatTitleP>
             <EatSubP>{sub}</EatSubP>
         </EatContainer>

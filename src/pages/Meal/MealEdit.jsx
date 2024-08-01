@@ -73,10 +73,28 @@ const MealEdit = () => {
 
     // 정보 받아오기
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserId = async () => {
             try {
-                const response = await API.get("api/meal/meals");
-                console.log("서버 응답 데이터:", response.data);
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchUserId();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!userId) return
+
+            try {
+                const response = await API.get("api/meal/meals", {
+                    params: {
+                        userId: userId
+                    }
+                });
+                console.log("서버 응답 데이터:", response.data.data);
 
                 const mealData = response.data.data.find(meal => meal.mealId === parseInt(id));
                 console.log("찾은 데이터:", mealData);
@@ -95,7 +113,7 @@ const MealEdit = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, [userId, id]);
 
 
     const handleTypeSelect = (type) => {

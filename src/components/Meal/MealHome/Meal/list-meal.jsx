@@ -31,11 +31,30 @@ const ListMeal = () => {
     const [meals, setMeals] = useState([]);
     const [searchInput, setSearchInput] = useState('');
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchUserId();
+    }, []);
 
     useEffect(() => {
         const fetchMeals = async () => {
+            if (!userId) return;
+
             try {
-                const response = await API.get('/api/meal/meals');
+                const response = await API.get('/api/meal/meals', {
+                    params: {
+                        userId: userId
+                    }
+                });
                 console.log(response);
                 setMeals(response.data.data);
             } catch (error) {
@@ -43,7 +62,7 @@ const ListMeal = () => {
             }
         };
         fetchMeals();
-    }, []);
+    }, [userId]);
 
     const getFilteredData = () => {
         let filteredData = [...meals];
@@ -94,7 +113,8 @@ const ListMeal = () => {
                             id={meal.mealId}
                             name={meal.mealName}
                             amount={meal.mealAmount}
-                            detail={meal.mealDetail}
+                            createAt={meal.createAt}
+                            updateAt={meal.updateAt}
                             selectedFilterItems={selectedFilterItems}
                         />
                     ))}
