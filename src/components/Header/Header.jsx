@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import axios from "axios";
+import { API } from "../../api/axios";
 import HeaderLogo from "../../assets/images/headerLogo.png";
 import HeaderNot from "../../assets/images/headerNot.png";
 import HeaderYes from "../../assets/images/headerYes.png";
-import HeaderNoticeNot from "../../assets/images/headerNoticeNot.png";
-import HeaderNoticeYes from "../../assets/images/headerNoticeYes.png";
+import { format, parseISO } from 'date-fns';
 
 const HeaderContainer = styled.div`
     width: 90%;
@@ -48,44 +47,55 @@ const HeaderImg = styled.img`
 
 const Header = () => {
     const navigate = useNavigate();
-    const [meal, setMeal] = useState(false);
-    const [notice, setNotice] = useState(false);
-
-    // 헤더 맨 오른쪽 얼굴 사진
-    useEffect(() => {
-        fetchDataMeal();
-    }, []);
-
-    const fetchDataMeal = async () => {
-        try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-            setMeal(response.data.length > 0);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    const [meal, setMeal] = useState([]);
+    const [userId, setUserId] = useState("");
+    const [hasMealsToday, setHasMealsToday] = useState(false);
 
     useEffect(() => {
-        fetchDataNotice();
+        const fetchUserId = async () => {
+            try {
+                const response = await API.get("/api/users/myPage");
+                setUserId(response.data.data.userId);
+            } catch (error) {
+                console.error("Error fetching user ID:", error);
+            }
+        };
+        fetchUserId();
     }, []);
 
-    // 헤더 알림 표시 -> 알림 표시된 사진이 뜨는 기준을 모르겠어서 나중에 다시 해놓겠습니다.
-    const fetchDataNotice = async () => {
-        try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-            setNotice(response.data.length > 0);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    useEffect(() => {
+        const fetchMeals = async () => {
+            if (!userId) return;
+
+            try {
+                const response = await API.get('/api/meal/meals', {
+                    params: { userId: userId }
+                });
+                const meals = response.data.data;
+                setMeal(meals);
+
+                const today = new Date();
+                const todayFormatted = format(today, 'yyyy-MM-dd');
+                console.log("Today's date:", todayFormatted);
+
+                const hasMealsToday = meals.some(meal => {
+                    const mealDate = format(parseISO(meal.createAt), 'yyyy-MM-dd');
+                    return mealDate === todayFormatted;
+                });
+
+                setHasMealsToday(hasMealsToday);
+                console.log("Has meals today:", hasMealsToday);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchMeals();
+    }, [userId]);
 
     const handleHomeClick = () => {
         navigate("/home");
     };
-
-    const handleNoticeClick = () => {
-        navigate("/notice");
-    }
 
     const handleMypageClick = () => {
         navigate("/mypage");
@@ -93,17 +103,16 @@ const Header = () => {
 
     return (
         <div className="pageContainer" style={{display: "flex", justifyContent: "center", backgroundColor: colors.mainColor}}>
-                <HeaderContainer>
-                    <HeaderLeft onClick={handleHomeClick}>
-                        <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
-                        <HeaderP>Ch-Eating</HeaderP>
-                    </HeaderLeft>
+            <HeaderContainer>
+                <HeaderLeft onClick={handleHomeClick}>
+                    <HeaderLogoImg src={HeaderLogo} alt="headerLogo" />
+                    <HeaderP>Ch-Eating</HeaderP>
+                </HeaderLeft>
 
-                    <HeaderRight>
-                        <HeaderImg src={notice ? HeaderNoticeYes : HeaderNoticeNot} alt="headerNoticeNot" onClick={handleNoticeClick} />
-                        <HeaderImg src={meal ? HeaderYes : HeaderNot} alt={meal ? "headerYes" : "headerNot"} onClick={handleMypageClick} />
-                    </HeaderRight>
-                </HeaderContainer>
+                <HeaderRight>
+                    <HeaderImg src={hasMealsToday ? HeaderYes : HeaderNot} alt={hasMealsToday ? "headerYes" : "headerNot"} onClick={handleMypageClick} />
+                </HeaderRight>
+            </HeaderContainer>
         </div>
     )
 }

@@ -7,17 +7,17 @@ const Bar = styled.div`
     border: none;
     border-radius: 5rem;
     background-color: ${props => {
-        if (props.testWin === '승리') {
+        if (props.testresult === '진짜 배고픔') {
             return colors.subColor;
-        } else if (props.testWin === '패배') {
+        } else if (props.testresult === '가짜 배고픔') {
             return colors.error;
         }
     }};
 `;
 
-const ItemBar = ({ testWin }) => {
+const ItemBar = ({ testresult }) => {
     return (
-        <Bar testWin={testWin} />
+        <Bar testresult={testresult} />
     );
 };
 

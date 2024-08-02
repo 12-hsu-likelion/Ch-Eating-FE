@@ -1,20 +1,23 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import colors from "../../../../styles/colors";
 import ListBar from "../Bar/list-bar";
+import colors from "../../../../styles/colors";
 
-const DateContainer = styled.div.attrs(props => ({
-    istoday: props.istoday ? "true" : undefined,
-    isfirst: props.isfirst ? "true" : undefined,
-    islast: props.islast ? "true" : undefined
-}))`
+const DateContainer = styled.div`
     width: calc(100% / 7);
     display: flex;
     justify-content: center;
     text-align: center;
-    background-color: ${props => (props.istoday ? colors.violet10 : "white")};
-    border-radius: ${props => props.isfirst ? '0 0 0 0.8rem' : props.islast ? '0 0 0.8rem 0' : '0'};
+    background-color: ${props => (props.$istoday === 'true' ? colors.violet10 : "white")};
+    border-radius: ${props => 
+        props.$isfirst === 'true' ? '0 0 0 0.8rem' : 
+        props.$islast === 'true' ? '0 0 0.8rem 0' : 
+        '0'};
     border: none;
+    cursor: pointer;
 `;
+
 const DateItem = styled.div`
     margin-top: 0.2rem;
 `;
@@ -30,17 +33,25 @@ const DateP = styled.p`
     font-weight: 600;
 `;
 
-const ItemDate = ({date, day, istoday, isfirst, islast}) => {
-    const formattedDate = date.toISOString().split('T')[0];
-    console.log(formattedDate);
+const ItemDate = ({ date, day, istoday = false, isfirst = false, islast = false, formattedDates }) => {
+    const navigate = useNavigate();
+
+    const handleDateClick = () => {
+        navigate(`/detailedanalytics/${formattedDates}`);
+    };
 
     return (
-        <DateContainer istoday={istoday} isfirst={isfirst} islast={islast}>
-                <DateItem>
-                    <DayP>{day}</DayP>
-                    <DateP>{date.getDate()}</DateP>
-                    <ListBar date={formattedDate}/>
-                </DateItem>
+        <DateContainer 
+            $istoday={istoday.toString()} 
+            $isfirst={isfirst.toString()} 
+            $islast={islast.toString()} 
+            onClick={handleDateClick}
+        >
+            <DateItem>
+                <DayP>{day}</DayP>
+                <DateP>{date.getDate()}</DateP>
+                <ListBar date={formattedDates}/>
+            </DateItem>
         </DateContainer>
     );
 };

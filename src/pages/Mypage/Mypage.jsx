@@ -47,9 +47,9 @@ const Mypage = () => {
                 <UserProfile />
             </MypageContainer>
                 
-            <MypageContainer style={{padding: "2.8rem 5% 4.7rem 5%", marginTop: "2rem"}}>
+            {/* <MypageContainer style={{padding: "2.8rem 5% 4.7rem 5%", marginTop: "2rem"}}>
                 <Notice />
-            </MypageContainer>
+            </MypageContainer> */}
 
             <MypageContainer style={{padding: "2.8rem 5% 4.7rem 5%", marginTop: "2rem", marginBottom: "7.7rem"}}>
                 <Account onLogoutClick={handleLogoutClick} onDeleteClick={handleDeleteClick} />
