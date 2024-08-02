@@ -45,32 +45,27 @@ const extractHourFromMeal = (createTime) => {
     return parseInt(hours, 10);
 }; */
 
+
 // 시간 부분만 빼기 (date 문자열에서 시간 추출)
-const extractHour = (createTime) => {
-    if (!createTime) {
+const extractHourFromDate = (dateTime) => {
+    if (!dateTime) {
         return null;
     }
-
-    // ISO 8601 포맷으로 변환하여 처리
-    const formattedTime = createTime.replace(/-/g, '/').replace(/T/, ' ').replace(/Z$/, '');
-    const date = new Date(formattedTime);
-
-    console.log(`createAtTime: ${createTime}`);
-    return date.getHours();
-};
-
-// 시간 부분만 빼기 (시간 문자열에서 시간 추출)
-const extractHourFromMeal = (createTime) => {
-    if (!createTime) {
-        return null;
-    }
-
-    const [hours] = createTime.split(':');
-
-    console.log(`createAtTime: ${createTime}, Hour: ${hours}`);
+    // 예: "2024-08-02-14:30" 형태의 문자열에서 시간 추출
+    const parts = dateTime.split('-'); // ["2024", "08", "02", "14:30"]
+    const timePart = parts[3]; // "14:30"
+    const [hours] = timePart.split(':'); // "14"
     return parseInt(hours, 10);
 };
 
+// 시간 부분만 빼기 (시간 문자열에서 시간 추출)
+const extractHourFromMeal = (time) => {
+    if (!time) {
+        return null;
+    }
+    const [hours] = time.split(':'); // "14:30:00" -> "14"
+    return parseInt(hours, 10);
+};
 
 const ListTime = ({ before, after, meal }) => {
     //console.log(before);
@@ -82,8 +77,8 @@ const ListTime = ({ before, after, meal }) => {
         <ListContainer>
             <ListBar />
             {timeIntervals.map(time => {
-                const matchingBefore = before.filter(item => extractHour(item.createDate) === time) || null;
-                const matchingAfter = after.filter(item => extractHour(item.createDate) === time) || null;
+                const matchingBefore = before.filter(item => extractHourFromDate(item.createDate) === time) || null;
+                const matchingAfter = after.filter(item => extractHourFromDate(item.createDate) === time) || null;
                 const matchingMeal = meal.filter(item => extractHourFromMeal(item.createAtTime) === time) || null;
 
                 return (
