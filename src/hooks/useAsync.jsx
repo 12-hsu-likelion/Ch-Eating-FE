@@ -262,7 +262,7 @@ export const useAxios = (path) => {
         }
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         fetch();
     }, [path]);
 
@@ -380,4 +380,33 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
     }, [deps]);
 
     return [state, getMonthlyFakeHungerStats];
+}
+
+export const useGetWeeklyStatics = (startDate, endDate) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    async function fetchData() {
+        dispatch({
+            type: "LOADING"
+        });
+
+        try {
+            const response = API.get("api/statistics/weekly", {
+                params: {
+                    startDate,
+                    endDate
+                }
+            });
+
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    return [state, fetchData];
 }
