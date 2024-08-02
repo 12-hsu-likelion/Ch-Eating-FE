@@ -32,7 +32,8 @@ const CalendarDaysWrapper = () => {
     }
 
     if(monthState.loading){
-        return <StyledLoading>로딩중...</StyledLoading>
+        // return <StyledLoading>로딩중...</StyledLoading>
+        return;
     }
 
     const transformedData = monthState.data.reduce((acc, item) => {

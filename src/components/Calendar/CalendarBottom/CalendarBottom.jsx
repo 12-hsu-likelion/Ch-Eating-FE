@@ -14,7 +14,7 @@ const CalendarBottom = () => {
 };
 
 const StyledCalendarBottom = styled.div`
-    margin-bottom: 80px;
+    margin-bottom: 75px;
 `;
 
 export default CalendarBottom;

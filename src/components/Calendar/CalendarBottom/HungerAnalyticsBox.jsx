@@ -4,7 +4,7 @@ import colors from '../../../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarContext } from '../../../context/CalendarContext';
 
-const HungerAnalyticsBox = ({type, data = "로딩중"}) => {
+const HungerAnalyticsBox = ({type, data = " "}) => {
     const {currentSelect} = useCalendarContext();
     const {isWeeklySelected, selectedWeek, selectedMonth} = currentSelect;
     const navigate = useNavigate();
