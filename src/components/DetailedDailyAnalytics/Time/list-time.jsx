@@ -22,15 +22,17 @@ const ListBar = styled.div`
 `;
 
 // 시간 부분만 빼기
-const extractHour = (createTime) => {
+/* const extractHour = (createTime) => {
     if (!createTime) {
         return null;
     }
 
     const formattedTime = createTime.replace(/-/g, '/');
     const date = new Date(formattedTime);
+
+    console.log(`createAtTime: ${createTime}`);
     return date.getHours();
-};
+}; 
 
 const extractHourFromMeal = (createTime) => {
     if (!createTime) {
@@ -41,8 +43,29 @@ const extractHourFromMeal = (createTime) => {
 
     //console.log(`createAtTime: ${createTime}, Hour: ${hours}`);
     return parseInt(hours, 10);
+}; */
+
+
+// 시간 부분만 빼기 (date 문자열에서 시간 추출)
+const extractHourFromDate = (dateTime) => {
+    if (!dateTime) {
+        return null;
+    }
+    // 예: "2024-08-02-14:30" 형태의 문자열에서 시간 추출
+    const parts = dateTime.split('-'); // ["2024", "08", "02", "14:30"]
+    const timePart = parts[3]; // "14:30"
+    const [hours] = timePart.split(':'); // "14"
+    return parseInt(hours, 10);
 };
 
+// 시간 부분만 빼기 (시간 문자열에서 시간 추출)
+const extractHourFromMeal = (time) => {
+    if (!time) {
+        return null;
+    }
+    const [hours] = time.split(':'); // "14:30:00" -> "14"
+    return parseInt(hours, 10);
+};
 
 const ListTime = ({ before, after, meal }) => {
     //console.log(before);
@@ -54,8 +77,8 @@ const ListTime = ({ before, after, meal }) => {
         <ListContainer>
             <ListBar />
             {timeIntervals.map(time => {
-                const matchingBefore = before.filter(item => extractHour(item.createDate) === time) || null;
-                const matchingAfter = after.filter(item => extractHour(item.createDate) === time) || null;
+                const matchingBefore = before.filter(item => extractHourFromDate(item.createDate) === time) || null;
+                const matchingAfter = after.filter(item => extractHourFromDate(item.createDate) === time) || null;
                 const matchingMeal = meal.filter(item => extractHourFromMeal(item.createAtTime) === time) || null;
 
                 return (
