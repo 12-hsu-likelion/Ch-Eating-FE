@@ -32,30 +32,30 @@ const extractHour = (createTime) => {
     return date.getHours();
 };
 
-const extractHourFromMeal = (createAtTime) => {
-    if (!createAtTime) {
+const extractHourFromMeal = (createTime) => {
+    if (!createTime) {
         return null;
     }
 
-    const date = new Date(createAtTime);
-    return date.getHours();
+    const [hours, minutes, seconds] = createTime.split(':');
+
+    //console.log(`createAtTime: ${createTime}, Hour: ${hours}`);
+    return parseInt(hours, 10);
 };
+
 
 const ListTime = ({ before, after, meal }) => {
     //console.log(before);
     //console.log(after);
-    console.log(meal);
+    //console.log(meal);
     const timeIntervals = Array.from({ length: 25 }, (_, index) => index);
 
     return (
         <ListContainer>
             <ListBar />
             {timeIntervals.map(time => {
-                //                              여기 밑에 item.createTime->item.createDate로 명세 바뀌어서 바꿔놨어요
                 const matchingBefore = before.filter(item => extractHour(item.createDate) === time) || null;
-                //                              여기 밑에 item.createTime->item.createDate로 명세 바뀌어서 바꿔놨어요
                 const matchingAfter = after.filter(item => extractHour(item.createDate) === time) || null;
-                //                                          이 밑의 item.createAtTiem은 뭔지 몰라서 건들지 않았습니다
                 const matchingMeal = meal.filter(item => extractHourFromMeal(item.createAtTime) === time) || null;
 
                 return (

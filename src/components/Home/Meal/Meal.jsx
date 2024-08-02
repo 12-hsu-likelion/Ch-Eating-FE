@@ -50,6 +50,7 @@ const Meal = () => {
                     }
                 });
                 const meals = response.data.data;
+                //console.log(meals);
                 
                 const today = new Date();
                 const todayFormatted = format(today, 'yyyy-MM-dd');

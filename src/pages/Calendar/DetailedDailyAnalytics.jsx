@@ -91,17 +91,22 @@ const DetailedDailyAnalytics = () => {
                     params: { userId: userId }
                 });
 
+                console.log("data:", response.data.data);
                 const formattedDate = getFormattedDate(year, month, day);
+                console.log("formattedDate:", formattedDate);
 
+                console.log(meal);
                 const filteredMeals = response.data.data.filter(meal =>
                     meal.createAt === formattedDate
                 );
 
+                //console.log("filteredMeals:", filteredMeals);
                 setMeal(filteredMeals);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
+        
         fetchMeals();
     }, [userId, year, month, day]);
 
