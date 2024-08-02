@@ -125,7 +125,7 @@ const StyledLogin = styled.section`
                 width: 100%;
                 background-color: ${colors.mainColor};
                 font-size: 16px;
-                padding: 18px 164px;
+                padding: 18px 0;
                 color: ${colors.gray1};
                 white-space: nowrap;
                 border-radius: 29px;

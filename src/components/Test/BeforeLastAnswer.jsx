@@ -31,7 +31,8 @@ const BeforeLastAnswer = ({ beforeAnswer, setBeforeAnswer }) => {
 
 const StyledBeforeLastAnswer = styled.div`
     margin-top: -16px;
-    width: 308px;
+    width: calc(308px + (100vw - 430px) * 0.5);
+    max-width: 308px;
 
     .level{
         display: flex;
