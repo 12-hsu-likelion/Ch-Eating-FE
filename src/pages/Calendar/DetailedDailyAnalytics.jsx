@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ListTime from '../../components/DetailedDailyAnalytics/Time/list-time';
 import { API } from "../../api/axios";
 
@@ -53,8 +53,11 @@ const BottomContainer = styled.div`
 `;
 
 const DetailedDailyAnalytics = () => {
-    const location = useLocation();
-    const { year, month, day } = location.state.dayInfo || {};
+    const { formattedDate } = useParams();
+    //console.log("params:", formattedDate);
+
+    const [year, month, day] = formattedDate.split('-').map(Number);
+
     const [userId, setUserId] = useState("");
     const [before, setBefore] = useState([]);
     const [after, setAfter] = useState([]);
@@ -65,6 +68,7 @@ const DetailedDailyAnalytics = () => {
         const formattedDay = String(day).padStart(2, '0');
         return `${year}-${formattedMonth}-${formattedDay}`;
     };
+
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -80,7 +84,7 @@ const DetailedDailyAnalytics = () => {
 
     useEffect(() => {
         const fetchMeals = async () => {
-            if (!userId) return;
+            if (!userId || !year || !month || !day) return;
 
             try {
                 const response = await API.get('/api/meal/meals', {
@@ -103,6 +107,8 @@ const DetailedDailyAnalytics = () => {
 
     useEffect(() => {
         const fetchTests = async () => {
+            if (!year || !month || !day) return;
+
             const formattedDate = getFormattedDate(year, month, day);
 
             try {
@@ -120,8 +126,6 @@ const DetailedDailyAnalytics = () => {
 
                 setBefore(beforeTests);
                 setAfter(afterTests);
-                //console.log(before);
-                //console.log(after);
             } catch (error) {
                 console.error("Error:", error);
             }

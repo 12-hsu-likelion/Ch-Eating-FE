@@ -16,25 +16,29 @@ const ListBar = ({ date }) => {
 
     useEffect(() => {
         const fetchTestResults = async () => {
-            try {
-                const response = await API.get("api/tests/byDate", {
-                    params: { date }
-                });
-                console.log("서버 응답 데이터:", response.data.data);
+        try {
+            const response = await API.get("api/tests/byDate", {
+                params: { date: date }
+            });
+            console.log(date, ":", response.data.data);
 
-                if (Array.isArray(response.data.data)) {
-                    setTestResults(response.data.data);
-                } else {
-                    console.error('Unexpected response structure:', response.data);
-                    setTestResults([]);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                setTestResults([]); 
-            }
-        };
+            // 시간 빠른 순으로 정렬
+            const convertToISO = (dateStr) => {
+                return dateStr.replace(/-(\d{2}):(\d{2})$/, 'T$1:$2:00Z');
+            };
 
-        if (date) { 
+            const sortedResults = response.data.data.sort((a, b) => {
+                return new Date(convertToISO(a.createTime)) - new Date(convertToISO(b.createTime));
+            });
+
+            console.log("Sorted Results:", sortedResults);
+            setTestResults(sortedResults);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+        if (date) {
             fetchTestResults();
         }
     }, [date]);
@@ -42,12 +46,11 @@ const ListBar = ({ date }) => {
     return (
         <ListBarContainer>
             {testResults
-                .filter(result => result.testResult === '가짜 배고픔')
                 .slice(0, 3)
                 .map(result => (
                     <ItemBar 
                         key={result.testId} 
-                        testWin={result.testWin} 
+                        testresult={result.testResult} 
                     />
                 ))}
         </ListBarContainer>

@@ -4,6 +4,7 @@ import colors from "../../../styles/colors";
 import { API } from "../../../api/axios";
 import NoticeNot from "../../../assets/images/noticeNot.png";
 import NoticeYes from "../../../assets/images/noticeYes.png";
+import { format, parseISO } from 'date-fns';
 
 const UserProfileP = styled.p`
     font-size: 2.4rem;
@@ -31,24 +32,30 @@ const UserProfileP2 = styled.p`
 const UserProfile = () => {
     const [name, setName] = useState('');
     const [id, setId] = useState('');
-    const [active, setActive] = useState(false);
+    const [hasDataToday, setHasDataToday] = useState(false);
+    const [profileImage, setProfileImage] = useState(NoticeNot);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await API.get('api/users/myPage');
-                const userData = response.data.data;
 
-                console.log(userData);
+                const userResponse = await API.get('api/users/myPage');
+                const userData = userResponse.data.data;
 
                 setName(userData.userName || '정보 없음');
                 setId(userData.userId || '정보 없음');
 
-                if (userData.active && userData.active.notice !== undefined) {
-                    setActive(userData.active.notice);
-                } else {
-                    setActive(false);
-                }
+                const mealResponse = await API.get('/api/meal/meals', {
+                    params: { userId: userData.userId }
+                });
+                const meals = mealResponse.data.data;
+
+                const today = new Date();
+                const todayFormatted = format(today, 'yyyy-MM-dd');
+                
+                const hasMealsToday = meals.some(meal => format(parseISO(meal.createAt), 'yyyy-MM-dd') === todayFormatted);
+                setHasDataToday(hasMealsToday);
+                setProfileImage(hasMealsToday ? NoticeYes : NoticeNot);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -58,14 +65,10 @@ const UserProfile = () => {
         fetchData();
     }, []);
 
-    const getImage = () => {
-        return active ? NoticeYes : NoticeNot;
-    };
-
     return (
         <>
             <UserProfileP>내 계정</UserProfileP>
-            <MypageImg src={getImage()} alt="profileImg" />
+            <MypageImg src={profileImage} alt="profileImg" />
 
             <ProfileContainer style={{ marginTop: "3.2rem" }}>
                 <UserProfileP2>이름</UserProfileP2>

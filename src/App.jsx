@@ -51,10 +51,11 @@ function App() {
           <Route path="/meal" element={<MealHome />} />
           <Route path="/post" element={<MealPost />} />
           <Route path="/edit/:id" element={<MealEdit />} />
-          <Route path="/notice" element={<Notice />} />
+          {/* <Route path="/notice" element={<Notice />} /> */}
           <Route path='/calendar' element={<Calendar />} />
           {/* DetailedDailyAnalytics는 캘린더에서 일을 클릭했을 때 이동하는 페이지 */}
-          <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} />
+          {/* <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} /> */}
+          <Route path="/detailedanalytics/:formattedDate" element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
         </Route>
       </Routes>

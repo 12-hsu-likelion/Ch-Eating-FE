@@ -3,6 +3,7 @@ import styled from "styled-components";
 import colors from "../../../styles/colors";
 import Plus from "../../../assets/images/plus.png";
 import ListDate from "./Date/list-date";
+import { useNavigate } from 'react-router-dom';
 
 const CalenderContainer = styled.div`
     width: 85%;
@@ -32,6 +33,7 @@ const PlusImg = styled.img`
 
 const Calender = () => {
     const [month, setMonth] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const date = new Date();
@@ -39,12 +41,16 @@ const Calender = () => {
         setMonth(monthNames[date.getMonth()]);
     }, []);
 
+    const handlePlusClick = () => {
+        navigate('/calendar');
+    };
+
     return (
         <div className="pageContainer" style={{display: "flex", justifyContent: "center"}}>
             <CalenderContainer>
                 <CalenderTop>
                     <CalenderTopP>{month}</CalenderTopP>
-                    <PlusImg src={Plus} alt="plus" />
+                    <PlusImg src={Plus} onClick={handlePlusClick} alt="plus" />
                 </CalenderTop>
                 <ListDate />
             </CalenderContainer>
