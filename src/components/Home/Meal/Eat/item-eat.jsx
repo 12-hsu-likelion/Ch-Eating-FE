@@ -14,6 +14,7 @@ const EatContainer = styled.div`
     text-align: center;
     border: none;
     border-radius: 0.8rem;
+    cursor: pointer;
 `
 
 const EatTitleP = styled.p`

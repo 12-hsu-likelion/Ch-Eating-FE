@@ -20,7 +20,7 @@ const TimeTitle = styled.p`
 `;
 
 const TimeP = styled.p`
-    color: ${({ color }) => color || colors.black};
+    color: ${({ color }) => color || colors.gray2};
     font-size: 4.8rem;
     font-weight: 600;
 `;
@@ -71,20 +71,16 @@ const Time = () => {
             const formattedMinutes = minutes.toString().padStart(2, '0');
             setTime(`${period} ${formattedHours}:${formattedMinutes}`);
 
-            let color = colors.black;
+            let color = colors.gray2;
             let message = '적절한 식사시간이 아니에요.';
 
             if ((hours >= 7 && hours < 9) || (hours === 9 && minutes === 0) ||
                 (hours >= 12 && hours < 14) || (hours === 14 && minutes === 0) ||
                 (hours >= 18 && hours < 20) || (hours === 20 && minutes === 0)) {
                 color = colors.subColor;
-                message = '이상적인 식사시간이에요!';
-            } else if ((hours >= 21 && hours < 24) || (hours === 0 && minutes === 0) ||
-                (hours >= 0 && hours < 1) || (hours === 1 && minutes === 0)) {
-                color = colors.error;
-                message = '야식 위험시간이에요!';
+                message = '적절한 식사시간이에요!';
             } else {
-                color = colors.black;
+                color = colors.error;
                 message = '적절한 식사시간이 아니에요.';
             }
 
@@ -93,7 +89,7 @@ const Time = () => {
         };
 
         updateTime();
-        const intervalId = setInterval(updateTime, 60000);
+        const intervalId = setInterval(updateTime, 1000);
 
         return () => clearInterval(intervalId);
     }, []);
