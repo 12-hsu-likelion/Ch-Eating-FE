@@ -65,30 +65,30 @@ const TestQna = () => {
     }
 
     // 결과를 도출하고 통신을 보내고 사용자를 안내하는 함수
-    async function getTestResult(answer){
+    async function getTestResult(answer) {
         const value = Object.values(answer);
 
-        if(activeType === "before"){
-            value.map((e, i)=>{
-                if(i === 0){
+        if (activeType === "before") {
+            value.map((e, i) => {
+                if (i === 0) {
                     const diff = (currentTime - e + 1440) % 1440;
                     if (diff <= 180 || diff >= 1440 - 180) {
                         fakeHungerCount += 1;
                     }
                 }
-                else if(i === 1){
+                else if (i === 1) {
                     fakeHungerCount += e === "네" ? 1 : 0;
                 }
-                else if(i === 2 || i === 3){
+                else if (i === 2 || i === 3) {
                     fakeHungerCount += e === "아니오" ? 1 : 0;
                 }
-                else{
+                else {
                     fakeHungerCount += e >= 4 ? 1 : 0;
                 }
             })
-        }else{
-            value.map(e=>{
-                if(e !== "아니오"){
+        } else {
+            value.map(e => {
+                if (e !== "아니오") {
                     fakeHungerCount++;
                 }
             })
@@ -104,23 +104,23 @@ const TestQna = () => {
             testResult
         })
 
-        try{
+        try {
             const response = await API.post("/api/tests/test", {
                 testName,
                 testResult
             });
 
             console.log(response.data);
-        }catch(e){
+        } catch (e) {
             console.log(e);
             alert("오류가 발생했습니다.");
             return;
         }
 
-        if(isFakeHunger){
+        if (isFakeHunger) {
             navigate(`/result/${activeType}/fakehunger`);
         }
-        else{
+        else {
             navigate(`/result/${activeType}/realhunger`);
         }
     }
