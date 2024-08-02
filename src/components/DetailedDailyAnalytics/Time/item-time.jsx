@@ -42,6 +42,8 @@ const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
         ...meal.map(item => ({ ...item, type: 'meal' }))
     ];
 
+    //console.log(time, ":", events);
+
     // 빠른 순으로 정렬
     const sortedEvents = events.sort((a, b) => {
         return parseCreateTime(a.createTime) - parseCreateTime(b.createTime);

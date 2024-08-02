@@ -1,3 +1,4 @@
+import React from 'react';
 import colors from "../../../../styles/colors";
 import styled from "styled-components";
 
@@ -9,24 +10,24 @@ const MealContainer = styled.div`
     align-items: center;
     padding-left: 1.2rem;
     margin-bottom: 0.5rem;
-`
+`;
 
 const MealP = styled.p`
     font-size: 1.2rem;
     font-weight: 600;
     color: ${colors.gray6};
-`
+`;
 
 const Meal = ({ data }) => {
     return (
         <>
-            <React.Fragment key={index}>
-                <MealContainer>
+            {data.map((item, index) => (
+                <MealContainer key={index}>
                     <MealP>식사</MealP>
                 </MealContainer>
-            </React.Fragment>
+            ))}
         </>
-    )
-}
+    );
+};
 
 export default Meal;
