@@ -22,15 +22,17 @@ const ListBar = styled.div`
 `;
 
 // 시간 부분만 빼기
-const extractHour = (createTime) => {
+/* const extractHour = (createTime) => {
     if (!createTime) {
         return null;
     }
 
     const formattedTime = createTime.replace(/-/g, '/');
     const date = new Date(formattedTime);
+
+    console.log(`createAtTime: ${createTime}`);
     return date.getHours();
-};
+}; 
 
 const extractHourFromMeal = (createTime) => {
     if (!createTime) {
@@ -40,6 +42,32 @@ const extractHourFromMeal = (createTime) => {
     const [hours, minutes, seconds] = createTime.split(':');
 
     //console.log(`createAtTime: ${createTime}, Hour: ${hours}`);
+    return parseInt(hours, 10);
+}; */
+
+// 시간 부분만 빼기 (date 문자열에서 시간 추출)
+const extractHour = (createTime) => {
+    if (!createTime) {
+        return null;
+    }
+
+    // ISO 8601 포맷으로 변환하여 처리
+    const formattedTime = createTime.replace(/-/g, '/').replace(/T/, ' ').replace(/Z$/, '');
+    const date = new Date(formattedTime);
+
+    console.log(`createAtTime: ${createTime}`);
+    return date.getHours();
+};
+
+// 시간 부분만 빼기 (시간 문자열에서 시간 추출)
+const extractHourFromMeal = (createTime) => {
+    if (!createTime) {
+        return null;
+    }
+
+    const [hours] = createTime.split(':');
+
+    console.log(`createAtTime: ${createTime}, Hour: ${hours}`);
     return parseInt(hours, 10);
 };
 
