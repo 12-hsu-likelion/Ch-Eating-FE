@@ -6,12 +6,12 @@ const ProtectedRoute = () => {
     const location = useLocation();
     const [state, refetch] = useAxios(location.pathname);
 
-    if(state.isLogin === undefined){
+    if (state.isLogin === undefined) {
         return;
     }
-    
+
     return (
-        state.isLogin ? <Outlet /> : <Navigate replace to={"/login"} />
+        state.isLogin ? <Outlet /> : <Navigate state={{ redirectedFrom: location }} replace to={"/login"} />
     );
 };
 

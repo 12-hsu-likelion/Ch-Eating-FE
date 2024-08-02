@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import sign_up_logo from "../../assets/images/sign_up_logo.png";
 import axios from "axios";
 import { useLoginAsync } from "../../hooks/useAsync";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [id, handleId, setId] = useInput("");
@@ -17,8 +17,10 @@ const Login = () => {
     const idRef = useRef();
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state?.redirectedFrom?.pathname || "/home";
 
-    const [loginState, onLogin] = useLoginAsync(id, pw, setError, setMessage);
+    const [loginState, onLogin] = useLoginAsync(id, pw, setError, setMessage, from);
 
     useEffect(() => {
         idRef.current.focus();

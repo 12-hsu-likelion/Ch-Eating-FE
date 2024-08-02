@@ -18,7 +18,6 @@ import MealPost from './pages/Meal/MealPost';
 import MealEdit from "./pages/Meal/MealEdit";
 import Notice from "./pages/Notice/Notice";
 
-import DeletePls from './pages/Login/DeletePls';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Calendar from './pages/Calendar/Calendar';
 import DetailedDailyAnalytics from './pages/Calendar/DetailedDailyAnalytics';
@@ -41,8 +40,6 @@ function App() {
         <Route path='/signupcomplete' element={<SignUpComplete />} />
 
         <Route element={<ProtectedRoute />}>
-          {/* 밑의 path는 로그인이 필요한 페이지들(홈, 마이페이지, 등등)을 넣어야 합니다. 밑의 path는 예시 */}
-          {/* <Route path='shouldbedeleted' element={<DeletePls />} /> */}
           <Route path="/home" element={<Home />} />
           <Route path='/mypage' element={<Mypage />} />
           <Route path="/test" element={<TestMain />} />
@@ -53,8 +50,6 @@ function App() {
           <Route path="/edit/:id" element={<MealEdit />} />
           {/* <Route path="/notice" element={<Notice />} /> */}
           <Route path='/calendar' element={<Calendar />} />
-          {/* DetailedDailyAnalytics는 캘린더에서 일을 클릭했을 때 이동하는 페이지 */}
-          {/* <Route path='/detailedanalytics/:date' element={<DetailedDailyAnalytics />} /> */}
           <Route path="/detailedanalytics/:formattedDate" element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
         </Route>

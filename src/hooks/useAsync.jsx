@@ -74,7 +74,7 @@ function reducer(state, action) {
 }
 
 // 로그인 하는 함수 ok
-export const useLoginAsync = (id, password, setError, setMessage) => {
+export const useLoginAsync = (id, password, setError, setMessage, from) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ export const useLoginAsync = (id, password, setError, setMessage) => {
 
             localStorage.setItem("accessToken", response.data.data.accessToken);
 
-            navigate("/home");
+            navigate(from);
         } catch (error) {
             dispatch({
                 type: "ERROR",
