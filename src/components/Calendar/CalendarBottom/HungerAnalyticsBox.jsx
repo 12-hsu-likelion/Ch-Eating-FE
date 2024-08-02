@@ -47,12 +47,13 @@ const StyledHungerAnalyticsBox = styled.li`
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 0 29px;
+    /* padding: 0 29px; */
     border-radius: 4px;
     border: .5px solid ${colors.gray2};
     background-color: ${colors.gray1};
     cursor: pointer;
     transition: .5s ease;
+    text-align: center;
 
     &:active{
         background-color: ${colors.gray2};

@@ -15,7 +15,7 @@ const Daily = () => {
     const [dailyState, refetch] = useGetWeeklyStatics(firstDayOfFirstWeek, lastDayOfLastWeek);
 
     useLayoutEffect(() => {
-        refetch();
+        // refetch();
     }, [selectedWeek]);
 
     return (

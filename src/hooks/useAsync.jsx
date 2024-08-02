@@ -99,6 +99,7 @@ export const useLoginAsync = (id, password, setError, setMessage, from) => {
             setError(false);
 
             localStorage.setItem("accessToken", response.data.data.accessToken);
+            localStorage.setItem("currentUserId", id);
 
             navigate(from);
         } catch (error) {
@@ -382,8 +383,10 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
     return [state, getMonthlyFakeHungerStats];
 }
 
+// daily(주간)이 바뀔 때마다 통계를 가져오는 함수
 export const useGetWeeklyStatics = (startDate, endDate) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const userId = localStorage.getItem("currentUserId");
 
     async function fetchData() {
         dispatch({
@@ -391,8 +394,41 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
         });
 
         try {
-            const response = API.get("api/statistics/weekly", {
+            const response = API.get("/api/statistics/weekly", {
                 params: {
+                    userId,
+                    startDate,
+                    endDate
+                }
+            });
+
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: "ERROR",
+                error
+            })
+        }
+    }
+
+    return [state, fetchData];
+}
+
+// weekly(월간)이 바뀔 때마다 통계를 가져오는 함수
+export const useGetMonthlyStatics = (startDate, endDate) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const userId = localStorage.getItem("currentUserId");
+
+    async function fetchData() {
+        dispatch({
+            type: "LOADING"
+        });
+
+        try {
+            const response = API.get("api/statistics/monthly", {
+                params: {
+                    userId,
                     startDate,
                     endDate
                 }

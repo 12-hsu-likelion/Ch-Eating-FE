@@ -13,12 +13,14 @@ const SignUp = () => {
     const [name, handleName, setName] = useInput("");
 
     const [inputTestMsg, setInputTestMsg] = useState({
+        nameMsg: "",
         idMsg: "",
         pwMsg: "",
         matchMsg: "",
     });
 
     const [errors, setErrors] = useState({
+        nameError: true,
         idError: {
             formatError: false,
             dupError: true
@@ -33,6 +35,31 @@ const SignUp = () => {
         matchPwdFocus: false,
         nameFocus: false,
     });
+
+    useEffect(()=>{
+        if(!inputRegexs.nameReg.test(name)){
+            setErrors(prev=>({
+                ...prev,
+                nameError: true,
+            }))
+
+            setInputTestMsg(prev=>({
+                ...prev,
+                nameMsg: "이름은 영문자 및 숫자, 유효한 한글 포함 3~15글자이어야 합니다"
+            }))
+        }
+        else{
+            setErrors(prev=>({
+                ...prev,
+                nameError: false,
+            }))
+
+            setInputTestMsg(prev=>({
+                ...prev,
+                nameMsg: ""
+            }))
+        }
+    }, [name]);
 
     useEffect(() => {
         if (!inputRegexs.idReg.test(id)) {
@@ -107,7 +134,6 @@ const SignUp = () => {
     }, [pw, matchPw]);
 
     // 통신 함수
-
     const [idDupState, checkIdDup] = useCheckIdDup(id, errors, setErrors, setInputTestMsg);
     const [signUpState, onSignUp] = useOnSignUp(name, id, pw);
 
@@ -138,6 +164,10 @@ const SignUp = () => {
                                 });
                             }}
                         />
+
+                        {name !== "" && (
+                            <Msg error={errors.nameError} text={inputTestMsg.nameMsg} />
+                        )}
                     </div>
                     <div className="input id-input">
                         <Title $isFocused={isFocused} $target="idFocus">아이디</Title>
@@ -214,7 +244,7 @@ const SignUp = () => {
                     onClick={onSignUp}
                     className="next"
                     disabled={
-                        name.length <= 2 ||
+                        errors.nameError ||
                         errors.idError.formatError ||
                         errors.idError.dupError ||
                         errors.pwError ||
@@ -273,11 +303,6 @@ const StyledSignUp = styled.section`
                     &:focus {
                         border-bottom: 1px solid ${colors.mainColor};
                     }
-                }
-
-                input[name="id"],
-                input[name="phone-number"] {
-                    padding-right: 80px;
                 }
 
                 input::placeholder {

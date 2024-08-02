@@ -65,30 +65,30 @@ const TestQna = () => {
     }
 
     // 결과를 도출하고 통신을 보내고 사용자를 안내하는 함수
-    async function getTestResult(answer){
+    async function getTestResult(answer) {
         const value = Object.values(answer);
 
-        if(activeType === "before"){
-            value.map((e, i)=>{
-                if(i === 0){
+        if (activeType === "before") {
+            value.map((e, i) => {
+                if (i === 0) {
                     const diff = (currentTime - e + 1440) % 1440;
                     if (diff <= 180 || diff >= 1440 - 180) {
                         fakeHungerCount += 1;
                     }
                 }
-                else if(i === 1){
+                else if (i === 1) {
                     fakeHungerCount += e === "네" ? 1 : 0;
                 }
-                else if(i === 2 || i === 3){
+                else if (i === 2 || i === 3) {
                     fakeHungerCount += e === "아니오" ? 1 : 0;
                 }
-                else{
+                else {
                     fakeHungerCount += e >= 4 ? 1 : 0;
                 }
             })
-        }else{
-            value.map(e=>{
-                if(e !== "아니오"){
+        } else {
+            value.map(e => {
+                if (e !== "아니오") {
                     fakeHungerCount++;
                 }
             })
@@ -104,23 +104,23 @@ const TestQna = () => {
             testResult
         })
 
-        try{
+        try {
             const response = await API.post("/api/tests/test", {
                 testName,
                 testResult
             });
 
             console.log(response.data);
-        }catch(e){
+        } catch (e) {
             console.log(e);
             alert("오류가 발생했습니다.");
             return;
         }
 
-        if(isFakeHunger){
+        if (isFakeHunger) {
             navigate(`/result/${activeType}/fakehunger`);
         }
-        else{
+        else {
             navigate(`/result/${activeType}/realhunger`);
         }
     }
@@ -303,11 +303,11 @@ const StyledTestQna = styled.section`
         .question-content {
             border-radius: 8px;
             border: 0.5px solid ${colors.gray2};
-            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             height: 380px;
+            width: 100%;
 
             > p {
                 color: #9FA4A8;
@@ -326,7 +326,6 @@ const StyledTestQna = styled.section`
             .answer-wrapper {
                 .answer-for-question1 {
                     display: flex;
-                    margin: 0 12px 65px 12px;
 
                     .drop-down {
                         position: relative;
@@ -339,7 +338,6 @@ const StyledTestQna = styled.section`
                             border: 0.5px solid ${colors.gray2};
                             border-radius: 4px;
                             background-color: ${colors.gray1};
-                            width: 95.78px;
                         }
 
                         .img-wrapper {
@@ -362,36 +360,32 @@ const StyledTestQna = styled.section`
                     .time-input-wrapper {
                         height: fit-content;
                         display: flex;
-                        width: 256px;
                         height: 38.89px;
                         align-items: center;
                         background-color: ${colors.gray1};
                         border: 0.5px solid ${colors.gray2};
                         border-radius: 4px;
                         margin-left: 24px;
+                        width: calc(254px + (100vw - 430px) * 1);
+                        max-width: 254px;
+                        justify-content: center;
 
                         span {
                             color: #9FA4A8;
                             font-size: 16px;
-                            margin: 0 48px;
+                            margin: 0 min(36px, calc(36px + (100vw - 430px) * 0.1));
                         }
 
                         input {
                             color: ${colors.black};
                             font-size: 16px;
-                            width: 25px;
+                            width: calc(45px + (100vw - 430px) * .1);
+                            max-width: 45px;
                             height: 90%;
+                            text-align: center;
 
                             &::placeholder {
                                 color: #9FA4A8;
-                            }
-
-                            &:first-child {
-                                margin-left: 57px;
-                            }
-
-                            &:last-child {
-                                margin-right: 57px;
                             }
                         }
                     }
@@ -408,14 +402,15 @@ const StyledTestQna = styled.section`
             width: 100%;
             display: flex;
             gap: 8.3px;
-            margin: 55px 16px 0 16px;
+            margin: 55px 16px 36px 16px;
         }
     }
 `;
 
 const StyledYesOrNoButton = styled.button`
     font-size: 16px;
-    width: 156px;
+    width: calc(156px + (100vw - 430px) * .4);
+    max-width: 156px;
     height: 45px;
     border-radius: 8px;
     color: ${({ $clicked }) => $clicked ? colors.gray1 : "#9FA4A8"};
@@ -429,7 +424,7 @@ const StyledPrevOrNextButton = styled.button`
     background-color: ${colors.gray2};
     border-radius: 8px;
     white-space: nowrap;
-    width: 194.85px;
+    width: 100%;
     height: 56px;
     pointer-events: ${({ $inVisible }) => $inVisible ? "none" : "auto"};
     opacity: ${({ $inVisible }) => $inVisible ? 0 : 1};

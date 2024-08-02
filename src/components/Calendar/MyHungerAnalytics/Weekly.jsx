@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import colors from '../../../styles/colors';
 import PieGraph from './Graph/PieGraph';
 import BarGraph from './Graph/BarGraph';
 import { eachDayOfInterval, endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from 'date-fns';
 import { useCalendarContext } from '../../../context/CalendarContext';
+import { useGetMonthlyStatics } from '../../../hooks/useAsync';
 
 const Weekly = () => {
 
@@ -19,7 +20,14 @@ const Weekly = () => {
     const firstDayOfFirstWeek = useMemo(() => format(startOfWeek(startCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [startCurrentMonth]);
     const lastDayOfLastWeek = useMemo(() => format(endOfWeek(endCurrentMonth, { weekStartsOn: 1 }), "yyyy-MM-dd"), [endCurrentMonth]);
 
-    console.log("현재 선택된 월의 첫 날과 끝 날: ", firstDayOfFirstWeek, lastDayOfLastWeek);
+    // console.log("현재 선택된 월의 첫 날과 끝 날: ", firstDayOfFirstWeek, lastDayOfLastWeek);
+
+    // 통신 코드
+    const [weeklyState, refetch] = useGetMonthlyStatics(firstDayOfFirstWeek, lastDayOfLastWeek);
+
+    useLayoutEffect(() => {
+        // refetch();
+    }, [selectedMonth]);
 
     const daysInMonth = eachDayOfInterval({
         start: firstDayOfFirstWeek,
@@ -53,25 +61,25 @@ const Weekly = () => {
 
         return random + i;
     })
-    console.log("나눠진 달의 배열", weekChunks);
-    
+    // console.log("나눠진 달의 배열", weekChunks);
+
 
     return (
         <StyledWeekly>
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <BarGraph weekChunks={weekChunks} data = {shouldBeDeletedData1} />
+                <BarGraph weekChunks={weekChunks} data={shouldBeDeletedData1} />
             </div>
 
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
-                <BarGraph weekChunks={weekChunks} data = {shouldBeDeletedData2} />
+                <BarGraph weekChunks={weekChunks} data={shouldBeDeletedData2} />
             </div>
 
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph type={"monthly"} data = {totalFakeHungerTimeDistribution} />
+                    <PieGraph type={"monthly"} data={totalFakeHungerTimeDistribution} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>

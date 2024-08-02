@@ -23,7 +23,6 @@ const CalendarDay = ({ data, gotoDetailedAnalyticsPage, dayInfo, isPrevMonth, is
 };
 
 const StyledCalendarDay = styled.li`
-    width: 56px;    
     min-height: 76px;
     cursor: pointer;
     padding-top: 6px;
