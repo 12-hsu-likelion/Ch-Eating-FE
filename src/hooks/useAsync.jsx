@@ -262,7 +262,7 @@ export const useAxios = (path) => {
         }
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         fetch();
     }, [path]);
 

@@ -36,17 +36,17 @@ const CalendarDaysWrapper = () => {
     }
 
     const transformedData = monthState.data.reduce((acc, item) => {
-      const { createTime } = item;
+      const { createDate } = item;
       
-      if (!acc[createTime]) {
-          acc[createTime] = [];
+      if (!acc[createDate]) {
+          acc[createDate] = [];
       }
       
-      acc[createTime].push(item);
+      acc[createDate].push(item);
       
       return acc;
   }, {});
-  
+
     return (
         <StyledCalendarDayWrapper>
             {daysInMonth.map((dayInfo, i)=>{
