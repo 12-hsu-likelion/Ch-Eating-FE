@@ -21,17 +21,39 @@ const ListBar = styled.div`
     margin-left: 13%;
 `;
 
+// 시간 부분만 빼기
+const extractHour = (createTime) => {
+    if (!createTime) {
+        return null;
+    }
+
+    const formattedTime = createTime.replace(/-/g, '/');
+    const date = new Date(formattedTime);
+    return date.getHours();
+};
+
+const extractHourFromMeal = (createAtTime) => {
+    if (!createAtTime) {
+        return null;
+    }
+
+    const date = new Date(createAtTime);
+    return date.getHours();
+};
+
 const ListTime = ({ before, after, meal }) => {
+    //console.log(before);
+    //console.log(after);
+    console.log(meal);
     const timeIntervals = Array.from({ length: 25 }, (_, index) => index);
 
     return (
         <ListContainer>
             <ListBar />
             {timeIntervals.map(time => {
-                // 나중에 id와 일치하는게 아닌 testTime 일치로 바꿀 것
-                const matchingBefore = before.find(before => before.id === time);
-                const matchingAfter = after.find(after => after.id === time);
-                const matchingMeal = meal.find(meal => meal.id === time);
+                const matchingBefore = before.filter(item => extractHour(item.createTime) === time) || null;
+                const matchingAfter = after.filter(item => extractHour(item.createTime) === time) || null;
+                const matchingMeal = meal.filter(item => extractHourFromMeal(item.createAtTime) === time) || null;
 
                 return (
                     <ItemTime 
