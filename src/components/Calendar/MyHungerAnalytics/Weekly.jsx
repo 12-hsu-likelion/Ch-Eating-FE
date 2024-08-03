@@ -26,7 +26,7 @@ const Weekly = () => {
     const [weeklyState, refetch] = useGetMonthlyStatics(firstDayOfFirstWeek, lastDayOfLastWeek);
 
     useLayoutEffect(() => {
-        // refetch();
+        refetch();
     }, [selectedMonth]);
 
     const daysInMonth = eachDayOfInterval({
@@ -62,6 +62,7 @@ const Weekly = () => {
         return random + i;
     })
     // console.log("나눠진 달의 배열", weekChunks);
+    console.log(shouldBeDeletedData1);
 
 
     return (
