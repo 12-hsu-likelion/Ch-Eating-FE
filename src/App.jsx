@@ -22,6 +22,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Calendar from './pages/Calendar/Calendar';
 import DetailedDailyAnalytics from './pages/Calendar/DetailedDailyAnalytics';
 import MyHungerAnalytics from './pages/Calendar/MyHungerAnalytics';
+import NotFound from './pages/NotFound/NotFound';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path='/calendar' element={<Calendar />} />
           <Route path="/detailedanalytics/:formattedDate" element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       {showFooter && <Footer />}
