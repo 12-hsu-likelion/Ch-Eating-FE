@@ -15,25 +15,29 @@ const Daily = () => {
     const [dailyState, refetch] = useGetWeeklyStatics(firstDayOfFirstWeek, lastDayOfLastWeek);
 
     useLayoutEffect(() => {
-        // refetch();
+        refetch();
     }, [selectedWeek]);
+
+    if(dailyState.loading){
+        return;
+    }
 
     return (
         <StyledDaily>
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <StackGraph data={periodStatistics.map(e => e.totalFakeHungerOccurrences)} />
+                <StackGraph data={dailyState.data.periodStatistics.map(e => e.totalFakeHungerOccurrences)} />
             </div>
 
             <div className="stack-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
-                <StackGraph data={periodStatistics.map(e => e.totalFakeHungerFailures)} />
+                <StackGraph data={dailyState.data.periodStatistics.map(e => e.totalFakeHungerFailures)} />
             </div>
 
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph type={"weekly"} data={totalFakeHungerTimeDistribution} />
+                    <PieGraph type={"weekly"} data={dailyState.data.totalFakeHungerTimeDistribution} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>

@@ -385,7 +385,11 @@ export const useGetMonthlyFakeHungerStats = (year, month, deps = "") => {
 
 // daily(주간)이 바뀔 때마다 통계를 가져오는 함수
 export const useGetWeeklyStatics = (startDate, endDate) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, {
+        loading: true,
+        data: null,
+        error: null
+    });
     const userId = localStorage.getItem("currentUserId");
 
     async function fetchData() {
@@ -394,7 +398,7 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
         });
 
         try {
-            const response = API.get("/api/statistics/weekly", {
+            const response = await API.get("/api/statistics/weekly", {
                 params: {
                     userId,
                     startDate,
@@ -402,7 +406,11 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
                 }
             });
 
-            console.log(response);
+            dispatch({
+                type: "SUCCESS",
+                data: response.data.data
+            })
+
         } catch (error) {
             console.log(error);
             dispatch({
@@ -417,7 +425,11 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
 
 // weekly(월간)이 바뀔 때마다 통계를 가져오는 함수
 export const useGetMonthlyStatics = (startDate, endDate) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, {
+        loading: true,
+        data: null,
+        error: null
+    });
     const userId = localStorage.getItem("currentUserId");
 
     async function fetchData() {
@@ -426,7 +438,7 @@ export const useGetMonthlyStatics = (startDate, endDate) => {
         });
 
         try {
-            const response = API.get("api/statistics/monthly", {
+            const response = await API.get("api/statistics/monthly", {
                 params: {
                     userId,
                     startDate,
@@ -434,7 +446,11 @@ export const useGetMonthlyStatics = (startDate, endDate) => {
                 }
             });
 
-            console.log(response);
+            dispatch({
+                type: "SUCCESS",
+                data: response.data.data
+            })
+
         } catch (error) {
             console.log(error);
             dispatch({
