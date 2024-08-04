@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import colors from "../../../../styles/colors";
+import colors from "../../../../../styles/colors";
 import styled from "styled-components";
-import { API } from "../../../../api/axios";
+import { API } from "../../../../../api/axios";
 
 const AfterContainer = styled.div`
     width: 100%;

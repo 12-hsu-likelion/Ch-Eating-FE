@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import colors from "../../../styles/colors";
+import colors from "../../../../styles/colors";
 import Before from "../Time/TimeDetail/Before";
 import After from "../Time/TimeDetail/After";
 import Meal from "../Time/TimeDetail/Meal";
