@@ -49,38 +49,27 @@ const Weekly = () => {
         return calcWeeks();
     }, [selectedMonth]);
 
-    // 이게 받은 데이터라고 치면
-    const shouldBeDeletedData1 = Array.from({ length: weekChunks.length }, (_, i) => {
-        const random = Math.floor(Math.random() * 5 + 1);
 
-        return random + i;
-    })
-
-    const shouldBeDeletedData2 = Array.from({ length: weekChunks.length }, (_, i) => {
-        const random = Math.floor(Math.random() * 20 + 1);
-
-        return random + i;
-    })
-    // console.log("나눠진 달의 배열", weekChunks);
-    console.log(shouldBeDeletedData1);
-
+    if(weeklyState.loading){
+        return;
+    }
 
     return (
         <StyledWeekly>
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 횟수</h2>
-                <BarGraph weekChunks={weekChunks} data={shouldBeDeletedData1} />
+                <BarGraph weekChunks={weekChunks} data={weeklyState.data?.periodStatistics?.map(e=>e.totalFakeHungerOccurrences)} />
             </div>
 
             <div className="bar-graph-wrapper">
                 <h2>가짜 배고픔에 속은 횟수</h2>
-                <BarGraph weekChunks={weekChunks} data={shouldBeDeletedData2} />
+                <BarGraph weekChunks={weekChunks} data={weeklyState.data?.periodStatistics?.map(e=>e.totalFakeHungerFailures)} />
             </div>
 
             <div className="pie-graph-wrapper">
                 <h2>가짜 배고픔을 느낀 시간대</h2>
                 <div className="pie-graph-with-hours">
-                    <PieGraph type={"monthly"} data={totalFakeHungerTimeDistribution} />
+                    <PieGraph type={"monthly"} data={weeklyState.data?.totalFakeHungerTimeDistribution} />
                     <span className='time time-24'>24</span>
                     <span className='time time-6'>6</span>
                     <span className='time time-12'>12</span>
@@ -149,11 +138,3 @@ const StyledWeekly = styled.div`
 `
 
 export default Weekly;
-
-const totalFakeHungerTimeDistribution = [
-    5, 6, 4, 7, 3, 8, 6, 4, 7, 5,
-    8, 3, 6, 4, 7, 5, 8, 3, 6, 4,
-    7, 5, 8, 3, 6, 4, 7, 5, 8, 3,
-    6, 4, 7, 5, 8, 3, 6, 4, 7, 5,
-    8, 3, 6, 4, 7, 5, 8, 3, 6, 4
-];

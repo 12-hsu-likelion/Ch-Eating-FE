@@ -5,8 +5,6 @@ import colors from '../../styles/colors';
 import { useCalendarContext } from '../../context/CalendarContext';
 
 const WeekDropDown = () => {
-    const s = useCalendarContext();
-    console.log(s);
     // 기본적으로 달이 변하면 달의 week도 변하기 때문에 달이 변할 때마다 현재 선택된 week도 변경
     // month의 경우는 어차피 크게 선택할 수 있기 때문에 연이 변해도, 달이 변해도 마지막으로 선택한 month(연도까지 포함된 객체)로 currentSelect가 변하지 않음
     const { currentSelect, dispatch, splitedArrayByWeek, currentDate, years} = useCalendarContext();

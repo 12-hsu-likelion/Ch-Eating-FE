@@ -99,7 +99,6 @@ export const useLoginAsync = (id, password, setError, setMessage, from) => {
             setError(false);
 
             localStorage.setItem("accessToken", response.data.data.accessToken);
-            localStorage.setItem("currentUserId", id);
 
             navigate(from);
         } catch (error) {
@@ -390,7 +389,6 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
         data: null,
         error: null
     });
-    const userId = localStorage.getItem("currentUserId");
 
     async function fetchData() {
         dispatch({
@@ -398,9 +396,8 @@ export const useGetWeeklyStatics = (startDate, endDate) => {
         });
 
         try {
-            const response = await API.get("/api/statistics/weekly", {
+            const response = await API.get("/api/tests/statistics/weekly", {
                 params: {
-                    userId,
                     startDate,
                     endDate
                 }
@@ -430,7 +427,6 @@ export const useGetMonthlyStatics = (startDate, endDate) => {
         data: null,
         error: null
     });
-    const userId = localStorage.getItem("currentUserId");
 
     async function fetchData() {
         dispatch({
@@ -438,9 +434,8 @@ export const useGetMonthlyStatics = (startDate, endDate) => {
         });
 
         try {
-            const response = await API.get("api/statistics/monthly", {
+            const response = await API.get("api/tests/statistics/monthly", {
                 params: {
-                    userId,
                     startDate,
                     endDate
                 }
