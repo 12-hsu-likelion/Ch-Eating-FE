@@ -12,7 +12,8 @@ const Weekly = () => {
     const { currentSelect } = useCalendarContext();
     const { selectedMonth } = currentSelect;
 
-    const tempDate = useMemo(() => new Date(`${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/)[0]}-01`), [selectedMonth]);
+    const tempDate = useMemo(() => new Date(`${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/)[0].padStart(2, "0")}-01`), [selectedMonth]);
+    console.log(`${selectedMonth.year}-${(selectedMonth.month).split(/[^0-9]/)[0].padStart(2, "0")}-01`);
 
     const startCurrentMonth = useMemo(() => startOfMonth(tempDate), [tempDate]);
     const endCurrentMonth = useMemo(() => endOfMonth(tempDate), [tempDate]);

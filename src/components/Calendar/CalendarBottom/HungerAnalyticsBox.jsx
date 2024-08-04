@@ -4,9 +4,9 @@ import colors from '../../../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarContext } from '../../../context/CalendarContext';
 
-const HungerAnalyticsBox = ({type, data = " "}) => {
-    const {currentSelect} = useCalendarContext();
-    const {isWeeklySelected, selectedWeek, selectedMonth} = currentSelect;
+const HungerAnalyticsBox = ({ type, data = " " }) => {
+    const { currentSelect } = useCalendarContext();
+    const { isWeeklySelected, selectedWeek, selectedMonth } = currentSelect;
     const navigate = useNavigate();
 
     // 만약에 지금이 주간 선택이라면 보내야할 데이터는 selectedWeek
@@ -20,15 +20,16 @@ const HungerAnalyticsBox = ({type, data = " "}) => {
         "FRIDAY": "금요일",
         "SATURDAY": "토요일",
         "SUNDAY": "일요일"
-      };
+    };
 
-    if(dayMapping[data]){
+    if (dayMapping[data]) {
         data = dayMapping[data];
     }
-    
+
     const sendData = isWeeklySelected ? selectedWeek[selectedWeek.length - 1].date : `${selectedMonth.year}-${selectedMonth.month.replace("월", "").toString().padStart("2", 0)}-01`;
+
     return (
-        <StyledHungerAnalyticsBox onClick={()=>navigate("/myhungeranalytics", {
+        <StyledHungerAnalyticsBox onClick={() => navigate("/myhungeranalytics", {
             state: {
                 sendData
             }

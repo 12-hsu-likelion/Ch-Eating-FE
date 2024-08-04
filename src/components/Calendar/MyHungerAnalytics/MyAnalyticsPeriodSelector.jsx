@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import colors from '../../../styles/colors';
 import { useCalendarContext } from '../../../context/CalendarContext';
@@ -7,10 +7,6 @@ import WeekDropDown from '../WeekDropDown';
 const MyAnalyticsPeriodSelector = () => {
     const { currentSelect, dispatch } = useCalendarContext();
     const {isWeeklySelected, selectedWeek} = currentSelect;
-
-    useEffect(()=>{
-        // 여기에 밑의 데이터를 fetch하는 함수 작성
-    }, [selectedWeek]);
 
     return (
         <StyledPeriodSelector>

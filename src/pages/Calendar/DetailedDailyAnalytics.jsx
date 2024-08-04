@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useLocation, useParams } from 'react-router-dom';
-import ListTime from '../../components/DetailedDailyAnalytics/Time/list-time';
+import ListTime from "../../components/Calendar/DetailedDailyAnalytics/Time/list-time";
 import { API } from "../../api/axios";
 
 const TopContainer = styled.div`
