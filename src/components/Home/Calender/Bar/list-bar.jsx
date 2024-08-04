@@ -16,27 +16,32 @@ const ListBar = ({ date }) => {
 
     useEffect(() => {
         const fetchTestResults = async () => {
-        try {
-            const response = await API.get("api/tests/byDate", {
-                params: { date: date }
-            });
-            console.log(date, ":", response.data.data);
+            try {
+                const response = await API.get("api/tests/byDate", {
+                    params: { date: date }
+                });
+                console.log(date, ":", response.data.data);
 
-            // 시간 빠른 순으로 정렬
-            const convertToISO = (dateStr) => {
-                return dateStr.replace(/-(\d{2}):(\d{2})$/, 'T$1:$2:00Z');
-            };
+                const sortedResults = response.data.data.sort((a, b) => {
+                    const timeA = a.createTime.split(':').map(Number);
+                    const timeB = b.createTime.split(':').map(Number);
 
-            const sortedResults = response.data.data.sort((a, b) => {
-                return new Date(convertToISO(a.createTime)) - new Date(convertToISO(b.createTime));
-            });
+                    const minutesA = timeA[0] * 60 + timeA[1];
+                    const minutesB = timeB[0] * 60 + timeB[1];
 
-            console.log("Sorted Results:", sortedResults);
-            setTestResults(sortedResults);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+                    if (minutesA !== minutesB) {
+                        return minutesA - minutesB;
+                    }
+
+                    return a.testId - b.testId;
+                });
+
+                console.log("Sorted Results:", sortedResults);
+                setTestResults(sortedResults);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
 
         if (date) {
             fetchTestResults();

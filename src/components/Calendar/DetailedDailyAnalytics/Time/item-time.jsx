@@ -27,11 +27,24 @@ const ContentContainer = styled.div`
     padding-left: 2%;
 `;
 
-const parseCreateTime = (createTimeStr) => {
-    if (!createTimeStr || typeof createTimeStr !== 'string') {
+const createFullDate = (dateStr, timeStr) => {
+    if (!dateStr || !timeStr) {
         return new Date(0);
     }
-    return new Date(createTimeStr.replace(/-/g, '/'));
+    const formattedDateStr = `${dateStr.replace(/-/g, '/')} ${timeStr}`;
+    return new Date(formattedDateStr);
+};
+
+// 정렬을 위한 시간 비교 함수
+const compareTime = (a, b) => {
+    const timeA = a.createTime || a.createAtTime || '';
+    const timeB = b.createTime || b.createAtTime || '';
+    
+    if (timeA === timeB) {
+        return (a.testId || 0) - (b.testId || 0);
+    }
+    
+    return timeA.localeCompare(timeB);
 };
 
 const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
@@ -42,12 +55,9 @@ const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
         ...meal.map(item => ({ ...item, type: 'meal' }))
     ];
 
-    //console.log(time, ":", events);
+    events.sort(compareTime);
 
-    // 빠른 순으로 정렬
-    const sortedEvents = events.sort((a, b) => {
-        return parseCreateTime(a.createTime) - parseCreateTime(b.createTime);
-    });
+    console.log(time, ":", events);
 
     const hasData = before.length > 0 || after.length > 0 || meal.length > 0;
 
@@ -59,14 +69,14 @@ const ItemTime = ({ time, before = [], after = [], meal = [] }) => {
         <ItemContainer>
             <TimeP hasdata={hasData ? 'true' : 'false'}>{formatTime(time)}:00</TimeP>
             <ContentContainer>
-                {sortedEvents.map((event, index) => {
+                {events.map((event, index) => {
                     switch (event.type) {
                         case 'before':
                             return <Before key={index} data={[event]} />;
                         case 'after':
                             return <After key={index} data={[event]} />;
                         case 'meal':
-                            return <Meal key={index} data={[event]}/>;
+                            return <Meal key={index} data={[event]} />;
                         default:
                             return null;
                     }
