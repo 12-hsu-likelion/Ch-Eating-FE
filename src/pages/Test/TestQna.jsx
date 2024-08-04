@@ -181,6 +181,8 @@ const TestQna = () => {
         }
     }, [currentQuestion]);
 
+    console.log(beforeAnswer.answer[1])
+
     return (
         <StyledTestQna className='pageContainer'>
             <div className="test-page-wrapper">
@@ -272,7 +274,11 @@ const TestQna = () => {
 
                 <div className="prev-or-next-btns">
                     <StyledPrevOrNextButton onClick={gotoNextOrPrev} $inVisible={currentQuestion === 1}>이전</StyledPrevOrNextButton>
-                    <StyledPrevOrNextButton onClick={gotoNextOrPrev}>다음</StyledPrevOrNextButton>
+                    <StyledPrevOrNextButton onClick={gotoNextOrPrev} $isAnswered={activeType === "before" ? (currentQuestion === 1
+                        ? (inputHour !== "" || inputMin !== "")
+                        : beforeAnswer.answer[currentQuestion] !== ""
+                    )
+                        : afterAnswer.answer[currentQuestion] !== ""} >다음</StyledPrevOrNextButton>
                 </div>
             </div>
         </StyledTestQna>
@@ -421,20 +427,13 @@ const StyledPrevOrNextButton = styled.button`
     font-weight: 600;
     font-size: 20px;
     color: ${colors.gray3};
-    background-color: ${colors.gray2};
+    background-color: ${({ $isAnswered }) => $isAnswered ? colors.mainColor : colors.gray2};
     border-radius: 8px;
     white-space: nowrap;
     width: 100%;
     height: 56px;
     pointer-events: ${({ $inVisible }) => $inVisible ? "none" : "auto"};
     opacity: ${({ $inVisible }) => $inVisible ? 0 : 1};
-    transition: color .25s, transform .25s;
-
-    &:active{
-        color: ${colors.gray1};
-        background-color: ${colors.mainColor};
-        transform: scale(.96);
-    };
 `;
 
 export default TestQna;
