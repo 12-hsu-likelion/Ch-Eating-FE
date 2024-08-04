@@ -9,7 +9,6 @@ import AnalyticsWrapper from '../../components/Calendar/MyHungerAnalytics/Analyt
 const MyHungerAnalytics = () => {
     const location = useLocation();
     const date = location.state.sendData;
-    console.log(date);
 
     return (
         <CalendarProvider date = {new Date(date)}>

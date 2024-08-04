@@ -7,6 +7,8 @@ const CalendarDay = ({ data, gotoDetailedAnalyticsPage, dayInfo, isPrevMonth, is
     const { date, year, month, day, dayIndexOfWeek } = dayInfo;
     // 정보 객체 받아와서 fake인지 아닌지 확인하기
 
+    data?.sort((a, b)=>a?.createTime?.localeCompare(b?.createTime) || a?.testId - b?.testId);
+
     const isFakeHunger = data?.map(e => e.testResult === "가짜 배고픔" ? true : false);
 
     return (

@@ -337,6 +337,7 @@ const StyledSignUp = styled.section`
             color: ${colors.gray1};
             padding: 18px 0;
             margin-top: 92px;
+            margin-bottom: 80px;
         }
 
         .next:disabled {
