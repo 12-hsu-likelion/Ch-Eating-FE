@@ -42,11 +42,12 @@ const CalendarDaysWrapper = () => {
       if (!acc[createDate]) {
           acc[createDate] = [];
       }
-      
+
       acc[createDate].push(item);
-      
+
       return acc;
   }, {});
+
 
     return (
         <StyledCalendarDayWrapper>

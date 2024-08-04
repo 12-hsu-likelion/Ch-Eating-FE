@@ -99,11 +99,6 @@ const TestQna = () => {
         const testName = activeType === "before" ? "식전 배고픔 테스트" : "식후 배고픔 테스트"
         const testResult = isFakeHunger ? "가짜 배고픔" : "진짜 배고픔"
 
-        console.log({
-            testName,
-            testResult
-        })
-
         try {
             const response = await API.post("/api/tests/test", {
                 testName,
@@ -180,8 +175,6 @@ const TestQna = () => {
             }))
         }
     }, [currentQuestion]);
-
-    console.log(beforeAnswer.answer[1])
 
     return (
         <StyledTestQna className='pageContainer'>
