@@ -23,7 +23,7 @@ const Meal = ({ data }) => {
         <>
             {data.map((item, index) => (
                 <MealContainer key={index}>
-                    <MealP>식사</MealP>
+                    <MealP>식사: {item.mealName} ({item.mealAmount})</MealP>
                 </MealContainer>
             ))}
         </>
