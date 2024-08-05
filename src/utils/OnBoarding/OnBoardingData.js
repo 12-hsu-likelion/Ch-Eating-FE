@@ -14,14 +14,14 @@ const OnBoardingData = [
     { 
         "id": 3, 
         "imageUrl": "onBoarding3.png",
-        "title": "알림 서비스", 
-        "subTitle": "내가 허기를 자주 느꼈던 시간에.알림을 받을 수 있어요" 
+        "title": "테스트 결과 관리", 
+        "subTitle": "테스트 결과는.자동으로 캘린더에 기록돼요" 
     },
     { 
         "id": 4, 
         "imageUrl": "onBoarding4.png",
-        "title": "식사량 기록", 
-        "subTitle": "내가 먹을 수 있는 양을 기록해서.과식을 방지하세요" 
+        "title": "배고픔 통계", 
+        "subTitle": "통계를 통해 가짜 배고픔 패턴을 파악하고.변화를 확인할 수 있어요" 
     }
 ];
 
