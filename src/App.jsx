@@ -39,6 +39,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signupcomplete' element={<SignUpComplete />} />
+        <Route path="*" element={<NotFound />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
@@ -53,7 +54,6 @@ function App() {
           <Route path='/calendar' element={<Calendar />} />
           <Route path="/detailedanalytics/:formattedDate" element={<DetailedDailyAnalytics />} />
           <Route path='/myhungeranalytics' element={<MyHungerAnalytics />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       {showFooter && <Footer />}
