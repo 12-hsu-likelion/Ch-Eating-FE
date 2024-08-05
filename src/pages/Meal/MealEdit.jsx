@@ -125,7 +125,7 @@ const MealEdit = () => {
     }, [postType]);
 
     useEffect(() => {
-        if (brandName && postType && menuName && mealAmount && details) {
+        if ( postType && menuName && mealAmount ) {
             setForm(true);
         } else {
             setForm(false);
