@@ -419,7 +419,7 @@ const StyledYesOrNoButton = styled.button`
 const StyledPrevOrNextButton = styled.button`
     font-weight: 600;
     font-size: 20px;
-    color: ${colors.gray3};
+    color: ${({$isAnswered})=>$isAnswered ? colors.gray1 : colors.gray3};
     background-color: ${({ $isAnswered }) => $isAnswered ? colors.mainColor : colors.gray2};
     border-radius: 8px;
     white-space: nowrap;
