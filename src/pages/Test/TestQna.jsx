@@ -72,7 +72,7 @@ const TestQna = () => {
             value.map((e, i) => {
                 if (i === 0) {
                     const diff = (currentTime - e + 1440) % 1440;
-                    if (diff <= 180 || diff >= 1440 - 180) {
+                    if (diff <= 180) {
                         fakeHungerCount += 1;
                     }
                 }
@@ -147,34 +147,35 @@ const TestQna = () => {
     }, []);
 
     useEffect(() => {
-        if (inputHour >= 12 && beforeAnswer.ampm === 'AM') {
-            setBeforeAnswer(prev => ({
-                ...prev,
-                ampm: 'PM'
-            }));
-        } else {
-            setBeforeAnswer(prev => ({
-                ...prev,
-                ampm: 'AM'
-            }));
-        }
-    }, [inputHour, inputMin]);
-
-    useEffect(() => {
         if (currentQuestion !== 1 && activeType === "before") {
 
             if (inputHour === "" && inputMin === "") {
                 return;
             }
+
             setBeforeAnswer(prev => ({
                 ...prev,
                 answer: {
                     ...prev.answer,
-                    [1]: Number(inputHour) * 60 + Number(inputMin)
+                    [1]: prev.ampm === "AM" ?
+                        (Number(inputHour) === 12 ? Number(inputMin) : Number(inputHour) * 60 + Number(inputMin)) :
+                        (Number(inputHour) === 12 ? Number(inputHour) * 60 + Number(inputMin) : Number(inputHour) * 60 + Number(inputMin) + 720)
+                }
+            }));
+        }
+    }, [currentQuestion]);
+
+    useEffect(() => {
+        if (inputHour === "" && inputMin === "") {
+            setBeforeAnswer(prev => ({
+                ...prev,
+                answer: {
+                    ...prev.answer,
+                    [1]: ""
                 }
             }))
         }
-    }, [currentQuestion]);
+    }, [inputHour, inputMin]);
 
     return (
         <StyledTestQna className='pageContainer'>
@@ -230,6 +231,9 @@ const TestQna = () => {
                                         placeholder='00'
                                         maxLength={2}
                                         onBlur={() => {
+                                            if (inputHour === "") {
+                                                return;
+                                            }
                                             if (inputHour < 10) {
                                                 setInputHour(inputHour.toString().padStart(2, '0'));
                                             }
@@ -243,6 +247,9 @@ const TestQna = () => {
                                         placeholder='00'
                                         maxLength={2}
                                         onBlur={() => {
+                                            if (inputMin === "") {
+                                                return;
+                                            }
                                             if (inputMin < 10) {
                                                 setInputMin(inputMin.toString().padStart(2, '0'));
                                             }
@@ -419,7 +426,7 @@ const StyledYesOrNoButton = styled.button`
 const StyledPrevOrNextButton = styled.button`
     font-weight: 600;
     font-size: 20px;
-    color: ${({$isAnswered})=>$isAnswered ? colors.gray1 : colors.gray3};
+    color: ${({ $isAnswered }) => $isAnswered ? colors.gray1 : colors.gray3};
     background-color: ${({ $isAnswered }) => $isAnswered ? colors.mainColor : colors.gray2};
     border-radius: 8px;
     white-space: nowrap;

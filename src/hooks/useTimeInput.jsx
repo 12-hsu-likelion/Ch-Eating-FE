@@ -11,14 +11,14 @@ export const useTimeInput = (input, type) => {
             return;
         }
 
-        if(type === "hour" && e.target.value >= 24){
-            alert("24 미만의 숫자를 입력해주세요.");
+        if(type === "hour" && e.target.value >= 13){
+            alert("시간은 12 이하의 숫자를 입력해주세요.");
             setValue("");
             return;
         }
         
         if(type === "min" && e.target.value >= 60){
-            alert("60 미만의 숫자를 입력해주세요.");
+            alert("분에는 60 미만의 숫자를 입력해주세요.");
             setValue("");
             return;
         }
