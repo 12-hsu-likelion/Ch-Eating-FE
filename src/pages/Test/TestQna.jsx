@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
-import questionType from '../../components/Test/TestQuestion';
+import questionType from '../../utils/Test/TestQuestion';
 import TestNumber from '../../components/Test/TestNumber';
 import dropDown from '../../assets/images/drop_down.png';
 import { useTimeInput } from '../../hooks/useTimeInput';
