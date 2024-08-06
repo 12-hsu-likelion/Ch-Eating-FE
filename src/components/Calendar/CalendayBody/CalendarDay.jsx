@@ -45,7 +45,7 @@ const StyledCalendarDay = styled.li`
     background-color: ${({ $isCurrent }) => $isCurrent ? colors.violet10 : colors.white};
 
     span{
-        font-size: 16px;
+        font-size: 1.6rem;
         color: ${colors.black};
         font-weight: 600;
         margin-bottom: 3px;

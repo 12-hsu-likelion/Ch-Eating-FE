@@ -26,6 +26,7 @@ const TypeButton = styled.button`
     font-weight: 600;
     color: ${props => props.active === "true" ? colors.gray1 : colors.gray3};
     border: none;
+    
 `;
 
 const BannerImg = styled.img`
@@ -69,8 +70,8 @@ const TestMain = () => {
         <div className="pageContainer" style={{display: "flex", justifyContent: "center"}}>
             <TestContainer>
                 <TypeContainer>
-                    <TypeButton active={activeType === 'before' ? "true" : "false"} onClick={() => handleTestTypeClick('before')} style={{borderRadius: "1.6rem 0 0 0"}}>식전</TypeButton>
-                    <TypeButton active={activeType === 'after' ? "true" : "false"} onClick={() => handleTestTypeClick('after')} style={{borderRadius: "0 1.6rem 0 0"}}>식후</TypeButton>
+                    <TypeButton active={activeType === 'before' ? "true" : "false"} onClick={() => handleTestTypeClick('before')} style={{borderRadius: "1.6rem 0 0 0"}}>식전 테스트</TypeButton>
+                    <TypeButton active={activeType === 'after' ? "true" : "false"} onClick={() => handleTestTypeClick('after')} style={{borderRadius: "0 1.6rem 0 0"}}>식후 테스트</TypeButton>
                 </TypeContainer>
 
                 {activeType === 'before' ? (

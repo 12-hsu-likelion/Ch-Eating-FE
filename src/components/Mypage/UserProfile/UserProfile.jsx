@@ -27,6 +27,7 @@ const ProfileContainer = styled.div`
 const UserProfileP2 = styled.p`
     font-size: 1.6rem;
     color: ${colors.gray5};
+    font-weight: 500;
 `;
 
 const UserProfile = () => {

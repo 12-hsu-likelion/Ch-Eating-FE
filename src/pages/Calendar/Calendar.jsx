@@ -13,7 +13,7 @@ const Calender = () => {
         <CalendarProvider date = {date}>
             <StyledCalendar className='pageContainer'>
                 <div className="calendar-wrapper">
-                    <div className="title">
+                    <div className="title" style={{fontSize: "1.2rem", color: colors.gray5}}>
                         캘린더
                     </div>
                     <CalendarHeader />
