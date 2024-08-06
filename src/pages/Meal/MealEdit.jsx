@@ -57,6 +57,7 @@ const EditButton = styled.button`
     font-size: 1.6rem;
     font-weight: 600;
     color: ${({ disabled }) => (disabled ? colors.gray3 : colors.gray1)};
+    font-family: 'Pretendard-Regular';
 `
 
 const MealEdit = () => {

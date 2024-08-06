@@ -57,6 +57,7 @@ const SubmitButton = styled.button`
     text-align: center;
     font-size: 1.6rem;
     font-weight: 600;
+    font-family: 'Pretendard-Regular';
     color: ${({ disabled }) => (disabled ? colors.gray3 : colors.gray1)};
 `
 

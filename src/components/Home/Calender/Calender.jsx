@@ -12,6 +12,7 @@ const CalenderContainer = styled.div`
 
 const CalenderTop = styled.div`
     width: 100%;
+    height: 2.4rem;
     background-color: ${colors.mainColor};
     border: none;
     border-radius: 0.8rem 0.8rem 0 0;

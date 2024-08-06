@@ -43,7 +43,7 @@ const Login = () => {
                             <p>{message}</p>
                         )}
                     </div>
-                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={onLogin}>로그인하기</button>
+                    <button disabled={(id.length < 6 || pw.length < 8)} onClick={onLogin} style={{fontFamily:'Pretendard-Regular'}}>로그인하기</button>
                 </div>
 
                 <div className="navi-to-signup">

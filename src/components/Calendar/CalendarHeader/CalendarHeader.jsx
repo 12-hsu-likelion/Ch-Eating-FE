@@ -34,7 +34,7 @@ const StyledCalendarHeader = styled.header`
     }
 
     h2{
-        font-size: 20px;
+        font-size: 2rem;
         font-weight: 600;
         color: ${colors.mainColor};
     }

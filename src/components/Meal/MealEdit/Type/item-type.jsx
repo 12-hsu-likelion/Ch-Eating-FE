@@ -14,7 +14,8 @@ const TypeButton = styled.button`
     font-size: 1.2rem;
     color: ${props => props.active === "true" ? colors.gray1 : colors.gray5};
     cursor: pointer;
-
+    font-family: 'Pretendard-Regular';
+    
     @media screen and (max-width: 375px) {
         padding: 0.8rem 3rem;
         font-size: 1.6rem;

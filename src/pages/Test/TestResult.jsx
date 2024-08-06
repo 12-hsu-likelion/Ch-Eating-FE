@@ -25,6 +25,7 @@ const ResultButton = styled.button`
     text-align: cneter;
     cursor: pointer;
     margin-top: 9.3rem;
+    font-family:'Pretendard-Regular';
 `
 
 const TestResult = () => {
