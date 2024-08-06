@@ -421,6 +421,7 @@ const StyledYesOrNoButton = styled.button`
     border-radius: 8px;
     color: ${({ $clicked }) => $clicked ? colors.gray1 : "#9FA4A8"};
     background-color: ${({ $clicked }) => $clicked ? colors.mainColor : colors.violet10};
+    font-family:'Pretendard-Regular';
 `;
 
 const StyledPrevOrNextButton = styled.button`
@@ -434,6 +435,7 @@ const StyledPrevOrNextButton = styled.button`
     height: 56px;
     pointer-events: ${({ $inVisible }) => $inVisible ? "none" : "auto"};
     opacity: ${({ $inVisible }) => $inVisible ? 0 : 1};
+    font-family:'Pretendard-Regular';
 `;
 
 export default TestQna;

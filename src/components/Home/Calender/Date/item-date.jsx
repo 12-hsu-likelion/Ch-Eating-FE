@@ -25,6 +25,7 @@ const DateItem = styled.div`
 const DayP = styled.p`
     font-size: 1rem;
     color: ${colors.gray4};
+    font-weight: 500;
 `;
 
 const DateP = styled.p`

@@ -41,6 +41,7 @@ const AddButton = styled.button`
     font-size: 1.6rem;
     font-weight: 600;
     color: ${colors.gray1};
+    font-family: 'Pretendard-Regular';
 `
 
 const MealHome = () => {

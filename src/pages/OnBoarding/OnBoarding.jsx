@@ -145,6 +145,7 @@ const LoginButton = styled.button`
     align-items: center;
     text-align: center;
     margin-top: 2.3rem;
+    font-family:'Pretendard-Regular';
 
     ${props => props.fade === 'out' && css`
         animation: ${fadeOut} 1s forwards;

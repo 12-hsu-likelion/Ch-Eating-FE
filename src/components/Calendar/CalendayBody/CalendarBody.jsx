@@ -54,7 +54,7 @@ const StyledCalendarBody = styled.div`
 
         li{
             flex: 1;
-            font-size: 10px;
+            font-size: 1rem;
             color: #9FA4A8;
             text-align: center;
             font-weight: 500;
